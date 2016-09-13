@@ -115,6 +115,50 @@ public class Epconst {
 		this.woody = nWoody;
 		this.evergreen = nEvergreen;
 		this.c3_flag = nC3_flag;
+		this.phenology_flag = nPhenology_flag;
+		this.onday = nOnday;
+		this.offday = nOffday;
+		this.transfer_pdays = dTransfer_pdays;
+		this.litfall_pdays = dLitfall_pdays;
+		this.leaf_turnover = dLeaf_turnover;
+		this.froot_turnover = dFroot_turnover;
+		this.livewood_turnover = dLivewood_turnover;
+		this.daily_mortality_turnover = dDaily_mortality_turnover;
+		this.daily_fire_turnover = dDaily_fire_turnover;
+		this.alloc_frootc_leafc = dAlloc_frootc_leafc;
+		this.alloc_newstemc_newleafc = dAlloc_newstemc_newleafc;
+		this.alloc_newlivewoodc_newwoodc = dAlloc_newlivewoodc_newwoodc;
+		this.alloc_crootc_stemc = dAlloc_crootc_stemc;
+		this.alloc_prop_curgrowth = dAlloc_prop_curgrowth;
+		this.avg_proj_sla = dAvg_proj_sla;
+		this.sla_ratio = dSla_ratio;
+		this.lai_ratio = dLai_ratio;
+		this.int_coef = dInt_coef;
+		this.ext_coef = dExt_coef;
+		this.flnr = dFlnr;
+		this.psi_open = dPsi_open;
+		this.psi_close = dPsi_close;
+		this.vpd_open = dVpd_open;
+		this.vpd_close = dVpd_close;
+		this.gl_smax = dGl_smax;
+		this.gl_c = dGl_c;
+		this.gl_bl = dGl_bl;
+		this.froot_cn = dFroot_cn;
+		this.leaf_cn = dLeaf_cn;
+		this.livewood_cn = dLivewood_cn;
+		this.deadwood_cn = dDeadwood_cn;
+		this.leaflitr_cn = dLeaflitr_cn;
+		this.leaflitr_flab = dLeaflitr_flab;
+		this.leaflitr_fucel = dLeaflitr_fucel;
+		this.leaflitr_fscel = dLeaflitr_fscel;
+		this.leaflitr_flig = dLeaflitr_flig;
+		this.frootlitr_flab = dFrootlitr_flab;
+		this.frootlitr_fucel = dFrootlitr_fucel;
+		this.frootlitr_fscel = dFrootlitr_fscel;
+		this.deadwood_fucel = dDeadwood_fucel;
+		this.deadwood_fscel = dDeadwood_fscel;
+		this.deadwood_flig = dDeadwood_flig;		
+		
 
 	}
 }
