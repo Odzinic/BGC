@@ -95,7 +95,11 @@ public enum Constant {
 	BV_WARN(1),
 	BV_PROGRESS(2),
 	BV_DETAIL(3),
-	BV_DIAG(4);
+	BV_DIAG(4),
+	
+	DAYSNDEPLOY(365.0),
+	DAYSCRECOVER(365.0),
+	BULK_DENITRIF_PROPORTION(0.5);
 	
 	private double value;
 	private Constant(double value){
