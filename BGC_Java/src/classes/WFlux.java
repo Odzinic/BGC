@@ -4,7 +4,8 @@ public class WFlux {
 
 	public double prcp_to_canopyw; /* (kgH2O/m2/d) interception on canopy */
 	public double prcp_to_soilw; /*
-									 * (kgH2O/m2/d) precip entering soilwater pool
+									 * (kgH2O/m2/d) precip entering soilwater
+									 * pool
 									 */
 	public double prcp_to_snoww; /* (kgH2O/m2/d) snowpack accumulation */
 	public double canopyw_evap; /* (kgH2O/m2/d) evaporation from canopy */
@@ -19,7 +20,7 @@ public class WFlux {
 	public WFlux(double dPrcp_to_canopyw, double dPrcp_to_soilw, double dPrcp_to_snoww, double dCanopyw_evap,
 			double dCanopyw_to_soilw, double dSnoww_subl, double dSnoww_to_soilw, double dSoilw_evap,
 			double dSoilw_trans, double dSoilw_outflow, double dEt) {
-		
+
 		this.prcp_to_canopyw = dPrcp_to_canopyw;
 		this.prcp_to_soilw = dPrcp_to_soilw;
 		this.prcp_to_snoww = dPrcp_to_snoww;

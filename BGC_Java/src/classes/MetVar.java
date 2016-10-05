@@ -34,7 +34,7 @@ public class MetVar {
 			double dVpd, double dSwavgfd, double dSwabs, double dSwtrans, double dSwabs_per_plaisun,
 			double dSwabs_per_plaishade, double dPpfd_per_plaisun, double dPpfd_per_plaishade, double dPar,
 			double dParabs, double dPa, double dCo2, double dDayl) {
-		
+
 		this.prcp = dPrcp;
 		this.tmax = dTmax;
 		this.tmin = dTmin;

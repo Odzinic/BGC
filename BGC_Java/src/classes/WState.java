@@ -10,13 +10,14 @@ public class WState {
 	public double soilevap_snk; /* (kgH2O/m2) SUM of soil water evaporation */
 	public double snowsubl_snk; /* (kgH2O/m2) SUM of snow water sublimation */
 	public double canopyevap_snk; /*
-									 * (kgH2O/m2) SUM of canopy water evaporation
+									 * (kgH2O/m2) SUM of canopy water
+									 * evaporation
 									 */
 	public double trans_snk; /* (kgH2O/m2) SUM of transpiration */
 
 	public WState(double dSoilw, double dSnoww, double dCanopyw, double dPrcp_src, double dOutflow_snk,
 			double dSoilevap_snk, double dSnowsubl_snk, double dCanopyevap_snk, double dTrans_snk) {
-		
+
 		this.soilw = dSoilw;
 		this.snoww = dSnoww;
 		this.canopyw = dCanopyw;

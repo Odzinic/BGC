@@ -8,21 +8,44 @@ public class Epconst {
 	public int phenology_flag; /* (flag) 1=phenology model, 0=user defined */
 	public int onday; /* (yday) yearday leaves on */
 	public int offday; /* (yday) yearday leaves off */
-	public double transfer_pdays; /* (prop.) fraction of growth period for transfer */
-	public double litfall_pdays; /* (prop.) fraction of growth period for litfall */
-	public double leaf_turnover; /* (1/yr) annual leaf turnover fraction */
-	public double froot_turnover; /* (1/yr) annual fine root turnover fraction */
-	public double livewood_turnover; /* (1/yr) annual live wood turnover fraction */
-	public double daily_mortality_turnover; /* (1/day) daily mortality turnover */
-	public double daily_fire_turnover; /* (1/day) daily fire turnover */
-	public double alloc_frootc_leafc; /* (ratio) new fine root C to new leaf C */
-	public double alloc_newstemc_newleafc; /* (ratio) new stem C to new leaf C */
-	public double alloc_newlivewoodc_newwoodc; /* (ratio) new livewood C:new wood C */
-	public double alloc_crootc_stemc; /* (ratio) new live croot C to new live stem C */
-	public double alloc_prop_curgrowth; /*
-									 * (prop.) daily allocation to current
-									 * growth
+	public double transfer_pdays; /*
+									 * (prop.) fraction of growth period for
+									 * transfer
 									 */
+	public double litfall_pdays; /*
+									 * (prop.) fraction of growth period for
+									 * litfall
+									 */
+	public double leaf_turnover; /* (1/yr) annual leaf turnover fraction */
+	public double froot_turnover; /*
+									 * (1/yr) annual fine root turnover fraction
+									 */
+	public double livewood_turnover; /*
+										 * (1/yr) annual live wood turnover
+										 * fraction
+										 */
+	public double daily_mortality_turnover; /*
+											 * (1/day) daily mortality turnover
+											 */
+	public double daily_fire_turnover; /* (1/day) daily fire turnover */
+	public double alloc_frootc_leafc; /*
+										 * (ratio) new fine root C to new leaf C
+										 */
+	public double alloc_newstemc_newleafc; /*
+											 * (ratio) new stem C to new leaf C
+											 */
+	public double alloc_newlivewoodc_newwoodc; /*
+												 * (ratio) new livewood C:new
+												 * wood C
+												 */
+	public double alloc_crootc_stemc; /*
+										 * (ratio) new live croot C to new live
+										 * stem C
+										 */
+	public double alloc_prop_curgrowth; /*
+										 * (prop.) daily allocation to current
+										 * growth
+										 */
 	public double avg_proj_sla; /* (m2/kgC) canopy average proj. SLA */
 	public double sla_ratio; /* (DIM) ratio of shaded to sunlit projected SLA */
 	public double lai_ratio; /* (DIM) ratio of (all-sided LA / one-sided LA) */
@@ -42,15 +65,31 @@ public class Epconst {
 	public double deadwood_cn; /* (kgC/kgN) C:N for dead wood */
 	public double leaflitr_cn; /* (kgC/kgN) constant C:N for leaf litter */
 	public double leaflitr_flab; /* (DIM) leaf litter labile fraction */
-	public double leaflitr_fucel; /* (DIM) leaf litter unshielded cellulose fract. */
-	public double leaflitr_fscel; /* (DIM) leaf litter shielded cellulose fract. */
+	public double leaflitr_fucel; /*
+									 * (DIM) leaf litter unshielded cellulose
+									 * fract.
+									 */
+	public double leaflitr_fscel; /*
+									 * (DIM) leaf litter shielded cellulose fract.
+									 */
 	public double leaflitr_flig; /* (DIM) leaf litter lignin fraction */
 	public double frootlitr_flab; /* (DIM) froot litter labile fraction */
-	public double frootlitr_fucel; /* (DIM) froot litter unshielded cellulose fract */
-	public double frootlitr_fscel; /* (DIM) froot litter shielded cellulose fract */
+	public double frootlitr_fucel; /*
+									 * (DIM) froot litter unshielded cellulose
+									 * fract
+									 */
+	public double frootlitr_fscel; /*
+									 * (DIM) froot litter shielded cellulose
+									 * fract
+									 */
 	public double frootlitr_flig; /* (DIM) froot litter lignin fraction */
-	public double deadwood_fucel; /* (DIM) dead wood unshileded cellulose fraction */
-	public double deadwood_fscel; /* (DIM) dead wood shielded cellulose fraction */
+	public double deadwood_fucel; /*
+									 * (DIM) dead wood unshileded cellulose
+									 * fraction
+									 */
+	public double deadwood_fscel; /*
+									 * (DIM) dead wood shielded cellulose fraction
+									 */
 	public double deadwood_flig; /* (DIM) dead wood lignin fraction */
 
 	public Epconst(int nWoody, int nEvergreen, int nC3_flag, int nPhenology_flag, int nOnday, int nOffday,
@@ -65,53 +104,6 @@ public class Epconst {
 			double dFrootlitr_fucel, double dFrootlitr_fscel, double dFrootlitr_flig, double dDeadwood_fucel,
 			double dDeadwood_fscel, double dDeadwood_flig) {
 
-//		woody = nWoody;
-//		evergreen = nEvergreen;
-//		c3_flag = nC3_flag;
-//		phenology_flag = nPhenology_flag;
-//		onday = nOnday;
-//		offday = nOffday;
-//		transfer_pdays = dTransfer_pdays;
-//		litfall_pdays = dLitfall_pdays;
-//		leaf_turnover = dLeaf_turnover;
-//		froot_turnover = dFroot_turnover;
-//		livewood_turnover = dLivewood_turnover;
-//		daily_mortality_turnover = dDaily_mortality_turnover;
-//		daily_fire_turnover = dDaily_fire_turnover;
-//		alloc_frootc_leafc = dAlloc_frootc_leafc;
-//		alloc_newstemc_newleafc = dAlloc_newstemc_newleafc;
-//		alloc_newlivewoodc_newwoodc = dAlloc_newlivewoodc_newwoodc;
-//		alloc_crootc_stemc = dAlloc_crootc_stemc;
-//		alloc_prop_curgrowth = dAlloc_prop_curgrowth;
-//		avg_proj_sla = dAvg_proj_sla;
-//		sla_ratio = dSla_ratio;
-//		lai_ratio = dLai_ratio;
-//		int_coef = dInt_coef;
-//		ext_coef = dExt_coef;
-//		flnr = dFlnr;
-//		psi_open = dPsi_open;
-//		psi_close = dPsi_close;
-//		vpd_open = dVpd_open;
-//		vpd_close = dVpd_close;
-//		gl_smax = dGl_smax;
-//		gl_c = dGl_c;
-//		gl_bl = dGl_bl;
-//		froot_cn = dFroot_cn;
-//		leaf_cn = dLeaf_cn;
-//		livewood_cn = dLivewood_cn;
-//		deadwood_cn = dDeadwood_cn;
-//		leaflitr_cn = dLeaflitr_cn;
-//		leaflitr_flab = dLeaflitr_flab;
-//		leaflitr_fucel = dLeaflitr_fucel;
-//		leaflitr_fscel = dLeaflitr_fscel;
-//		leaflitr_flig = dLeaflitr_flig;
-//		frootlitr_flab = dFrootlitr_flab;
-//		frootlitr_fucel = dFrootlitr_fucel;
-//		frootlitr_fscel = dFrootlitr_fscel;
-//		deadwood_fucel = dDeadwood_fucel;
-//		deadwood_fscel = dDeadwood_fscel;
-//		deadwood_flig = dDeadwood_flig;
-		
 		this.woody = nWoody;
 		this.evergreen = nEvergreen;
 		this.c3_flag = nC3_flag;
@@ -157,8 +149,7 @@ public class Epconst {
 		this.frootlitr_fscel = dFrootlitr_fscel;
 		this.deadwood_fucel = dDeadwood_fucel;
 		this.deadwood_fscel = dDeadwood_fscel;
-		this.deadwood_flig = dDeadwood_flig;		
-		
+		this.deadwood_flig = dDeadwood_flig;
 
 	}
 }

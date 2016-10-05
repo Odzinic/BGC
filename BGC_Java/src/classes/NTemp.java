@@ -23,7 +23,7 @@ public class NTemp {
 			double dPlitr2c_loss, double dPmnf_l2s2, double dPlitr4c_loss, double dPmnf_l4s3, double dPsoil1c_loss,
 			double dPmnf_s1s2, double dPsoil2c_loss, double dPmnf_s2s3, double dPsoil3c_loss, double dPmnf_s3s4,
 			double dPsoil4c_loss, double dKl4) {
-		
+
 		this.mineralized = dMineralized;
 		this.potential_immob = dPotential_immob;
 		this.plitr1c_loss = dPlitr1c_loss;

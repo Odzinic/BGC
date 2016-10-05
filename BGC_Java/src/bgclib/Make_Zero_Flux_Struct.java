@@ -148,8 +148,8 @@ public class Make_Zero_Flux_Struct {
 		cf.livecrootc_storage_to_livecrootc_transfer = 0;
 		cf.deadcrootc_storage_to_deadcrootc_transfer = 0;
 		cf.gresp_storage_to_gresp_transfer = 0;
-		cf.livestemc_to_deadstemc = 0;
-		cf.livecrootc_to_deadcrootc = 0;
+		cf.livestemc_to_deadstemc = 0.0;
+		cf.livecrootc_to_deadcrootc = 0.0;
 
 		/* daily nitrogen fluxes */
 		nf.m_leafn_to_litr1n = 0.0;

@@ -92,7 +92,7 @@ public class Restart_Data {
 			double dNpool, double dDay_leafc_litfall_increment, double dDay_frootc_litfall_increment,
 			double dDay_livestemc_turnover_increment, double dDay_livecrootc_turnover_increment, double dAnnmax_leafc,
 			double dAnnmax_frootc, double dAnnmax_livestemc, double dAnnmax_livecrootc, double dDsr, int iMetyr) {
-		
+
 		this.soilw = dSoilw;
 		this.snoww = dSnoww;
 		this.canopyw = dCanopyw;

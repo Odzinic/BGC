@@ -9,7 +9,7 @@ public class CO2Control {
 	public int co2vals;
 
 	public CO2Control(int iVarco2, double dCo2ppm, double[] dCo2ppm_array, int[] dCo2year_array, int iCo2vals) {
-		
+
 		this.varco2 = iVarco2;
 		this.co2ppm = dCo2ppm;
 		this.co2ppm_array = dCo2ppm_array;
