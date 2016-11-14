@@ -5,18 +5,18 @@ import classes.Restart_Data;
 
 public class BGCOut {
 
-	Restart_Data restart_output;
-	File dayout; /* File containing daily output */
-	File monavgout; /* File containing monthly average output */
-	File annavgout; /* File containing annual average output */
-	File annout; /* File containing annual output */
-	File anntext; /* File containing simple annual text output */
-	File dayoutascii; /* File containing daily ascii output */
-	File monoutascii; /* File containing monthly ascii output */
-	File annoutascii; /* File containing annual ascii output */
-	double spinup_resid_trend; /* kgC/m2/yr remaining trend after spinup */
-	int spinup_years; /* number of years before reaching steady-state */
-	char bgc_ascii; /* ASCII output flag */
+	public Restart_Data restart_output;
+	public File dayout; /* File containing daily output */
+	public File monavgout; /* File containing monthly average output */
+	public File annavgout; /* File containing annual average output */
+	public File annout; /* File containing annual output */
+	public File anntext; /* File containing simple annual text output */
+	public File dayoutascii; /* File containing daily ascii output */
+	public File monoutascii; /* File containing monthly ascii output */
+	public File annoutascii; /* File containing annual ascii output */
+	public double spinup_resid_trend; /* kgC/m2/yr remaining trend after spinup */
+	public int spinup_years; /* number of years before reaching steady-state */
+	public char bgc_ascii; /* ASCII output flag */
 
 	public BGCOut(Restart_Data rRestart_output, File fDayout, File fMonavgout, File fAnnavgout, File fAnnout,
 			File fAnntext, File fDayoutascii, File fMonoutascii, File fAnnoutascii, double dSpinup_resid_trend,

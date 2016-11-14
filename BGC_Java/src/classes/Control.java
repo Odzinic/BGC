@@ -13,15 +13,15 @@ public class Control {
 	public int doannual; /* flag for annual output */
 	public int ndayout; /* number of daily outputs */
 	public int nannout; /* number of annual outputs */
-	public int daycodes; /* array of indices for daily outputs */
-	public int anncodes; /* array of indices for annual outputs */
+	public int[] daycodes; /* array of indices for daily outputs */
+	public int[] anncodes; /* array of indices for annual outputs */
 	public int read_restart; /* flag to read restart file */
 	public int write_restart; /* flag to write restart file */
 	public int keep_metyr; /* (flag) 1=retain restart metyr, 0=reset metyr */
 	public int onscreen; /* (flag) 1=show progress on-screen 0=don't */
 
 	public Control(int iMetyears, int iSimyears, int iSimstartyear, int iSpinup, int iMaxspinyears, int iDodaily,
-			int iDomonavg, int iDoannavg, int iDoannual, int iNdayout, int iNannout, int iDaycodes, int iAnncodes,
+			int iDomonavg, int iDoannavg, int iDoannual, int iNdayout, int iNannout, int[] iDaycodes, int[] iAnncodes,
 			int iRead_restart, int iWrite_restart, int iKeep_metyr, int iOnscreen) {
 
 		this.metyears = iMetyears;
