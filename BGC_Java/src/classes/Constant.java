@@ -96,7 +96,8 @@ public enum Constant {
 	/* Verbosity keywords. BV: Bgc Verbosity */
 	BV_SILENT(-1), BV_ERROR(0), BV_WARN(1), BV_PROGRESS(2), BV_DETAIL(3), BV_DIAG(4),
 
-	DAYSNDEPLOY(365.0), DAYSCRECOVER(365.0), BULK_DENITRIF_PROPORTION(0.5);
+	DAYSNDEPLOY(365.0), DAYSCRECOVER(365.0), BULK_DENITRIF_PROPORTION(0.5),
+	FLT_COND_TOL(1e-10);
 
 	private double value;
 
