@@ -10,77 +10,73 @@ import classes.Constant;
 import classes.MetArr;
 
 public class MetArr_Init {
-	
-	/* It is assumed here that the meteorological datafile contains the following 
-	list of variables, with the indicated units.  All other variables in the metv
-	arrays are derived from this basic set:
 
-	VARIABLE    UNITS
-	yday        (none) (yearday)
-	prcp        cm     (daily total precipitation, water equivalent)  
-	tmax        deg C  (daily maximum temperature) 
-	tmin        deg C  (daily minimum temperature)
-	VPD         Pa     (daylight average VPD)
-	swavgfd     W/m2   (daylight average shortwave flux density)
-	daylength   s      (daylight duration)
+	/*
+	 * It is assumed here that the meteorological datafile contains the
+	 * following list of variables, with the indicated units. All other
+	 * variables in the metv arrays are derived from this basic set:
+	 * 
+	 * VARIABLE UNITS yday (none) (yearday) prcp cm (daily total precipitation,
+	 * water equivalent) tmax deg C (daily maximum temperature) tmin deg C
+	 * (daily minimum temperature) VPD Pa (daylight average VPD) swavgfd W/m2
+	 * (daylight average shortwave flux density) daylength s (daylight duration)
+	 * 
+	 */
 
-	*/
-	
-	public int metarr_init(File metf, MetArr metarr, final ClimChange scc, int nyears, int nhead){
-		
-		
+	public int metarr_init(File metf, MetArr metarr, final ClimChange scc, int nyears, int nhead) {
+
 		int i;
 		int ndays;
 		int year;
 		double tmax, tmin, prcp, vpd, swavgfd = 0, dayl = 0;
 		Scanner sc = null;
 		String[] sCurrline;
-		
+
 		double RAD2PAR = Constant.RAD2PAR.getValue();
-		
+
 		try {
 			sc = new Scanner(metf);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		Smooth sm = new Smooth();
-		
-		
+
 		ndays = 365 * nyears;
-		
-		
+
 		/* Skips the header files */
-		for (int j = 0; j<nhead; j++){
-			
+		for (int j = 0; j < nhead; j++) {
+
 			sc.nextLine();
-			
+
 		}
-		
+
 		/* begin daily loop: read input file, generate array values */
-		for (i = 0; i<ndays; i++){
-			
+		for (i = 0; i < ndays; i++) {
+
 			/* Fixed 02/05/04 */
-			if( swavgfd < 0.0 ){
+			if (swavgfd < 0.0) {
 				swavgfd = 0.0;
 			}
 
-			if( dayl < 0.0 ){
+			if (dayl < 0.0) {
 				dayl = 0.0;
 			}
-			
+
 			sCurrline = sc.nextLine().split(" ");
-			
-			/* apply the climate change scenario and store 
-			  NOTE: Skips year, yday and Tday columns*/
-			
+
+			/*
+			 * apply the climate change scenario and store NOTE: Skips year,
+			 * yday and Tday columns
+			 */
+
 			tmax = Double.valueOf(sCurrline[2]);
 			tmin = Double.valueOf(sCurrline[3]);
 			prcp = Double.valueOf(sCurrline[5]);
 			vpd = Double.valueOf(sCurrline[6]);
 			swavgfd = Double.valueOf(sCurrline[7]);
-			
+
 			metarr.tmax[i] = tmax + scc.s_tmax;
 			metarr.tmin[i] = tmin + scc.s_tmin;
 			metarr.prcp[i] = prcp + scc.s_prcp;
@@ -89,9 +85,10 @@ public class MetArr_Init {
 			metarr.par[i] = swavgfd * RAD2PAR * scc.s_swavgfd;
 			metarr.tavg[i] = (metarr.tmax[i] + metarr.tmin[i]) / 2.0;
 		}
-		
-		 sm.run_avg(metarr.tavg, metarr.tavg_ra, ndays, 11, 1);
-		
+
+		sm.run_avg(metarr.tavg, metarr.tavg_ra, ndays, 11, 1);
+
+		sc.close();
 		return 0;
 	}
 
