@@ -23,10 +23,8 @@ public class Output_ASCII {
 		try {
 			writer = new PrintWriter(ptr, "UTF-8");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

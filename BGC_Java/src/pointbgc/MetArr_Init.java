@@ -37,7 +37,6 @@ public class MetArr_Init {
 		try {
 			sc = new Scanner(metf);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

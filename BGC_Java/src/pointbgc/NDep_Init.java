@@ -20,7 +20,6 @@ public class NDep_Init {
 		try {
 			sc = new Scanner(ndepfile);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return 0;
 		}

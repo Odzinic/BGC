@@ -28,7 +28,6 @@ public class CO2_Init {
 		try {
 			sc = new Scanner(init);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
