@@ -149,9 +149,9 @@ public class Ini_REDO {
                 ReturnValue returnString = new ReturnValue();
 
                 try{
-
                     returnString.strVal = String.valueOf(inputLines.get(iPos));
-//                    readString.add(String.valueOf(inputLines.get(iPos)));
+
+                    return returnString;
                 } catch (UnsupportedOperationException uoe) {
 
                     uoe.printStackTrace();
