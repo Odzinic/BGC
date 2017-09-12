@@ -7,148 +7,126 @@ import classes.Output;
 
 public class Output_Ctrl {
 
-	public int output_ctrl(File init, Output output) {
+    public int output_ctrl(File init, Output output) {
 
-		int i = 0;
-		String key1 = "OUTPUT_CONTROL";
-		String key2 = "DAILY_OUTPUT";
-		String key3 = "ANNUAL_OUTPUT";
+        int i = 0;
+        String key1 = "OUTPUT_CONTROL";
+        String key2 = "DAILY_OUTPUT";
+        String key3 = "ANNUAL_OUTPUT";
 
-		String cli_mode = null; // NEED TO CREATE PUBLIC STATIC CLI_MODE IN
-								// POINTBGC
+        String cli_mode = null; // TODO: NEED TO CREATE PUBLIC STATIC CLI_MODE IN POINTBGC
 
-		Ini ini = new Ini();
+        Ini_REDO outputIni = new Ini_REDO(init, key1);    // Ini class for reading in OUTPUT_CONTROL values
+        Ini_REDO dailyIni = new Ini_REDO(init, key2);    // Ini class for reading in DAILY_OUTPUT values
+        Ini_REDO annualIni = new Ini_REDO(init, key3);    // Ini class for reading in ANNUAL_OUTPUT values
 
-		String MODE_SPINUP = String.valueOf(Constant.MODE_SPINUP.getValue());
-		String MODE_MODEL = String.valueOf(Constant.MODE_MODEL.getValue());
-		String MODE_SPINNGO = String.valueOf(Constant.MODE_SPINNGO.getValue());
+        String MODE_SPINUP = String.valueOf(Constant.MODE_SPINUP.getValue());
+        String MODE_MODEL = String.valueOf(Constant.MODE_MODEL.getValue());
+        String MODE_SPINNGO = String.valueOf(Constant.MODE_SPINNGO.getValue());
 
-		/********************************************************************
-		 ** ** Begin reading initialization file block starting with keyword: **
-		 ** OUTPUT_CONTROL ** **
-		 ********************************************************************/
+        /********************************************************************
+         ** ** Begin reading initialization file block starting with keyword: **
+         ** OUTPUT_CONTROL ** **
+         ********************************************************************/
 
-		if (ini.scan_open(init, key1, 'r')) {
 
-			/* get the output filename prefix */
-			output.outprefix = (String) ini.scan_value(init, 's').get(0);
+		/* get the output filename prefix */
+        output.outprefix = outputIni.scan_value(0, 's').strVal;
 
-			/* scan flags for daily output */
-			output.dodaily = (int) ini.scan_value(init, 'i').get(0);
+		/* scan flags for daily output */
+        output.dodaily = outputIni.scan_value(1, 'i').intVal;
 
-			if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
+        if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
 
-				output.dodaily = 0;
-			}
+            output.dodaily = 0;
+        } else if (cli_mode.equals(MODE_MODEL)) {
 
-			else if (cli_mode.equals(MODE_MODEL)) {
+            output.dodaily = 1;
+        }
 
-				output.dodaily = 1;
-			}
+		/*
+         * scan flag for monthly average output (operates on daily
+		 * variables)
+		 */
+        output.domonavg = outputIni.scan_value(2, 'i').intVal;
 
-			/*
-			 * scan flag for monthly average output (operates on daily
-			 * variables)
-			 */
-			output.domonavg = (int) ini.scan_value(init, 'i').get(0);
+        if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
 
-			if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
+            output.domonavg = 0;
+        } else if (cli_mode.equals(MODE_MODEL)) {
 
-				output.domonavg = 0;
-			}
+            output.domonavg = 1;
+        }
 
-			else if (cli_mode.equals(MODE_MODEL)) {
+		/*
+         * scan flag for annual average output (operates on daily variables)
+		 */
+        output.doannavg = outputIni.scan_value(3, 'i').intVal;
 
-				output.domonavg = 1;
-			}
+        if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
 
-			/*
-			 * scan flag for annual average output (operates on daily variables)
-			 */
-			output.doannavg = (int) ini.scan_value(init, 'i').get(0);
+            output.doannavg = 0;
+        } else if (cli_mode.equals(MODE_MODEL)) {
 
-			if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
+            output.doannavg = 1;
+        }
 
-				output.doannavg = 0;
-			}
+		/* scan flag for annual output */
+        output.doannual = outputIni.scan_value(4, 'i').intVal;
 
-			else if (cli_mode.equals(MODE_MODEL)) {
+        if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
 
-				output.doannavg = 1;
-			}
+            output.doannual = 0;
+        } else if (cli_mode.equals(MODE_MODEL)) {
 
-			/* scan flag for annual output */
-			output.doannual = (int) ini.scan_value(init, 'i').get(0);
+            output.doannual = 1;
+        }
 
-			if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
+        output.onscreen = outputIni.scan_value(5, 'i').intVal;
 
-				output.doannual = 0;
-			}
 
-			else if (cli_mode.equals(MODE_MODEL)) {
+        /********************************************************************
+         ** ** Begin reading initialization file block starting with keyword: **
+         ** DAILY_OUTPUT ** **
+         ********************************************************************/
 
-				output.doannual = 1;
-			}
 
-			output.onscreen = (int) ini.scan_value(init, 'i').get(0);
 
-		}
+		/* read the number of daily output variables */
+        output.ndayout = dailyIni.scan_value(0, 'i').intVal;
 
-		else if (!(ini.scan_open(init, key1, 'r'))) {
+		/* begin loop to read in the daily output variable indices */
+        for (i = 0; i < output.ndayout; i++) {
 
-			System.out.println("Error reading keyword for output file data");
-		}
+            output.daycodes.add(i, dailyIni.scan_value(1, 'i').intVal);
+        }
 
-		/********************************************************************
-		 ** ** Begin reading initialization file block starting with keyword: **
-		 ** DAILY_OUTPUT ** **
-		 ********************************************************************/
 
-		if (ini.scan_open(init, key2, 'r')) {
+        /********************************************************************
+         ** ** Begin reading initialization file block starting with keyword: **
+         ** ANNUAL_OUTPUT ** **
+         ********************************************************************/
 
-			/* read the number of daily output variables */
-			output.ndayout = (int) ini.scan_value(init, 'i').get(0);
 
-			/* begin loop to read in the daily output variable indices */
-			for (i = 0; i < output.ndayout; i++) {
 
-				output.daycodes[i] = (int) ini.scan_value(init, 'i').get(0);
-			}
+		/* read the number of annual output variables */
+        output.nannout = annualIni.scan_value(0, 'i').intVal;
 
-		}
+        if (output.nannout == 0 && output.ndayout == 0 && (cli_mode == MODE_MODEL || cli_mode == MODE_SPINNGO)) {
 
-		else if (!(ini.scan_open(init, key2, 'r'))) {
+            System.out.println("ERROR! You are trying to run the model with no output variables. Please add some output variables to your ini file.");
+            return 0;
+        } else {
 
-			System.out.println("Error reading keyword for output file data");
-		}
+            for (i = 0; i < output.nannout; i++) {
 
-		/********************************************************************
-		 ** ** Begin reading initialization file block starting with keyword: **
-		 ** ANNUAL_OUTPUT ** **
-		 ********************************************************************/
+                output.anncodes.add(i, annualIni.scan_value(1, 'i').intVal);
+            }
+        }
 
-		if (ini.scan_open(init, key3, 'r')) {
 
-			/* read the number of annual output variables */
-			output.nannout = (int) ini.scan_value(init, 'i').get(0);
+        return 0;
 
-			if (output.nannout == 0 && output.ndayout == 0 && (cli_mode == MODE_MODEL || cli_mode == MODE_SPINNGO)) {
-				
-				System.out.println("ERROR! You are trying to run the model with no output variables. Please add some output variables to your ini file.");
-				return 0;
-			}
-			
-			else{
-				
-				for (i = 0; i<output.nannout; i++){
-					
-					output.anncodes[i] = (int) ini.scan_value(init, 'i').get(0);
-				}
-			}
-		}
-		
-		return 0;
-
-	}
+    }
 
 }

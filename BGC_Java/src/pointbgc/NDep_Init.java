@@ -1,3 +1,4 @@
+//Compatible
 package pointbgc;
 
 import java.io.File;
@@ -8,52 +9,43 @@ import classes.NDepControl;
 
 public class NDep_Init {
 
-	public int ndep_init(File ndepfile, NDepControl ndepctrl) {
+    public int ndep_init(File ndepfile, NDepControl ndepctrl) {
 
-		int i = 0;
-		int reccount = 0;
-		String[] sCurrline;
-		Scanner sc = null;
+        int i = 0;
+        int reccount = 0;
+        String[] sCurrline;
+        Scanner sc = null;
 
-		Ini ini = new Ini();
 
-		try {
-			sc = new Scanner(ndepfile);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return 0;
-		}
+        try {
+            sc = new Scanner(ndepfile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return 0;
+        }
 
 		/*
-		 * if using variable CO2 file, open it, otherwise discard the next line
+         * if using variable CO2 file, open it, otherwise discard the next line
 		 * of the ini file
 		 */
-		if (ini.file_open(ndepfile, 'r')) {
 
-			for (i = 0; sc.hasNextLine(); i++) {
 
-				/* Find the number of lines in the file */
-				reccount++;
+        for (i = 0; sc.hasNextLine(); i++) {
 
-				sCurrline = sc.nextLine().split(" ");
+			/* Find the number of lines in the file */
+            reccount++;
 
-				ndepctrl.ndepyear_array[i] = Integer.valueOf(sCurrline[0]);
-				ndepctrl.ndep_array[i] = Double.valueOf(sCurrline[1]);
+            sCurrline = sc.nextLine().split("\\s+");
 
-				System.out.printf("NDEP value read: %1$d, %2$f", ndepctrl.ndepyear_array[i], ndepctrl.ndep_array[i]);
+            ndepctrl.ndepyear_array.add(i, Integer.valueOf(sCurrline[0]));
+            ndepctrl.ndep_array.add(i, Double.valueOf(sCurrline[1]));
 
-			}
+            System.out.printf("NDEP value read: %1$d, %2$f", ndepctrl.ndepyear_array.get(i), ndepctrl.ndep_array.get(i));
 
-		}
+        }
 
-		else {
-
-			sc.close();
-			return 0;
-		}
-
-		sc.close();
-		return 0;
-	}
+        sc.close();
+        return 0;
+    }
 
 }

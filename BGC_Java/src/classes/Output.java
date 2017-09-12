@@ -1,6 +1,7 @@
 package classes;
 
 import java.io.File;
+import java.util.List;
 
 public class Output {
 
@@ -12,8 +13,8 @@ public class Output {
 	public int doannual; /* flag for annual output */
 	public int ndayout; /* number of custom daily outputs */
 	public int nannout; /* number of custom annual outputs */
-	public int[] daycodes; /* array of indices for daily outputs */
-	public int[] anncodes; /* array of indices for annual outputs */
+	public List<Integer> daycodes; /* array of indices for daily outputs */
+	public List<Integer> anncodes; /* array of indices for annual outputs */
 	public File dayout; /* daily output File */
 	public File monavgout; /* monthly average output File */
 	public File annavgout; /* annual average output File */
@@ -25,8 +26,8 @@ public class Output {
 	public int bgc_ascii;
 
 	public Output(int iOnscreen, String sOutprefix, int iDodaily, int iDomonavg, int iDoannavg, int iDoannual,
-			int iNdayout, int iNannout, int[] iDaycodes, int[] iAnncodes, File fDayout, File fMonavgout, File fAnnavgout,
-			File fAnnout, File fAnntext, File fDayoutascii, File fMonoutascii, File fAnnoutascii, int sBgc_ascii) {
+				  int iNdayout, int iNannout, List<Integer> iDaycodes, List<Integer> iAnncodes, File fDayout, File fMonavgout, File fAnnavgout,
+				  File fAnnout, File fAnntext, File fDayoutascii, File fMonoutascii, File fAnnoutascii, int sBgc_ascii) {
 
 		this.onscreen = iOnscreen;
 		this.outprefix = sOutprefix;

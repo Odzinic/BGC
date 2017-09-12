@@ -21,7 +21,7 @@ public class Output_Init {
 
 			// !!! CHECK IF THIS PATH WORKS !!! //
 			sNewPath = String.join(output.outprefix, ".dayout");
-			output.dayout.renameTo(new File(sNewPath));
+			output.dayout = new File(sNewPath);
 
 			if (ini.file_open(output.dayout, 'w')) {
 
