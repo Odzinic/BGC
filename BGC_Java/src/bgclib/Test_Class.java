@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 
 import classes.Epconst;
 import classes.Epvar;
+import classes.Control;
 import bgclib.Annual_Rates;
 
 public class Test_Class {
