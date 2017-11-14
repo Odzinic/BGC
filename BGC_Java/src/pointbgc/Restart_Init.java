@@ -1,3 +1,4 @@
+//Compatible
 package pointbgc;
 
 
@@ -15,10 +16,9 @@ See copyright.txt for Copyright information
 */
 public class Restart_Init {
 
-    int restart_init(File init, Restart_Ctrl restart){
+    public int restart_init(File init, Restart_Ctrl restart) {
 
         String key1 = "RESTART";
-        String keyword = null;
 
         double cli_mode = 0.0; // TODO NEED TO CREATE PUBLIC STATIC CLI_MODE IN POINTBGC. Should be a double.
 
@@ -67,10 +67,6 @@ public class Restart_Init {
 
         /* flag for metyear handling */
         restart.keep_metyr = ini.scan_value(2, 'i').intVal;
-
-
-
-
 
         return 0;
     }
