@@ -35,7 +35,7 @@ public class Epc_Init {
             ini = new Ini_REDO(fEpcIni, key2);
         } catch (NullPointerException npe) {
 
-            System.out.println("ERROR: No epc filepath specified in .ini file, epc_init()");
+            System.out.println("ERROR: No/Incorrect epc filepath specified in .ini file, epc_init()");
 
         }
 		

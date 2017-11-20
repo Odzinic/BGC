@@ -1,3 +1,4 @@
+//Compatible
 /*
 Sitec_Init
 Initialize the site physical constants for bgc simulation
