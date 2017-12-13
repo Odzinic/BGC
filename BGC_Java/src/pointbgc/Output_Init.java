@@ -1,89 +1,123 @@
 package pointbgc;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+/*
+output_init.c
+Reads output control information from initialization file
+
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+Biome-BGC version 4.2 (final release)
+See copyright.txt for Copyright information
+
+Revisions from version 4.1.2:
+Seperated init scanning and outputfile opening.
+This function now opens output files. Output controls
+are now read from output_ctrl.c
+
+Revisions from version 4.1.1:
+Fixed error in ascii output file that incorrectly gave the
+units for annual precipitation as cm/year - the real units are mm/yr.
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+*/
+
+import java.io.*;
 
 import classes.Output;
 
 public class Output_Init {
 
-	public int output_init(Output output) {
+    public boolean output_init(Output output) {
 
 		String sNewPath;
-		
-		FileWriter fw = null;
-
-        Ini_REDO ini = new Ini_REDO();
+        PrintWriter writer;
 
 		/* open outfiles if specified */
 		if (output.dodaily == 1) {
 
 			// !!! CHECK IF THIS PATH WORKS !!! //
-			sNewPath = String.join(output.outprefix, ".dayout");
-			output.dayout = new File(sNewPath);
+            sNewPath = output.outprefix + ".dayout";
+            output.dayout = new File(sNewPath);
 
-			if (ini.file_open(output.dayout, 'w')) {
+            try {
+                writer = new PrintWriter(output.dayout.toString(), "UTF-8");
+                System.out.println("Opened binary daily output file in write mode");
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Error opening daily outfile in output_ctrl()");
 
-				System.out.println("Opened binary daily output file in write mode");
-			}
+                return false;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                System.out.println("Error opening daily outfile in output_ctrl()");
 
-			else {
-
-				System.out.println("Error opening daily outfile in output_ctrl()");
-				return 0;
-			}
+                return false;
+            }
 		}
 
 		if (output.domonavg == 1) {
 
 			// !!! CHECK IF THIS PATH WORKS !!! //
-			sNewPath = String.join(output.outprefix, ".monavgout");
-			output.monavgout.renameTo(new File(sNewPath));
+            sNewPath = output.outprefix + ".monavgout";
+            output.monavgout = new File(sNewPath);
 
-			if (ini.file_open(output.monavgout, 'w')) {
+            try {
+                writer = new PrintWriter(output.monavgout.toString(), "UTF-8");
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Error opening monthly average outfile in output_ctrl()");
 
-			}
+                return false;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                System.out.println("Error opening monthly average outfile in output_ctrl()");
 
-			else {
-
-				System.out.println("Error opening monthly average outfile in output_ctrl()");
-				return 0;
-			}
+                return false;
+            }
 		}
 
 		if (output.doannavg == 1) {
 
 			// !!! CHECK IF THIS PATH WORKS !!! //
-			sNewPath = String.join(output.outprefix, ".annavgout");
-			output.annavgout.renameTo(new File(sNewPath));
+            sNewPath = output.outprefix + ".annavgout";
+            output.annavgout = new File(sNewPath);
 
-			if (ini.file_open(output.annavgout, 'w')) {
+            try {
+                writer = new PrintWriter(output.annavgout.toString(), "UTF-8");
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Error opening annual average outfile in output_ctrl()");
 
-			}
+                return false;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                System.out.println("Error opening annual average outfile in output_ctrl()");
 
-			else {
-
-				System.out.println("Error opening annual average outfile in output_ctrl()");
-				return 0;
-			}
+                return false;
+            }
 		}
 
 		if (output.doannual == 1) {
 
 			// !!! CHECK IF THIS PATH WORKS !!! //
-			sNewPath = String.join(output.outprefix, ".annavgout");
-			output.annout.renameTo(new File(sNewPath));
+            sNewPath = output.outprefix + ".annavgout";
+            output.annout = new File(sNewPath);
 
-			if (ini.file_open(output.annout, 'w')) {
+            try {
+                writer = new PrintWriter(output.annout.toString(), "UTF-8");
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Error opening annual outfile in output_ctrl()");
 
-			}
+                return false;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                System.out.println("Error opening annual outfile in output_ctrl()");
 
-			else {
-
-				System.out.println("Error opening annual outfile in output_ctrl()");
-				return 0;
-			}
+                return false;
+            }
 		}
 
 		/****************************************/
@@ -96,48 +130,65 @@ public class Output_Init {
 		if (output.bgc_ascii == 1 && output.dodaily == 1) {
 
 			// !!! CHECK IF THIS PATH WORKS !!! //
-			sNewPath = String.join(output.outprefix, ".dayout.ascii");
-			output.dayoutascii.renameTo(new File(sNewPath));
+            sNewPath = output.outprefix + ".dayout.ascii";
+            output.dayoutascii = new File(sNewPath);
 
-			if (ini.file_open(output.dayoutascii, 'o')) {
+            try {
+                writer = new PrintWriter(output.dayoutascii.toString(), "UTF-8");
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Error opening annual outfile in output_ctrl()");
 
-			}
+                return false;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                System.out.println("Error opening annual outfile in output_ctrl()");
 
-			else {
-
-				System.out.println("Error opening annual outfile in output_ctrl()");
-				return 0;
-			}
+                return false;
+            }
 		}
 
 		if (output.bgc_ascii == 1 && output.domonavg == 1) {
 
-			sNewPath = String.join(output.outprefix, ".monavgout.ascii");
-			output.monoutascii.renameTo(new File(sNewPath));
+            sNewPath = output.outprefix + ".monavgout.ascii";
+            output.monoutascii = new File(sNewPath);
 
-			if (ini.file_open(output.monoutascii, 'o')) {
+            try {
+                writer = new PrintWriter(output.monoutascii.toString(), "UTF-8");
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Error opening monthly ascii outfile in output_ctrl()");
 
-			}
+                return false;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                System.out.println("Error opening monthly ascii outfile in output_ctrl()");
 
-			else {
-
-				System.out.println("Error opening monthly ascii outfile in output_ctrl()");
-			}
+                return false;
+            }
 		}
 
 		if (output.bgc_ascii == 1 && output.doannual == 1) {
 
-			sNewPath = String.join(output.outprefix, ".annout.ascii");
-			output.annoutascii.renameTo(new File(sNewPath));
+            sNewPath = output.outprefix + ".annout.ascii";
+            output.annoutascii = new File(sNewPath);
 
-			if (ini.file_open(output.annoutascii, 'o')) {
+            try {
+                writer = new PrintWriter(output.annoutascii.toString(), "UTF-8");
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Error opening annual ascii outfile in output_ctrl()");
 
-			}
+                return false;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                System.out.println("Error opening annual ascii outfile in output_ctrl()");
 
-			else {
-
-				System.out.println("Error opening annual ascii outfile in output_ctrl()");
-			}
+                return false;
+            }
 		}
 		
 		
@@ -147,39 +198,37 @@ public class Output_Init {
 		/*					*/
 		/****************************************/
 		if (output.bgc_ascii == 1 && output.doannual == 1){
-			
-			sNewPath = String.join(output.outprefix, "_ann.txt");
-			output.anntext.renameTo(new File(sNewPath));
-			
-			if (ini.file_open(output.anntext, 'o')){
-				
-				ini.close_file();
-				
-				try {
-					fw = new FileWriter(output.anntext);
-					
-					fw.write("Annual summary output from Biome-BGC version\n");
-					fw.write("ann PRCP = annual total precipitation (mm/yr)\n");
-					fw.write("ann Tavg = annual average air temperature (deg C)\n");
-					fw.write("max LAI = annual maximum value of projected leaf area index (m2/m2)\n");
-					fw.write("ann ET = annual total evapotranspiration (mm/yr)\n");
-					fw.write("ann OF = annual total outflow (mm/yr)\n");
-					fw.write("ann NPP = annual total net primary production (gC/m2/yr)\n");
-					fw.write("ann NPB = annual total net biome production (gC/m2/yr)\n\n");
-					fw.write(String.format("%6s%10s%10s%10s%10s%10s%10s%10s\n", "year","ann PRCP","ann Tavg",
-							"max LAI","ann ET","ann OF","ann NPP","ann NBP"));
-					
-				} catch (IOException e) {
-					e.printStackTrace();
-					return 0;
-				}
-				
-				
-				
-			}
+
+            sNewPath = output.outprefix + "_ann.txt";
+            output.anntext = new File(sNewPath);
+
+
+            try {
+                writer = new PrintWriter(output.outprefix.toString(), "UTF-8");
+                writer.println("Annual summary output from Biome-BGC version");
+                writer.println("ann PRCP = annual total precipitation (mm/yr)");
+                writer.println("ann Tavg = annual average air temperature (deg C)");
+                writer.println("max LAI = annual maximum value of projected leaf area index (m2/m2)");
+                writer.println("ann ET = annual total evapotranspiration (mm/yr)");
+                writer.println("ann OF = annual total outflow (mm/yr)");
+                writer.println("ann NPP = annual total net primary production (gC/m2/yr)");
+                writer.println("ann NPB = annual total net biome production (gC/m2/yr)");
+                writer.println(String.format("%6s%10s%10s%10s%10s%10s%10s%10s", "year", "ann PRCP", "ann Tavg",
+                        "max LAI", "ann ET", "ann OF", "ann NPP", "ann NBP"));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("Error opening annual ascii outfile in output_ctrl()");
+
+                return false;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                System.out.println("Error opening annual ascii outfile in output_ctrl()");
+
+                return false;
+            }
 		}
-		
-		return 0;
-	}
+
+        return true;
+    }
 
 }
