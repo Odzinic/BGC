@@ -14,7 +14,7 @@ public class Output_Init {
 		
 		FileWriter fw = null;
 
-		Ini ini = new Ini();
+        Ini_REDO ini = new Ini_REDO();
 
 		/* open outfiles if specified */
 		if (output.dodaily == 1) {

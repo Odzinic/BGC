@@ -1,3 +1,4 @@
+//Compatible
 package pointbgc;
 
 import java.io.File;
