@@ -8,7 +8,7 @@ import classes.Output;
 
 public class Output_Ctrl {
 
-    public int output_ctrl(File init, Output output) {
+    public boolean output_ctrl(File init, Output output) {
 
         int i = 0;
         String key1 = "OUTPUT_CONTROL";
@@ -116,7 +116,7 @@ public class Output_Ctrl {
         if (output.nannout == 0 && output.ndayout == 0 && (cli_mode == MODE_MODEL || cli_mode == MODE_SPINNGO)) {
 
             System.out.println("ERROR! You are trying to run the model with no output variables. Please add some output variables to your ini file.");
-            return 0;
+            return false;
         } else {
 
             for (i = 0; i < output.nannout; i++) {
@@ -126,7 +126,7 @@ public class Output_Ctrl {
         }
 
 
-        return 0;
+        return true;
 
     }
 

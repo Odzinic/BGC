@@ -16,7 +16,7 @@ See copyright.txt for Copyright information
 */
 public class Restart_Init {
 
-    public int restart_init(File init, Restart_Ctrl restart) {
+    public boolean restart_init(File init, Restart_Ctrl restart) {
 
         String key1 = "RESTART";
 
@@ -44,7 +44,7 @@ public class Restart_Init {
         if (restart.read_restart  == -1){
 
             System.out.printf(BV_ERROR, "Error reading input restart flag\n");
-            return 0;
+            return false;
 
         }
 
@@ -56,7 +56,20 @@ public class Restart_Init {
         }
 
         /* check for output restart file */
-        restart.write_restart = ini.scan_value(1, 'i').intVal;
+        try {
+            restart.write_restart = ini.scan_value(1, 'i').intVal;
+        } catch (IndexOutOfBoundsException ibe) {
+            System.out.println(ibe);
+            System.out.printf(BV_ERROR, "Error reading output restart file, restart_init()\n");
+
+            return false;
+        } catch (ClassCastException cce) {
+            System.out.println(cce);
+            System.out.printf(BV_ERROR, "Error reading output restart file, restart_init()\n");
+
+            return false;
+
+        }
 
         if (cli_mode == MODE_SPINUP){
             restart.write_restart = 1;
@@ -66,8 +79,21 @@ public class Restart_Init {
         }
 
         /* flag for metyear handling */
-        restart.keep_metyr = ini.scan_value(2, 'i').intVal;
+        try {
+            restart.keep_metyr = ini.scan_value(2, 'i').intVal;
+        } catch (IndexOutOfBoundsException ibe) {
+            System.out.println(ibe);
+            System.out.printf(BV_ERROR, "Error reading metyear flag, restart_init()\n");
 
-        return 0;
+            return false;
+        } catch (ClassCastException cce) {
+            System.out.println(cce);
+            System.out.printf(BV_ERROR, "Error reading metyear flag, restart_init()\n");
+
+            return false;
+
+        }
+
+        return true;
     }
 }

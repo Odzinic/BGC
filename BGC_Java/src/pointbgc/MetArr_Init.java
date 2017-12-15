@@ -9,6 +9,7 @@ import bgclib.Smooth;
 import classes.ClimChange;
 import classes.Constant;
 import classes.MetArr;
+import classes.Point;
 
 public class MetArr_Init {
 
@@ -25,12 +26,15 @@ public class MetArr_Init {
 	 */
 
     //TODO: Determine if the metf file is properly read in somewhere else in the code
-    public boolean metarr_init(File metf, MetArr metarr, final ClimChange scc, int nyears, int nhead) {
+    public boolean metarr_init(File metf, MetArr metarr, final ClimChange scc, Point point, int nyears) {
 
         int i;
         int ndays;
         int year;
         double tmax, tmin, prcp, vpd, swavgfd = 0, dayl = 0;
+        //TODO: Find if the number of header lines is initialized before this function call
+        int nhead = point.numhead;
+
         Scanner sc = null;
         String[] sCurrline;
 

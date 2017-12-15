@@ -9,7 +9,7 @@ import java.io.File;
 
 public class Ramp_NDep_Init {
 
-    public int ramp_ndep_init(File init, Ramp_Ndep ramp_ndep){
+    public boolean ramp_ndep_init(File init, Ramp_Ndep ramp_ndep) {
 
         String key1 = "RAMP_NDEP";
 
@@ -33,6 +33,7 @@ public class Ramp_NDep_Init {
         } catch (IndexOutOfBoundsException ibe) {
 
             System.out.printf(BV_ERROR, "Error reading keyword, ramp_ndep_init()\n");
+            return false;
 
         }
 
@@ -43,6 +44,7 @@ public class Ramp_NDep_Init {
         } catch (IndexOutOfBoundsException ibe) {
 
             System.out.printf(BV_ERROR, "Error reading year of reference for industrial Ndep: ramp_ndep_init()\n");
+            return false;
 
         }
 
@@ -53,10 +55,11 @@ public class Ramp_NDep_Init {
         } catch (IndexOutOfBoundsException ibe) {
 
             System.out.printf(BV_ERROR, "Error reading industrial Ndep value: ramp_ndep_init()\n");
+            return false;
 
         }
 
 
-        return 0;
+        return true;
     }
 }

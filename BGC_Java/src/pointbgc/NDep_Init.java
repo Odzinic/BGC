@@ -9,7 +9,7 @@ import classes.NDepControl;
 
 public class NDep_Init {
 
-    public int ndep_init(File ndepfile, NDepControl ndepctrl) {
+    public boolean ndep_init(File ndepfile, NDepControl ndepctrl) {
 
         int i = 0;
         int reccount = 0;
@@ -21,7 +21,7 @@ public class NDep_Init {
             sc = new Scanner(ndepfile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return 0;
+            return false;
         }
 
 		/*
@@ -45,7 +45,7 @@ public class NDep_Init {
         }
 
         sc.close();
-        return 0;
+        return true;
     }
 
 }

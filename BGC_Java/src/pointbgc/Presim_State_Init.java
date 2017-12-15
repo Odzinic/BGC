@@ -7,7 +7,7 @@ import classes.CInit;
 
 public class Presim_State_Init {
 
-    public int presim_state_init(WState ws, CState cs, NState ns, CInit cinit){
+    public boolean presim_state_init(WState ws, CState cs, NState ns, CInit cinit) {
 
         ws.soilw = 0.0;
         ws.snoww = 0.0;
@@ -109,7 +109,7 @@ public class Presim_State_Init {
         ns.nvol_snk = 0.0;
         ns.fire_snk = 0.0;
 
-        return 0;
+        return true;
     }
 
 
