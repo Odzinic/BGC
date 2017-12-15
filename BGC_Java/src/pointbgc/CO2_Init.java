@@ -10,7 +10,7 @@ import classes.Constant;
 
 public class CO2_Init {
 
-    public void co2_init(File init, CO2Control co2, int simyears) {
+    public boolean co2_init(File init, CO2Control co2, int simyears) {
 
         int i;
         String key1 = "CO2_CONTROL";
@@ -47,9 +47,14 @@ public class CO2_Init {
         } catch (IndexOutOfBoundsException ibe) {
             System.out.println(ibe);
             System.out.printf(BV_ERROR, "Error reading keyword, co2_init()\n");
+
+            return false;
+
         } catch (ClassCastException cce) {
             System.out.println(cce);
             System.out.printf(BV_ERROR, "Error reading keyword, co2_init()\n");
+
+            return false;
 
         }
 
@@ -59,9 +64,14 @@ public class CO2_Init {
         } catch (IndexOutOfBoundsException ibe) {
             System.out.println(ibe);
             System.out.printf(BV_ERROR, "Error reading keyword, co2_init()\n");
+
+            return false;
+
         } catch (ClassCastException cce) {
             System.out.println(cce);
             System.out.printf(BV_ERROR, "Error reading keyword, co2_init()\n");
+
+            return false;
 
         }
 
@@ -78,6 +88,8 @@ public class CO2_Init {
             } catch (FileNotFoundException fnf) {
                 System.out.println(fnf);
                 System.out.printf(BV_ERROR, "Error opening CO2 variable file, co2_init()\n");
+
+                return false;
             }
 
             while (sc.hasNextLine()) {
@@ -89,6 +101,8 @@ public class CO2_Init {
         } else if (!(co2.varco2 == 1)) {
 
             System.out.printf(BV_ERROR, "Error opening annual CO2 file\n");
+
+            return false;
         }
 
 		/*
@@ -107,6 +121,8 @@ public class CO2_Init {
                 System.out.printf(BV_ERROR, "Note: file must contain a pair of values for each\n");
                 System.out.printf(BV_ERROR, "simyear: year and CO2.\n");
 
+                return false;
+
             } else {
                 co2.co2year_array[i] = Integer.getInteger(sParseLine[0]);
                 co2.co2ppm_array[i] = Integer.getInteger(sParseLine[1]);
@@ -114,6 +130,8 @@ public class CO2_Init {
 
         }
         System.out.printf(BV_DIAG, String.format("Found: %i CO2 records in co2_init()\n", reccount));
+
+        return true;
 
     }
 
