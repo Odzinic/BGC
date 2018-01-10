@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public class Output_ASCII {
 	
@@ -15,8 +16,7 @@ public class Output_ASCII {
 	**/
 
 
-	public int output_ascii(double[] arr,int nvars,  File ptr)
-	{
+    public int output_ascii(List<Double> arr, int nvars, File ptr) {
 		int i = 0;
 		
 		PrintWriter writer = null;
@@ -27,9 +27,11 @@ public class Output_ASCII {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		
-		for(i = 0;i < nvars;i++){ writer.printf("%10.8f\t",arr[i]);}
-		writer.printf("\n");
+
+        for (i = 0; i < nvars; i++) {
+            writer.printf("%10.8f\t", arr.get(i));
+        }
+        writer.printf("\n");
 		
 		return 0;
 
