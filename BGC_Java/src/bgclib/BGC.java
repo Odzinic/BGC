@@ -1,6 +1,8 @@
 package bgclib;
 
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,6 +131,7 @@ public class BGC {
         zero_nf = new NFlux(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         zero_wf = new WFlux(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         nt = new NTemp(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        phenarr = new PhenArray(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         String BV_DIAG = String.valueOf(Constant.BV_DIAG.getValue());
         String BV_ERROR = String.valueOf(Constant.BV_ERROR.getValue());
@@ -149,7 +152,8 @@ public class BGC {
         List<Double> annarr = new ArrayList<>();
 
 		/* miscelaneous variables for program control in main */
-        int simyr, yday, metyr, metday;
+        //TODO: See if settings metyr as zero is appropriate
+        int simyr, yday = 0, metyr = 0, metday;
         int first_balance;
         int annual_alloc;
         int outv;
@@ -158,7 +162,7 @@ public class BGC {
         int dayout;
 
 		/* mode == MODE_MODEL only */
-        double daily_ndep = 0
+        double daily_ndep = 0;
         double daily_nfix = 0;
         double ndep_scalar = 0;
         double ndep_diff = 0;
@@ -177,13 +181,13 @@ public class BGC {
 		/* mode == MODE_SPINUP only */
 		/* spinup control */
         int ntimesmet, nblock = 0;
-        int steady1, steady2, rising, metcycle = 0, spinyears;
+        int steady1 = 0, steady2 = 0, rising = 0, metcycle = 0, spinyears = 0;
         double tally1 = 0.0, tally1b = 0.0, tally2 = 0.0, tally2b = 0.0, t1 = 0.0;
         double naddfrac = 0;
 
 		/* mode == MODE_MODEL only */
 		/* simple annual variables for text output */
-        double annmaxplai = 0, annet, annoutflow, annnpp, annnbp, annprcp, anntavg;
+        double annmaxplai = 0, annet = 0, annoutflow = 0, annnpp = 0, annnbp = 0, annprcp = 0, anntavg = 0;
 
         double MODE_SPINUP = Constant.MODE_SPINUP.getValue();
         double MODE_MODEL = Constant.MODE_MODEL.getValue();
@@ -228,35 +232,6 @@ public class BGC {
             dayout = 0;
         }
 
-//		/* allocate memory for local output arrays */
-//		if (ok && dayout &&	!(dayarr = (float*) malloc(ctrl.ndayout * sizeof(float))))
-//		{
-//			System.out.printf(BV_ERROR, "Error allocating for local daily output array in bgc()\n");
-//			ok=0;
-//		}
-//		if (ok && ctrl.domonavg && !(monavgarr = (float*) malloc(ctrl.ndayout * sizeof(float))))
-//		{
-//			System.out.printf(BV_ERROR, "Error allocating for monthly average output array in bgc()\n");
-//			ok=0;
-//		}
-//		if (ok && ctrl.doannavg && !(annavgarr = (float*) malloc(ctrl.ndayout * sizeof(float))))
-//		{
-//			System.out.printf(BV_ERROR, "Error allocating for annual average output array in bgc()\n");
-//			ok=0;
-//		}
-//		if (ok && ctrl.doannual && !(annarr = (float*) malloc(ctrl.nannout * sizeof(float))))
-//		{
-//			System.out.printf(BV_ERROR, "Error allocating for local annual output array in bgc()\n");
-//			ok=0;
-//		}
-//		/* allocate space for the output map pointers */
-//		if (ok && !(output_map = (double**) malloc(NMAP * sizeof(double*))))
-//		{
-//			System.out.printf(BV_ERROR, "Error allocating for output map in output_map_init()\n");
-//			ok=0;
-//		}
-//		
-//		System.out.printf(BV_DIAG, "done allocate out arrays\n");
 		
 		/* initialize monavg and annavg to 0.0 */
         if (ctrl.domonavg == 2) {
@@ -931,15 +906,14 @@ public class BGC {
                                     switch (ctrl.daycodes[outv]) {
                                     /* Leaf area index*/
                                         case 545:
-                                            annavgarr[outv] = (float) annmaxplai;
-                                            annavgarr.set(outv, (float) annmaxplai)
+                                            annavgarr.set(outv, (double) annmaxplai);
                                             break;
                                         default:
-                                            annavgarr[outv] /= 365.0;
+                                            annavgarr.set(outv, annavgarr.get(outv) / 365.0);
                                             break;
                                     }
                                 } else {
-                                    annavgarr[outv] /= 365.0;
+                                    annavgarr.set(outv, annavgarr.get(outv) / 365.0);
                                 }
                             }
 						
@@ -954,7 +928,7 @@ public class BGC {
 						
 						/* reset annual average variables for next month */
                             for (outv = 0; outv < ctrl.ndayout; outv++) {
-                                annavgarr[outv] = 0.0;
+                                annavgarr.set(outv, 0.0);
                                 annmaxplai = 0.0;
                             }
 
@@ -998,7 +972,7 @@ public class BGC {
                 if (ctrl.doannual == 1) {
                 /* fill the annual output array */
                     for (outv = 0; outv < ctrl.nannout; outv++) {
-                        annarr[outv] = (double) output_map[ctrl.anncodes[outv]];
+                        annarr.set(outv, (double) output_map.get(ctrl.anncodes[outv]));
                     }
                 /* write the annual output array to annual output file */
 //				if (fwrite(annarr, sizeof(float), ctrl.nannout, bgcout.annout.ptr)
@@ -1020,14 +994,18 @@ public class BGC {
                 if (mode == MODE_MODEL && bgcout.bgc_ascii == 1) {
                 /* write the simple annual text output */
 
-                    writer = new PrintWriter(bgcout.anntext, "UTF-8");
+                    try {
+                        writer = new PrintWriter(bgcout.anntext, "UTF-8");
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        return 0;
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        return 0;
+                    }
 
                     writer.printf("%6d%10.1f%10.1f%10.1f%10.1f%10.1f%10.1f%10.1f\n",
                             ctrl.simstartyear + simyr, annprcp, anntavg, annmaxlai, annet, annoutflow, annnpp, annnbp);
-
-//				fprintf(bgcout.anntext,"%6d%10.1f%10.1f%10.1f%10.1f%10.1f%10.1f%10.1f\n",
-//					ctrl.simstartyear+simyr,annprcp,anntavg,annmaxlai,annet,annoutflow,annnpp,annnbp);
-
                 }
 
                 metyr++;
