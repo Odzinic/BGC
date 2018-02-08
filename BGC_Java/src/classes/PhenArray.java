@@ -1,28 +1,30 @@
 package classes;
 
+import java.util.List;
+
 public class PhenArray {
 
-	public int[] remdays_curgrowth; /*
+	public List<Integer> remdays_curgrowth; /*
 									 * (nmetdays) days left in current growth
 									 * season
 									 */
-	public int[] remdays_transfer; /*
+	public List<Integer> remdays_transfer; /*
 									 * (nmetdays) number of transfer days
 									 * remaining
 									 */
-	public int[] remdays_litfall; /*
+	public List<Integer> remdays_litfall; /*
 									 * (nmetdays) number of litfall days remaining
 									 */
-	public int[] predays_transfer; /*
+	public List<Integer> predays_transfer; /*
 									 * (nmetdays) number of transfer days
 									 * previous
 									 */
-	public int[] predays_litfall; /*
+	public List<Integer> predays_litfall; /*
 									 * (nmetdays) number of litfall days previous
 									 */
 
-	public PhenArray(int[] cRemdays_curgrowth, int[] cRemdays_transfer, int[] cRemdays_litfall, int[] cPredays_transfer,
-			int[] cPredays_litfall) {
+	public PhenArray(List<Integer> cRemdays_curgrowth, List<Integer> cRemdays_transfer, List<Integer> cRemdays_litfall, List<Integer> cPredays_transfer,
+					 List<Integer> cPredays_litfall) {
 
 		this.remdays_curgrowth = cRemdays_curgrowth;
 		this.remdays_transfer = cRemdays_transfer;
