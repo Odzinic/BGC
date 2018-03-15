@@ -101,7 +101,7 @@ public enum Constant {
 
 	private double value;
 
-	private Constant(double value) {
+	Constant(double value) {
 		this.value = value;
 	}
 
