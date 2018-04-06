@@ -26,8 +26,8 @@ public class Output {
 	public int bgc_ascii;
 
 	public Output(int iOnscreen, String sOutprefix, int iDodaily, int iDomonavg, int iDoannavg, int iDoannual,
-				  int iNdayout, int iNannout, List<Integer> iDaycodes, List<Integer> iAnncodes, File fDayout, File fMonavgout, File fAnnavgout,
-				  File fAnnout, File fAnntext, File fDayoutascii, File fMonoutascii, File fAnnoutascii, int sBgc_ascii) {
+                  int iNdayout, int iNannout, List<Integer> iDaycodes, List<Integer> iAnncodes, File fDayout, File fMonavgout, File fAnnavgout,
+                  File fAnnout, File fAnntext, File fDayoutascii, File fMonoutascii, File fAnnoutascii, int iBgc_ascii) {
 
 		this.onscreen = iOnscreen;
 		this.outprefix = sOutprefix;
@@ -47,7 +47,7 @@ public class Output {
 		this.dayoutascii = fDayoutascii;
 		this.monoutascii = fMonoutascii;
 		this.annoutascii = fAnnoutascii;
-		this.bgc_ascii = sBgc_ascii;
+        this.bgc_ascii = iBgc_ascii;
 
 	}
 
