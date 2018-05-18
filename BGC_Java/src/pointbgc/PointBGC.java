@@ -41,7 +41,27 @@ public class PointBGC {
         File init;
         File ndep_file;
         FileWriter bgc_logfile;
+
+
+        // Initialization classes
         Presim_State_Init pres_state_init;
+        Ini ini;
+        Met_Init met_init;
+        Restart_Init restart_init;
+        Time_Init time_init;
+        Scc_Init scc_init;
+        CO2_Init co2_init;
+        Sitec_Init sitec_init;
+        Ramp_NDep_Init ramp_ndep_init;
+        Epc_Init epc_init;
+        State_Init wstate_init;
+        State_Init cnstate_init;
+        Output_Ctrl output_ctrl;
+        Output_Init output_init;
+        End_Init end_init;
+        MetArr_Init metarr_init;
+
+
 
         // Initialize variables
         bgcin = new BGCIn(new Restart_Data(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0),
@@ -59,7 +79,24 @@ public class PointBGC {
 
         point = new Point("", "", null, 0);
         output = new Output(0, "", 0, 0, 0, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), null, null, null, null, null, null, null, null, 0);
+
         pres_state_init = new Presim_State_Init();
+        ini = new Ini();
+        met_init = new Met_Init();
+        restart_init = new Restart_Init();
+        time_init = new Time_Init();
+        scc_init = new Scc_Init();
+        co2_init = new CO2_Init();
+        sitec_init = new Sitec_Init();
+        ramp_ndep_init = new Ramp_NDep_Init();
+        epc_init = new Epc_Init();
+        wstate_init = new State_Init();
+        cnstate_init = new State_Init();
+        output_ctrl = new Output_Ctrl();
+        output_init = new Output_Init();
+        end_init = new End_Init();
+        metarr_init = new MetArr_Init();
+
 
         int BV_SILENT = (int) Constant.BV_SILENT.getValue();
         int BV_DIAG = (int) Constant.BV_DIAG.getValue();
@@ -109,7 +146,7 @@ public class PointBGC {
 
                 case "-v":
                     try {
-                        bgc_verbosity = Integer.valueOf(args[currArg + 2]);
+                        bgc_verbosity = Integer.valueOf(args[currArg + 1]);
                         break;
 
                     } catch (ClassCastException cce) {
@@ -118,10 +155,10 @@ public class PointBGC {
                         return;
                     }
 
-                case "l":
+                case "-l":
                     // Attempt to open logfile specified by user
                     try {
-                        File logpath = new File(args[currArg + 2]);
+                        File logpath = new File(args[currArg + 1]);
                         bgc_logfile = new FileWriter(logpath);
                         break;
                     } catch (FileNotFoundException fnfe) {
@@ -158,7 +195,7 @@ public class PointBGC {
 
                 case "-n": /* Nitrogen deposition file */
                     //Try to open nitrogen deposition file
-                    ndep_file = new File(args[currArg + 2]);
+                    ndep_file = new File(args[currArg + 1]);
                     System.out.printf("Using annual NDEP file %s\n", ndep_file.getName());
                     readndepfile = 1;
                     bgcin.ndepctrl.varndep = 1;
@@ -206,6 +243,34 @@ public class PointBGC {
 
         /* initialize the bgcin state variable structures before filling with
         values from ini file */
+        if (pres_state_init.presim_state_init(bgcin.ws, bgcin.cs, bgcin.ns, bgcin.cinit) == false) {
+            System.out.println("Error in call to presim_state_init() from pointbgc()");
+            return;
+        }
+
+        /******************************
+         **                           **
+         **  BEGIN READING INIT FILE  **
+         **                           **
+         ******************************/
+
+        /* open the main init file for ascii read and check for errors */
+        if (ini.file_open(new File(args[args.length - 1]), 'i') == false) {
+            System.out.println("Error opening init file, pointbgc.c");
+            return;
+        }
+        init = new File(args[args.length - 1]);
+
+        /* open met file, discard header lines */
+        if (met_init.met_init(init, point) == false) {
+
+            System.out.println("Error in initializing Met class.");
+            return;
+        } else System.out.println("Met class initialized");
+
+
+
+
 
 
 

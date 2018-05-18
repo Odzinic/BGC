@@ -23,8 +23,8 @@ public class Ini {
     public boolean file_open(File target, char mode)
     /*
      * Possible values for mode 'r' for read binary 'i' for read ascii 'w' for
-	 * write binary 'o' for write ascii
-	 */ {
+     * write binary 'o' for write ascii
+     */ {
         int ok = 1;
 
         switch (mode) {
@@ -118,9 +118,9 @@ public class Ini {
      * depending on the specified scan type
      */
     public List<?> scan_value(File ini, char type)
-	/*
-	 * Possible values for type 'i' for integer 'd' for double 's' for string
-	 */
+    /*
+     * Possible values for type 'i' for integer 'd' for double 's' for string
+     */
 
     {
         int ok_scan;
@@ -224,10 +224,10 @@ public class Ini {
      * initialization file and then opening it with a specified access mode
      */
     public boolean scan_open(File ini, String key, char mode) {
-		/*
-		 * Possible values for mode 'r' for read binary 'i' for read ascii 'w'
-		 * for write binary 'o' for write ascii
-		 */
+        /*
+         * Possible values for mode 'r' for read binary 'i' for read ascii 'w'
+         * for write binary 'o' for write ascii
+         */
 
         if (scan_value(ini, 's') == null) {
 
