@@ -51,6 +51,7 @@ public class PointBGC {
         Time_Init time_init;
         Scc_Init scc_init;
         CO2_Init co2_init;
+        NDep_Init ndep_init;
         Sitec_Init sitec_init;
         Ramp_NDep_Init ramp_ndep_init;
         Epc_Init epc_init;
@@ -60,7 +61,6 @@ public class PointBGC {
         Output_Init output_init;
         End_Init end_init;
         MetArr_Init metarr_init;
-
 
 
         // Initialize variables
@@ -76,9 +76,13 @@ public class PointBGC {
                 new NState(.0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0),
                 new Siteconst(.0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0, .0),
                 new Epconst(0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
-
+        bgcout = new BGCOut(new Restart_Data(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0),
+                new File(""), new File(""), new File(""), new File(""), new File(""), new File(""), new File(""), new File(""), 0.0, 0, 0);
         point = new Point("", "", null, 0);
         output = new Output(0, "", 0, 0, 0, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), null, null, null, null, null, null, null, null, 0);
+        restart = new Restart_Ctrl(0, 0, 0, new File(""), new File("")); //TODO: Find if this throws a file not found
+        scc = new ClimChange(0.0, 0.0, 0.0, 0.0, 0.0);
+        ndep_file = new File(""); //TODO: Find if this throws a file not found
 
         pres_state_init = new Presim_State_Init();
         ini = new Ini();
@@ -87,6 +91,7 @@ public class PointBGC {
         time_init = new Time_Init();
         scc_init = new Scc_Init();
         co2_init = new CO2_Init();
+        ndep_init = new NDep_Init();
         sitec_init = new Sitec_Init();
         ramp_ndep_init = new Ramp_NDep_Init();
         epc_init = new Epc_Init();
@@ -116,7 +121,7 @@ public class PointBGC {
         String USER = "unknown";
         String HOST = "Windows";
 
-        //TODO: Check to see if these variables should be global because they are references in other classes
+        //TODO: Check to see if these variables should be global because they are referenced in other classes
         //   int summary_sanity;
 
         int c; /* for getopt cli argument processing */
@@ -263,16 +268,120 @@ public class PointBGC {
 
         /* open met file, discard header lines */
         if (met_init.met_init(init, point) == false) {
-
             System.out.println("Error in initializing Met class.");
             return;
         } else System.out.println("Met class initialized");
 
+        /* read restart control parameters */
+        if (restart_init.restart_init(init, restart) == false) {
+            System.out.println(("Error in initializing Restart class"));
+            return;
+        } else System.out.println(("Restart class initialized"));
 
+        /* read scalar climate change parameters */
+        if (scc_init.scc_init(init, scc) == false) {
+            System.out.println(("Error in initializing Scalar Climate Change class"));
+            return;
+        } else System.out.println("Scalar Climate Change class initialized");
 
+        /* read CO2 control parameters */
+        if (co2_init.co2_init(init, bgcin.co2, bgcin.ctrl.simyears) == false) {
+            System.out.println("Error in initializing CO2 Control class");
+        } else System.out.println("CO2 control initialized class");
 
+        /* Check if reading Nitrogen Deposition file is enabled */
+        if (readndepfile == 1) {
 
+            if (ndep_init.ndep_init(ndep_file, bgcin.ndepctrl) == false) {
+                System.out.println("Error in initializing Nitrogen Deposition class");
+                return;
+            } else System.out.println("Nitrogen Deposition class initialized");
+        }
 
+        /* read site constants */
+        if (sitec_init.sitec_init(init, bgcin.sitec) == false) {
+            System.out.println("Error in initializing Site class");
+            return;
+        } else System.out.println("Site class initialized");
+
+        /* read ramped nitrogen deposition block */
+        if (ramp_ndep_init.ramp_ndep_init(init, bgcin.ramp_ndep) == false) {
+            System.out.println("Error in initializing Ramped Deposition class");
+            return;
+        } else System.out.println("Ramped Deposition class initialized");
+
+        /* read ecophysiological constants */
+        if (epc_init.epc_init(init, bgcin.epc) == false) {
+            System.out.println("Error in initializing Ecophysiological class");
+            return;
+        } else System.out.println("Ecophysiological class initialized");
+
+        /* initialize water state structure */
+        if (wstate_init.wstate_init(init, bgcin.sitec, bgcin.ws) == false) {
+            System.out.println("Error in initializing Water State class");
+            return;
+        } else System.out.println("Water State class initialized");
+
+        /* initialize carbon and nitrogen state structures */
+        if (cnstate_init.cnstate_init(init, bgcin.epc, bgcin.cs, bgcin.cinit, bgcin.ns) == false) {
+            System.out.println("Error in initializing Carbon and Nitrogen State classes");
+            return;
+        } else System.out.println("Carbon and Nitrogen State classes initialized");
+
+        /* read the output control information */
+        if (output_ctrl.output_ctrl(init, output) == false) {
+            System.out.println("Error in initializing Output Control class");
+            return;
+        } else System.out.println("Output Control class initialized");
+
+        /* initialize output files. Does nothing in spinup mode*/
+        if (output_init.output_init(output) == false) {
+            System.out.println("Error in initializing Output class");
+            return;
+        } else System.out.println("Output class initialized");
+
+        /* read final line out of init file to test for proper file structure */
+        if (end_init.end_init(init) == false) {
+            System.out.println("Error reading end of init file");
+            return;
+        } else System.out.println("Ending of init read");
+
+        /* read meteorology file, build metarr arrays, compute running avgs */
+        if (metarr_init.metarr_init(point.metf, bgcin.metarr, scc, point, bgcin.ctrl.metyears) == false) {
+            System.out.println("Error in intializing Meteorological classes");
+            return;
+        } else System.out.println(("Meteorological classes initialized"));
+
+        /* copy some of the info from input structure to bgc simulation control
+	    structure */
+        bgcin.ctrl.onscreen = output.onscreen;
+        bgcin.ctrl.dodaily = output.dodaily;
+        bgcin.ctrl.domonavg = output.domonavg;
+        bgcin.ctrl.doannavg = output.doannavg;
+        bgcin.ctrl.doannual = output.doannual;
+        bgcin.ctrl.ndayout = output.ndayout;
+        bgcin.ctrl.nannout = output.nannout;
+        bgcin.ctrl.daycodes = output.daycodes;
+        bgcin.ctrl.anncodes = output.anncodes;
+        bgcin.ctrl.read_restart = restart.read_restart;
+        bgcin.ctrl.write_restart = restart.write_restart;
+        bgcin.ctrl.keep_metyr = restart.keep_metyr;
+
+        /* copy the output file structures into bgcout */
+        if (output.dodaily == 1) bgcout.dayout = output.dayout;
+        if (output.domonavg == 1) bgcout.monavgout = output.monavgout;
+        if (output.doannavg == 1) bgcout.annavgout = output.annavgout;
+        if (output.doannual == 1) bgcout.annout = output.annout;
+        if (output.bgc_ascii == 1 && output.dodaily == 1) bgcout.dayoutascii = output.dayoutascii;
+        if (output.bgc_ascii == 1 && output.domonavg == 1) bgcout.monoutascii = output.monoutascii;
+        if (output.bgc_ascii == 1 && output.doannual == 1) bgcout.annoutascii = output.annoutascii;
+        bgcout.anntext = output.anntext;
+        bgcout.bgc_ascii = bgc_ascii;
+
+        /* if using ramped Ndep, copy preindustrial Ndep into ramp_ndep struct */
+        if (bgcin.ramp_ndep.doramp == 1) {
+            bgcin.ramp_ndep.preind_ndep = bgcin.sitec.ndep;
+        }
 
 
     }

@@ -16,11 +16,11 @@ public class BGCOut {
 	public File annoutascii; /* File containing annual ascii output */
 	public double spinup_resid_trend; /* kgC/m2/yr remaining trend after spinup */
 	public int spinup_years; /* number of years before reaching steady-state */
-	public char bgc_ascii; /* ASCII output flag */
+    public int bgc_ascii; /* ASCII output flag */
 
 	public BGCOut(Restart_Data rRestart_output, File fDayout, File fMonavgout, File fAnnavgout, File fAnnout,
-			File fAnntext, File fDayoutascii, File fMonoutascii, File fAnnoutascii, double dSpinup_resid_trend,
-			int iSpinup_years, char cBgc_ascii) {
+                  File fAnntext, File fDayoutascii, File fMonoutascii, File fAnnoutascii, double dSpinup_resid_trend,
+                  int iSpinup_years, int iBgc_ascii) {
 
 		this.restart_output = rRestart_output;
 		this.dayout = fDayout;
@@ -33,7 +33,7 @@ public class BGCOut {
 		this.annoutascii = fAnnoutascii;
 		this.spinup_resid_trend = dSpinup_resid_trend;
 		this.spinup_years = iSpinup_years;
-		this.bgc_ascii = cBgc_ascii;
+        this.bgc_ascii = iBgc_ascii;
 	}
 
 }
