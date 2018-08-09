@@ -11,6 +11,7 @@ See copyright.txt for Copyright information
 
 package pointbgc;
 
+import bgclib.BGC;
 import classes.*;
 
 import java.io.*;
@@ -44,6 +45,7 @@ public class PointBGC {
 
 
         // Initialization classes
+        BGC bgc;
         Presim_State_Init pres_state_init;
         Ini ini;
         Met_Init met_init;
@@ -101,6 +103,7 @@ public class PointBGC {
         output_init = new Output_Init();
         end_init = new End_Init();
         metarr_init = new MetArr_Init();
+        bgc = new BGC();
 
 
         int BV_SILENT = (int) Constant.BV_SILENT.getValue();
@@ -381,6 +384,49 @@ public class PointBGC {
         /* if using ramped Ndep, copy preindustrial Ndep into ramp_ndep struct */
         if (bgcin.ramp_ndep.doramp == 1) {
             bgcin.ramp_ndep.preind_ndep = bgcin.sitec.ndep;
+        }
+
+        /* if using an input restart file, read a record */
+        if (restart.read_restart == 1) {
+            /* 02/06/04
+             * The if statement gaurds against core dump on bad restart file.
+             * If spinup exits with error then the norm trys to use the restart,
+             * that has nothing in it, a seg fault occurs. Amac */
+            if (!restart.in_restart.canRead()) {
+                System.out.println("Error reading restart file! 0 bytes read. Aborting..");
+                return;
+            }
+
+        }
+
+        /*********************
+         **                  **
+         **  CALL BIOME-BGC  **
+         **                  **
+         *********************/
+
+        /* all initialization complete, call model */
+        /* either call the spinup code or the normal simulation code */
+        if (bgcin.ctrl.spinup == 1) {
+
+            if (bgc.bgc(bgcin, bgcout, MODE_SPINUP) == 0) {
+                System.out.println("Error in call to bgc()");
+                return;
+            }
+
+            System.out.println(String.format("SPINUP: residual trend  = %f", bgcout.spinup_resid_trend));
+            System.out.println(String.format("SPINUP: number of years  = %d", bgcout.spinup_years));
+        } else {
+
+            if (bgc.bgc(bgcin, bgcout, MODE_MODEL) == 0) {
+                System.out.println("Error in call to bgc()");
+                return;
+            }
+        }
+
+        /* if using an output restart file, write a record */
+        if (restart.write_restart == 1) {
+            
         }
 
 
