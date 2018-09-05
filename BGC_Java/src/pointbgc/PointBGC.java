@@ -15,6 +15,7 @@ import bgclib.BGC;
 import classes.*;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -251,7 +252,7 @@ public class PointBGC {
 
         /* initialize the bgcin state variable structures before filling with
         values from ini file */
-        if (pres_state_init.presim_state_init(bgcin.ws, bgcin.cs, bgcin.ns, bgcin.cinit) == false) {
+        if (!pres_state_init.presim_state_init(bgcin.ws, bgcin.cs, bgcin.ns, bgcin.cinit)) {
             System.out.println("Error in call to presim_state_init() from pointbgc()");
             return;
         }
@@ -263,94 +264,94 @@ public class PointBGC {
          ******************************/
 
         /* open the main init file for ascii read and check for errors */
-        if (ini.file_open(new File(args[args.length - 1]), 'i') == false) {
+        if (!ini.file_open(new File(args[args.length - 1]), 'i')) {
             System.out.println("Error opening init file, pointbgc.c");
             return;
         }
         init = new File(args[args.length - 1]);
 
         /* open met file, discard header lines */
-        if (met_init.met_init(init, point) == false) {
+        if (!met_init.met_init(init, point)) {
             System.out.println("Error in initializing Met class.");
             return;
         } else System.out.println("Met class initialized");
 
         /* read restart control parameters */
-        if (restart_init.restart_init(init, restart) == false) {
+        if (!restart_init.restart_init(init, restart)) {
             System.out.println(("Error in initializing Restart class"));
             return;
         } else System.out.println(("Restart class initialized"));
 
         /* read scalar climate change parameters */
-        if (scc_init.scc_init(init, scc) == false) {
+        if (!scc_init.scc_init(init, scc)) {
             System.out.println(("Error in initializing Scalar Climate Change class"));
             return;
         } else System.out.println("Scalar Climate Change class initialized");
 
         /* read CO2 control parameters */
-        if (co2_init.co2_init(init, bgcin.co2, bgcin.ctrl.simyears) == false) {
+        if (!co2_init.co2_init(init, bgcin.co2, bgcin.ctrl.simyears)) {
             System.out.println("Error in initializing CO2 Control class");
         } else System.out.println("CO2 control initialized class");
 
         /* Check if reading Nitrogen Deposition file is enabled */
         if (readndepfile == 1) {
 
-            if (ndep_init.ndep_init(ndep_file, bgcin.ndepctrl) == false) {
+            if (!ndep_init.ndep_init(ndep_file, bgcin.ndepctrl)) {
                 System.out.println("Error in initializing Nitrogen Deposition class");
                 return;
             } else System.out.println("Nitrogen Deposition class initialized");
         }
 
         /* read site constants */
-        if (sitec_init.sitec_init(init, bgcin.sitec) == false) {
+        if (!sitec_init.sitec_init(init, bgcin.sitec)) {
             System.out.println("Error in initializing Site class");
             return;
         } else System.out.println("Site class initialized");
 
         /* read ramped nitrogen deposition block */
-        if (ramp_ndep_init.ramp_ndep_init(init, bgcin.ramp_ndep) == false) {
+        if (!ramp_ndep_init.ramp_ndep_init(init, bgcin.ramp_ndep)) {
             System.out.println("Error in initializing Ramped Deposition class");
             return;
         } else System.out.println("Ramped Deposition class initialized");
 
         /* read ecophysiological constants */
-        if (epc_init.epc_init(init, bgcin.epc) == false) {
+        if (!epc_init.epc_init(init, bgcin.epc)) {
             System.out.println("Error in initializing Ecophysiological class");
             return;
         } else System.out.println("Ecophysiological class initialized");
 
         /* initialize water state structure */
-        if (wstate_init.wstate_init(init, bgcin.sitec, bgcin.ws) == false) {
+        if (!wstate_init.wstate_init(init, bgcin.sitec, bgcin.ws)) {
             System.out.println("Error in initializing Water State class");
             return;
         } else System.out.println("Water State class initialized");
 
         /* initialize carbon and nitrogen state structures */
-        if (cnstate_init.cnstate_init(init, bgcin.epc, bgcin.cs, bgcin.cinit, bgcin.ns) == false) {
+        if (!cnstate_init.cnstate_init(init, bgcin.epc, bgcin.cs, bgcin.cinit, bgcin.ns)) {
             System.out.println("Error in initializing Carbon and Nitrogen State classes");
             return;
         } else System.out.println("Carbon and Nitrogen State classes initialized");
 
         /* read the output control information */
-        if (output_ctrl.output_ctrl(init, output) == false) {
+        if (!output_ctrl.output_ctrl(init, output)) {
             System.out.println("Error in initializing Output Control class");
             return;
         } else System.out.println("Output Control class initialized");
 
         /* initialize output files. Does nothing in spinup mode*/
-        if (output_init.output_init(output) == false) {
+        if (!output_init.output_init(output)) {
             System.out.println("Error in initializing Output class");
             return;
         } else System.out.println("Output class initialized");
 
         /* read final line out of init file to test for proper file structure */
-        if (end_init.end_init(init) == false) {
+        if (!end_init.end_init(init)) {
             System.out.println("Error reading end of init file");
             return;
         } else System.out.println("Ending of init read");
 
         /* read meteorology file, build metarr arrays, compute running avgs */
-        if (metarr_init.metarr_init(point.metf, bgcin.metarr, scc, point, bgcin.ctrl.metyears) == false) {
+        if (!metarr_init.metarr_init(point.metf, bgcin.metarr, scc, point, bgcin.ctrl.metyears)) {
             System.out.println("Error in intializing Meteorological classes");
             return;
         } else System.out.println(("Meteorological classes initialized"));
@@ -424,11 +425,96 @@ public class PointBGC {
             }
         }
 
+        //TODO: Check if this works the same as fwrite
         /* if using an output restart file, write a record */
         if (restart.write_restart == 1) {
-            
+            BufferedWriter restart_file = null;
+            try {
+                restart_file = new BufferedWriter(new FileWriter("restart_file.ini", true));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            for (Field f : bgcout.restart_output.getClass().getDeclaredFields()) {
+                try {
+                    restart_file.write(f.toString());
+                    restart_file.newLine();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            try {
+                restart_file.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /* Now do the Model part of Spin & Go. */
+        if (cli_mode == MODE_SPINNGO) {
+            System.out.println("Finished Spinup for Spin 'n Go. Now starting Model run ('Go' part of Spin'n Go)");
+            System.out.println("Assigned bgcout struct to bgcin for spinngo model run");
+
+            bgcin.ctrl.spinup = 0;
+            output.doannavg = 1;
+            output.doannual = 1;
+            output.dodaily = 1;
+            output.domonavg = 1;
+
+            if (!output_init.output_init(output)) {
+                System.out.println("Error in call to output_init() from pointbgc.c... Exiting");
+                return;
+            }
+
+            /* copy some of the info from input structure to bgc simulation control structure */
+            bgcin.ctrl.dodaily = output.dodaily;
+            bgcin.ctrl.domonavg = output.domonavg;
+            bgcin.ctrl.doannavg = output.doannavg;
+            bgcin.ctrl.doannual = output.doannual;
+
+            /* copy the output file structures into bgcout */
+            if (output.dodaily == 1) {
+                bgcout.dayout = output.dayout;
+            }
+            if (output.domonavg == 1) {
+                bgcout.monavgout = output.monavgout;
+            }
+            if (output.doannavg == 1) {
+                bgcout.annavgout = output.annavgout;
+            }
+            if (output.doannual == 1) {
+                bgcout.annout = output.annout;
+            }
+            if (output.bgc_ascii == 1 && output.dodaily == 1) {
+                bgcout.dayoutascii = output.dayoutascii;
+            }
+            if (output.bgc_ascii == 1 && output.domonavg == 1) {
+                bgcout.monoutascii = output.monoutascii;
+            }
+            if (output.bgc_ascii == 1 && output.doannual == 1) {
+                bgcout.annoutascii = output.annoutascii;
+            }
+            if (output.bgc_ascii == 1 && output.doannual == 1) {
+                bgcout.anntext = output.anntext;
+            }
+
+            /* initialize output files. Does nothing in spinup mode*/
+            bgcin.ctrl.read_restart = 1;
+            bgcin.restart_input = bgcout.restart_output;
+
+            if (bgc.bgc(bgcin, bgcout, MODE_MODEL) == 0) {
+                System.out.println("Error in call to bgc()");
+                return;
+            }
+
+            restart.read_restart = 0;
+            bgcin.ctrl.read_restart = 0;
+
+            System.out.println("Finished the bgc() Model call in spinngo");
         }
 
 
     }
-}
+} /* end of main */
