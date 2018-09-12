@@ -14,12 +14,12 @@ public class DayMet {
 		double tday;
 
 		/* convert prcp from cm -. kg/m2 */
-		metv.prcp = metarr.prcp[metday];
+		metv.prcp = metarr.prcp.get(metday);
 
 		/* air temperature calculations (all temperatures deg C) */
-		metv.tmax = tmax = metarr.tmax[metday];
-		metv.tmin = tmin = metarr.tmin[metday];
-		metv.tavg = tavg = metarr.tavg[metday];
+		metv.tmax = tmax = metarr.tmax.get(metday);
+		metv.tmin = tmin = metarr.tmin.get(metday);
+		metv.tavg = tavg = metarr.tavg.get(metday);
 		metv.tday = tday = 0.45 * (tmax - tavg) + tavg;
 		metv.tnight = (tday + tmin) / 2.0;
 
@@ -30,19 +30,19 @@ public class DayMet {
 		 * running average is weighted linearly from 1 to 11. There are no
 		 * corrections for snowpack or vegetation cover.
 		 */
-		metv.tsoil = metarr.tavg_ra[metday];
+		metv.tsoil = metarr.tavg_ra.get(metday);
 
 		/* daylight average vapor pressure deficit (Pa) */
-		metv.vpd = metarr.vpd[metday];
+		metv.vpd = metarr.vpd.get(metday);
 
 		/* daylight average shortwave flux density (W/m2) */
-		metv.swavgfd = metarr.swavgfd[metday];
+		metv.swavgfd = metarr.swavgfd.get(metday);
 
 		/* PAR (W/m2) */
-		metv.par = metarr.par[metday];
+		metv.par = metarr.par.get(metday);
 
 		/* daylength (s) */
-		metv.dayl = metarr.dayl[metday];
+		metv.dayl = metarr.dayl.get(metday);
 
 		return 0;
 	}

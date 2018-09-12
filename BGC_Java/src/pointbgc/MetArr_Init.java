@@ -17,12 +17,17 @@ public class MetArr_Init {
      * It is assumed here that the meteorological datafile contains the
 	 * following list of variables, with the indicated units. All other
 	 * variables in the metv arrays are derived from this basic set:
-	 * 
-	 * VARIABLE UNITS yday (none) (yearday) prcp cm (daily total precipitation,
-	 * water equivalent) tmax deg C (daily maximum temperature) tmin deg C
-	 * (daily minimum temperature) VPD Pa (daylight average VPD) swavgfd W/m2
-	 * (daylight average shortwave flux density) daylength s (daylight duration)
-	 * 
+     *
+     * VARIABLE UNITS
+     * yday (none) (yearday)
+     * prcp cm (daily total precipitation,
+     * water equivalent)
+     * tmax deg C (daily maximum temperature)
+     * tmin deg C
+     * (daily minimum temperature)
+     * VPD Pa (daylight average VPD)
+     * swavgfd W/m2 (daylight average shortwave flux density)
+     * daylength s (daylight duration)
 	 */
 
     //TODO: Determine if the metf file is properly read in somewhere else in the code
@@ -76,11 +81,12 @@ public class MetArr_Init {
 			 * yday and Tday columns
 			 */
 
-            tmax = Double.valueOf(sCurrline[2]);
-            tmin = Double.valueOf(sCurrline[3]);
-            prcp = Double.valueOf(sCurrline[5]);
-            vpd = Double.valueOf(sCurrline[6]);
-            swavgfd = Double.valueOf(sCurrline[7]);
+            tmax = Double.valueOf(sCurrline[3]);
+            tmin = Double.valueOf(sCurrline[4]);
+            prcp = Double.valueOf(sCurrline[6]);
+            vpd = Double.valueOf(sCurrline[7]);
+            swavgfd = Double.valueOf(sCurrline[8]);
+            dayl = Double.valueOf(sCurrline[9]);
 
 
             metarr.tmax.add(i, tmax + scc.s_tmax);
@@ -88,6 +94,7 @@ public class MetArr_Init {
             metarr.prcp.add(i, prcp + scc.s_prcp);
             metarr.vpd.add(i, vpd + scc.s_vpd);
             metarr.swavgfd.add(i, swavgfd * scc.s_swavgfd);
+            metarr.dayl.add(i, dayl);
             metarr.par.add(i, swavgfd * RAD2PAR * scc.s_swavgfd);
             metarr.tavg.add(i, (metarr.tmax.get(i) + metarr.tmin.get(i)) / 2.0);
         }

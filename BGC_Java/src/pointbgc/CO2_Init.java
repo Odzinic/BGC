@@ -46,13 +46,13 @@ public class CO2_Init {
             co2.varco2 = ini.scan_value(0, 'i').intVal;
         } catch (IndexOutOfBoundsException ibe) {
             System.out.println(ibe);
-            System.out.printf(BV_ERROR, "Error reading keyword, co2_init()\n");
+            System.out.println("Error reading keyword, co2_init()");
 
             return false;
 
         } catch (ClassCastException cce) {
             System.out.println(cce);
-            System.out.printf(BV_ERROR, "Error reading keyword, co2_init()\n");
+            System.out.println("Error reading keyword, co2_init()");
 
             return false;
 
@@ -63,13 +63,13 @@ public class CO2_Init {
             co2.co2ppm = ini.scan_value(1, 'd').doubVal;
         } catch (IndexOutOfBoundsException ibe) {
             System.out.println(ibe);
-            System.out.printf(BV_ERROR, "Error reading keyword, co2_init()\n");
+            System.out.println("Error reading keyword, co2_init()");
 
             return false;
 
         } catch (ClassCastException cce) {
             System.out.println(cce);
-            System.out.printf(BV_ERROR, "Error reading keyword, co2_init()\n");
+            System.out.println("Error reading keyword, co2_init()");
 
             return false;
 
@@ -87,7 +87,7 @@ public class CO2_Init {
             try (Scanner scanner = sc = new Scanner(fCO2var)) {
             } catch (FileNotFoundException fnf) {
                 System.out.println(fnf);
-                System.out.printf(BV_ERROR, "Error opening CO2 variable file, co2_init()\n");
+                System.out.println("Error opening CO2 variable file, co2_init()");
 
                 return false;
             }
@@ -99,10 +99,8 @@ public class CO2_Init {
             sc.reset();
 
         } else if (!(co2.varco2 == 1)) {
+            System.out.println(("CO2 variable file was not selected. Continuing."));
 
-            System.out.printf(BV_ERROR, "Error opening annual CO2 file\n");
-
-            return false;
         }
 
 		/*
@@ -117,19 +115,24 @@ public class CO2_Init {
 
             if (sParseLine.length != 2) {
 
-                System.out.printf(BV_ERROR, "Error reading annual CO2 array, ctrl_init()\n");
-                System.out.printf(BV_ERROR, "Note: file must contain a pair of values for each\n");
-                System.out.printf(BV_ERROR, "simyear: year and CO2.\n");
+                System.out.println("Error reading annual CO2 array, ctrl_init()");
+                System.out.println("Note: file must contain a pair of values for each");
+                System.out.println("simyear: year and CO2.");
 
                 return false;
 
             } else {
-                co2.co2year_array[i] = Integer.getInteger(sParseLine[0]);
-                co2.co2ppm_array[i] = Integer.getInteger(sParseLine[1]);
+                co2.co2year_array.set(i, Integer.getInteger(sParseLine[0]));
+                co2.co2ppm_array.set(i, Double.valueOf(sParseLine[1]));
             }
 
         }
-        System.out.printf(BV_DIAG, String.format("Found: %i CO2 records in co2_init()\n", reccount));
+        System.out.printf(String.format("Found: %d CO2 records in co2_init()", reccount));
+
+        if (co2.co2ppm < 0.0) {
+            System.out.println("Error in co2_init(): co2 (ppm) must be positive");
+            return false;
+        }
 
         return true;
 

@@ -95,8 +95,8 @@ public class FirstDay {
 		 * of simulation, how many days of transfer and litterfall have already
 		 * occurred for this year
 		 */
-		predays = phen.predays_transfer[0];
-		remdays = phen.remdays_transfer[0];
+        predays = phen.predays_transfer.get(0);
+        remdays = phen.remdays_transfer.get(0);
 		if (predays > 0) {
 			prop_transfer = (double) predays / (double) (predays + remdays);
 			/* perform these transfers */
@@ -144,8 +144,8 @@ public class FirstDay {
 			 * only test for litterfall if there has already been some transfer
 			 * growth this year
 			 */
-			predays = phen.predays_litfall[0];
-			remdays = phen.remdays_litfall[0];
+            predays = phen.predays_litfall.get(0);
+            remdays = phen.remdays_litfall.get(0);
 			if (predays > 0) {
 				/*
 				 * some litterfall has already occurred. in this case, just

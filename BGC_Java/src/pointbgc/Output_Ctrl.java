@@ -15,15 +15,16 @@ public class Output_Ctrl {
         String key2 = "DAILY_OUTPUT";
         String key3 = "ANNUAL_OUTPUT";
 
-        String cli_mode = null; // TODO: NEED TO CREATE PUBLIC STATIC CLI_MODE IN POINTBGC
+        double cli_mode = PointBGC.cli_mode; 
 
         Ini_REDO outputIni = new Ini_REDO(init, key1);    // Ini class for reading in OUTPUT_CONTROL values
         Ini_REDO dailyIni = new Ini_REDO(init, key2);    // Ini class for reading in DAILY_OUTPUT values
         Ini_REDO annualIni = new Ini_REDO(init, key3);    // Ini class for reading in ANNUAL_OUTPUT values
 
-        String MODE_SPINUP = String.valueOf(Constant.MODE_SPINUP.getValue());
-        String MODE_MODEL = String.valueOf(Constant.MODE_MODEL.getValue());
-        String MODE_SPINNGO = String.valueOf(Constant.MODE_SPINNGO.getValue());
+        //TODO: Make all MODE_s double
+        double MODE_SPINUP = Constant.MODE_SPINUP.getValue();
+        double MODE_MODEL = Constant.MODE_MODEL.getValue();
+        double MODE_SPINNGO = Constant.MODE_SPINNGO.getValue();
 
         /********************************************************************
          ** ** Begin reading initialization file block starting with keyword: **
@@ -37,10 +38,10 @@ public class Output_Ctrl {
 		/* scan flags for daily output */
         output.dodaily = outputIni.scan_value(1, 'i').intVal;
 
-        if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
+        if (cli_mode == MODE_SPINUP || cli_mode == MODE_SPINNGO) {
 
             output.dodaily = 0;
-        } else if (cli_mode.equals(MODE_MODEL)) {
+        } else if (cli_mode == MODE_MODEL) {
 
             output.dodaily = 1;
         }
@@ -51,10 +52,10 @@ public class Output_Ctrl {
 		 */
         output.domonavg = outputIni.scan_value(2, 'i').intVal;
 
-        if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
+        if (cli_mode == MODE_SPINUP || cli_mode == MODE_SPINNGO) {
 
             output.domonavg = 0;
-        } else if (cli_mode.equals(MODE_MODEL)) {
+        } else if (cli_mode == MODE_MODEL) {
 
             output.domonavg = 1;
         }
@@ -64,10 +65,10 @@ public class Output_Ctrl {
 		 */
         output.doannavg = outputIni.scan_value(3, 'i').intVal;
 
-        if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
+        if (cli_mode == MODE_SPINUP || cli_mode == MODE_SPINNGO) {
 
             output.doannavg = 0;
-        } else if (cli_mode.equals(MODE_MODEL)) {
+        } else if (cli_mode == MODE_MODEL) {
 
             output.doannavg = 1;
         }
@@ -75,10 +76,10 @@ public class Output_Ctrl {
 		/* scan flag for annual output */
         output.doannual = outputIni.scan_value(4, 'i').intVal;
 
-        if (cli_mode.equals(MODE_SPINUP) || cli_mode.equals(MODE_SPINNGO)) {
+        if (cli_mode == MODE_SPINUP || cli_mode == MODE_SPINNGO) {
 
             output.doannual = 0;
-        } else if (cli_mode.equals(MODE_MODEL)) {
+        } else if (cli_mode == MODE_MODEL) {
 
             output.doannual = 1;
         }

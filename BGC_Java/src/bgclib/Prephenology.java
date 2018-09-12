@@ -62,8 +62,8 @@ public class Prephenology {
                 int psum_startday, psum_stopday;
 				double tmax_ann, tmax, new_tmax;
 				double tmin_annavg;
-				
-				Smooth smooth = null;
+
+				Smooth smooth = new Smooth();
 				
 				String BV_ERROR = String.valueOf(Constant.BV_ERROR.getValue());
 
@@ -79,6 +79,7 @@ public class Prephenology {
 				model = epc.phenology_flag;
 				woody = epc.woody;
 				evergreen = epc.evergreen;
+
 				
 				if (sitec.lat < 0.0){
 					south = 1;
@@ -101,7 +102,9 @@ public class Prephenology {
                         remdays_litfall.add(pday, 0);
                         predays_litfall.add(pday, 0);
                     }
-					
+
+
+
 					/* user defined on and off days (base zero) */
 					onday = epc.onday;
 					offday = epc.offday;
@@ -160,11 +163,11 @@ public class Prephenology {
 							if (nlitfalldays < 1) nlitfalldays = 1;
 							if (nlitfalldays > ngrowthdays) nlitfalldays = ngrowthdays;
                             for (pday = 0; pday < onday; pday++) {
-                                remdays_curgrowth.add(pday, 0);
-                                remdays_transfer.add(pday, 0);
-                                predays_transfer.add(pday, 0);
-                                remdays_litfall.add(pday, 0);
-                                predays_litfall.add(pday, 0);
+								remdays_curgrowth.set(pday, 0);
+								remdays_transfer.set(pday, 0);
+								predays_transfer.set(pday, 0);
+								remdays_litfall.set(pday, 0);
+								predays_litfall.set(pday, 0);
                             }
 							counter = ngrowthdays;
 							for (pday=onday ; pday<offday ; pday++)
@@ -232,6 +235,7 @@ public class Prephenology {
 
 					/* now copy this year multiple times to the permanent phenology struct
 					arrays, with tests for southern hemisphere. */
+					//TODO: Check if add works instead of set
 					for (py=0 ; py<phenyears ; py++)
 					{
 						if (south == 1)
@@ -242,14 +246,16 @@ public class Prephenology {
 								year to the permanent phenology array */
 								for (pday=182 ; pday<365 ; pday++)
 								{
-                                    phen.remdays_curgrowth.set(pday - 182, remdays_curgrowth.get(pday));
-                                    phen.remdays_transfer.set(pday - 182, remdays_transfer.get(pday));
-                                    phen.remdays_litfall.set(pday - 182, remdays_litfall.get(pday));
-                                    phen.predays_transfer.set(pday - 182, predays_transfer.get(pday));
-                                    phen.predays_litfall.set(pday - 182, predays_litfall.get(pday));
+									phen.remdays_curgrowth.add(pday - 182, remdays_curgrowth.get(pday));
+									phen.remdays_transfer.add(pday - 182, remdays_transfer.get(pday));
+									phen.remdays_litfall.add(pday - 182, remdays_litfall.get(pday));
+									phen.predays_transfer.add(pday - 182, predays_transfer.get(pday));
+									phen.predays_litfall.add(pday - 182, predays_litfall.get(pday));
+
 
 
 								}
+
 							}
 							else if (py==phenyears-1)
 							{
@@ -257,22 +263,22 @@ public class Prephenology {
 								year to the permanent phenology array */
 								for (pday=0 ; pday<182 ; pday++)
 								{
-                                    phen.remdays_curgrowth.set(py * 365 - 182 + pday, remdays_curgrowth.get(pday));
-                                    phen.remdays_transfer.set(py * 365 - 182 + pday, remdays_transfer.get(pday));
-                                    phen.remdays_litfall.set(py * 365 - 182 + pday, remdays_litfall.get(pday));
-                                    phen.predays_transfer.set(py * 365 - 182 + pday, predays_transfer.get(pday));
-                                    phen.predays_litfall.set(py * 365 - 182 + pday, predays_litfall.get(pday));
+									phen.remdays_curgrowth.add(py * 365 - 182 + pday, remdays_curgrowth.get(pday));
+									phen.remdays_transfer.add(py * 365 - 182 + pday, remdays_transfer.get(pday));
+									phen.remdays_litfall.add(py * 365 - 182 + pday, remdays_litfall.get(pday));
+									phen.predays_transfer.add(py * 365 - 182 + pday, predays_transfer.get(pday));
+									phen.predays_litfall.add(py * 365 - 182 + pday, predays_litfall.get(pday));
                                 }
 							}
 							else
 							{
 								for (pday=0 ; pday<365 ; pday++)
 								{
-                                    phen.remdays_curgrowth.set(py * 365 - 182 + pday, remdays_curgrowth.get(pday));
-                                    phen.remdays_transfer.set(py * 365 - 182 + pday, remdays_transfer.get(pday));
-                                    phen.remdays_litfall.set(py * 365 - 182 + pday, remdays_litfall.get(pday));
-                                    phen.predays_transfer.set(py * 365 - 182 + pday, predays_transfer.get(pday));
-                                    phen.predays_litfall.set(py * 365 - 182 + pday, predays_litfall.get(pday));
+									phen.remdays_curgrowth.add(py * 365 - 182 + pday, remdays_curgrowth.get(pday));
+									phen.remdays_transfer.add(py * 365 - 182 + pday, remdays_transfer.get(pday));
+									phen.remdays_litfall.add(py * 365 - 182 + pday, remdays_litfall.get(pday));
+									phen.predays_transfer.add(py * 365 - 182 + pday, predays_transfer.get(pday));
+									phen.predays_litfall.add(py * 365 - 182 + pday, predays_litfall.get(pday));
                                 }
 							}
 						} /* end if south */
@@ -281,11 +287,11 @@ public class Prephenology {
 							/* north */
 							for (pday=0 ; pday<365 ; pday++)
 							{
-                                phen.remdays_curgrowth.set(py * 365 + pday, remdays_curgrowth.get(pday));
-                                phen.remdays_transfer.set(py * 365 + pday, remdays_transfer.get(pday));
-                                phen.remdays_litfall.set(py * 365 + pday, remdays_litfall.get(pday));
-                                phen.predays_transfer.set(py * 365 + pday, predays_transfer.get(pday));
-                                phen.predays_litfall.set(py * 365 + pday, predays_litfall.get(pday));
+								phen.remdays_curgrowth.add(py * 365 + pday, remdays_curgrowth.get(pday));
+								phen.remdays_transfer.add(py * 365 + pday, remdays_transfer.get(pday));
+								phen.remdays_litfall.add(py * 365 + pday, remdays_litfall.get(pday));
+								phen.predays_transfer.add(py * 365 + pday, predays_transfer.get(pday));
+								phen.predays_litfall.add(py * 365 + pday, predays_litfall.get(pday));
                             }
 						} /* end if north */
 					} /* end py loop */
@@ -442,8 +448,8 @@ public class Prephenology {
 
 							/* save these onset and offset days and go to the next
 							phenological year */
-                            onday_arr.set(py, onset_day);
-                            offday_arr.set(py, offset_day);
+							onday_arr.add(py, onset_day);
+							offday_arr.add(py, offset_day);
 
                         } /* end phenyears loop for filling onset and offset arrays */
 					} /* end if woody (tree phenology model) */
@@ -539,9 +545,9 @@ public class Prephenology {
 										year */
                                         phensoilt = metarr.tavg_ra.get(183 + pday);
                                         phenprcp = metarr.prcp.get(183 + pday);
-                                        grass_prcpyear.set(pday, phenprcp);
-                                        grass_tminyear.set(pday, metarr.tmin.get(183 + pday));
-                                        grass_tmaxyear.set(pday, metarr.tmax.get(183 + pday));
+										grass_prcpyear.add(pday, phenprcp);
+										grass_tminyear.add(pday, metarr.tmin.get(183 + pday));
+										grass_tmaxyear.add(pday, metarr.tmax.get(183 + pday));
                                     }
 									else if (py==phenyears-1 && pday>181)
 									{
@@ -549,26 +555,26 @@ public class Prephenology {
 										end of the last phenological year */
                                         phensoilt = metarr.tavg_ra.get(ndays - 547 + pday);
                                         phenprcp = metarr.prcp.get(ndays - 547 + pday);
-                                        grass_prcpyear.set(pday, phenprcp);
-                                        grass_tminyear.set(pday, metarr.tmin.get(ndays - 547 + pday));
-                                        grass_tmaxyear.set(pday, metarr.tmax.get(ndays - 547 + pday));
+										grass_prcpyear.add(pday, phenprcp);
+										grass_tminyear.add(pday, metarr.tmin.get(ndays - 547 + pday));
+										grass_tmaxyear.add(pday, metarr.tmax.get(ndays - 547 + pday));
                                     }
 									else
 									{
                                         phensoilt = metarr.tavg_ra.get(py * 365 - 182 + pday);
                                         phenprcp = metarr.prcp.get(py * 365 - 182 + pday);
-                                        grass_prcpyear.set(pday, phenprcp);
-                                        grass_tminyear.set(pday, metarr.tmin.get(py * 365 - 182 + pday));
-                                        grass_tmaxyear.set(pday, metarr.tmax.get(py * 365 - 182 + pday));
+										grass_prcpyear.add(pday, phenprcp);
+										grass_tminyear.add(pday, metarr.tmin.get(py * 365 - 182 + pday));
+										grass_tmaxyear.add(pday, metarr.tmax.get(py * 365 - 182 + pday));
                                     }
 								}
 								else /* north */
 								{
                                     phensoilt = metarr.tavg_ra.get(py * 365 + pday);
                                     phenprcp = metarr.prcp.get(py * 365 + pday);
-                                    grass_prcpyear.set(pday, phenprcp);
-                                    grass_tminyear.set(pday, metarr.tmin.get(py * 365 + pday));
-                                    grass_tmaxyear.set(pday, metarr.tmax.get(py * 365 + pday));
+									grass_prcpyear.add(pday, phenprcp);
+									grass_tminyear.add(pday, metarr.tmin.get(py * 365 + pday));
+									grass_tmaxyear.add(pday, metarr.tmax.get(py * 365 + pday));
                                 }
 								
 								/* grass onset test */
@@ -668,8 +674,8 @@ public class Prephenology {
 							
 							/* save these onset and offset days and go to the next
 							phenological year */
-                            onday_arr.set(py, onset_day);
-                            offday_arr.set(py, offset_day);
+							onday_arr.add(py, onset_day);
+							offday_arr.add(py, offset_day);
 
                         } /* end phenyears loop for filling onset and offset arrays */
 					} /* end else !woody (grass phenology model) */
@@ -683,11 +689,11 @@ public class Prephenology {
 						/* zero the 365-day phen arrays */
 						for (pday=0 ; pday<365 ; pday++)
 						{
-                            remdays_curgrowth.set(pday, 0);
-                            remdays_transfer.set(pday, 0);
-                            predays_transfer.set(pday, 0);
-                            remdays_litfall.set(pday, 0);
-                            predays_litfall.set(pday, 0);
+							remdays_curgrowth.add(pday, 0);
+							remdays_transfer.add(pday, 0);
+							predays_transfer.add(pday, 0);
+							remdays_litfall.add(pday, 0);
+							predays_litfall.add(pday, 0);
                         }
 
                         onday = onday_arr.get(py);
@@ -699,11 +705,11 @@ public class Prephenology {
 							growth */
 							for (pday=0 ; pday<365 ; pday++)
 							{
-                                remdays_curgrowth.set(pday, 0);
-                                remdays_transfer.set(pday, 0);
-                                predays_transfer.set(pday, 0);
-                                remdays_litfall.set(pday, 0);
-                                predays_litfall.set(pday, 0);
+								remdays_curgrowth.add(pday, 0);
+								remdays_transfer.add(pday, 0);
+								predays_transfer.add(pday, 0);
+								remdays_litfall.add(pday, 0);
+								predays_litfall.add(pday, 0);
                             }
 						} /* end if special no-growth signal */
 						else
@@ -740,55 +746,55 @@ public class Prephenology {
 							
 							for (pday=0 ; pday<onday ; pday++)
 							{
-                                remdays_curgrowth.set(pday, 0);
-                                remdays_transfer.set(pday, 0);
-                                predays_transfer.set(pday, 0);
-                                remdays_litfall.set(pday, 0);
-                                predays_litfall.set(pday, 0);
+								remdays_curgrowth.add(pday, 0);
+								remdays_transfer.add(pday, 0);
+								predays_transfer.add(pday, 0);
+								remdays_litfall.add(pday, 0);
+								predays_litfall.add(pday, 0);
                             }
 							counter = ngrowthdays;
 							for (pday=onday ; pday<offday ; pday++)
 							{
-                                remdays_curgrowth.set(pday, counter);
+								remdays_curgrowth.add(pday, counter);
                                 counter--;
 							}
 							for (pday=offday ; pday<365 ; pday++)
 							{
-                                remdays_curgrowth.set(pday, 0);
+								remdays_curgrowth.add(pday, 0);
                             }
 							counter = ntransferdays;
 							for (pday=onday ; pday<onday+ntransferdays ; pday++)
 							{
-                                remdays_transfer.set(pday, counter);
-                                predays_transfer.set(pday, ntransferdays - counter);
+								remdays_transfer.add(pday, counter);
+								predays_transfer.add(pday, ntransferdays - counter);
                                 counter--;
 							}
 							for (pday=onday+ntransferdays ; pday<=offday ; pday++)
 							{
-                                remdays_transfer.set(pday, 0);
-                                predays_transfer.set(pday, ntransferdays);
+								remdays_transfer.add(pday, 0);
+								predays_transfer.add(pday, ntransferdays);
                             }
 							for (pday=offday+1 ; pday<365 ; pday++)
 							{
-                                remdays_transfer.set(pday, 0);
-                                predays_transfer.set(pday, 0);
+								remdays_transfer.add(pday, 0);
+								predays_transfer.add(pday, 0);
                             }
 							for (pday=onday ; pday<offday-nlitfalldays+1 ; pday++)
 							{
-                                remdays_litfall.set(pday, 0);
-                                predays_litfall.set(pday, 0);
+								remdays_litfall.add(pday, 0);
+								predays_litfall.add(pday, 0);
                             }
 							counter = nlitfalldays;
 							for (pday=offday-nlitfalldays+1 ; pday<=offday ; pday++)
 							{
-                                remdays_litfall.set(pday, counter);
-                                predays_litfall.set(pday, nlitfalldays - counter);
+								remdays_litfall.add(pday, counter);
+								predays_litfall.add(pday, nlitfalldays - counter);
                                 counter--;
 							}
 							for (pday=offday+1 ; pday<365 ; pday++)
 							{
-                                remdays_litfall.set(pday, 0);
-                                predays_litfall.set(pday, 0);
+								remdays_litfall.add(pday, 0);
+								predays_litfall.add(pday, 0);
                             }
 						} /* end else normal growth year */
 						
@@ -802,11 +808,11 @@ public class Prephenology {
 								year to the permanent phenology array */
 								for (pday=182 ; pday<365 ; pday++)
 								{
-                                    phen.remdays_curgrowth.set(pday - 182, remdays_curgrowth.get(pday));
-                                    phen.remdays_transfer.set(pday - 182, remdays_transfer.get(pday));
-                                    phen.remdays_litfall.set(pday - 182, remdays_litfall.get(pday));
-                                    phen.predays_transfer.set(pday - 182, predays_transfer.get(pday));
-                                    phen.predays_litfall.set(pday - 182, predays_litfall.get(pday));
+									phen.remdays_curgrowth.add(pday - 182, remdays_curgrowth.get(pday));
+									phen.remdays_transfer.add(pday - 182, remdays_transfer.get(pday));
+									phen.remdays_litfall.add(pday - 182, remdays_litfall.get(pday));
+									phen.predays_transfer.add(pday - 182, predays_transfer.get(pday));
+									phen.predays_litfall.add(pday - 182, predays_litfall.get(pday));
                                 }
 							}
 							else if (py==phenyears-1)
@@ -815,22 +821,22 @@ public class Prephenology {
 								year to the permanent phenology array */
 								for (pday=0 ; pday<182 ; pday++)
 								{
-                                    phen.remdays_curgrowth.set(py * 365 - 182 + pday, remdays_curgrowth.get(pday));
-                                    phen.remdays_transfer.set(py * 365 - 182 + pday, remdays_transfer.get(pday));
-                                    phen.remdays_litfall.set(py * 365 - 182 + pday, remdays_litfall.get(pday));
-                                    phen.predays_transfer.set(py * 365 - 182 + pday, predays_transfer.get(pday));
-                                    phen.predays_litfall.set(py * 365 - 182 + pday, predays_litfall.get(pday));
+									phen.remdays_curgrowth.add(py * 365 - 182 + pday, remdays_curgrowth.get(pday));
+									phen.remdays_transfer.add(py * 365 - 182 + pday, remdays_transfer.get(pday));
+									phen.remdays_litfall.add(py * 365 - 182 + pday, remdays_litfall.get(pday));
+									phen.predays_transfer.add(py * 365 - 182 + pday, predays_transfer.get(pday));
+									phen.predays_litfall.add(py * 365 - 182 + pday, predays_litfall.get(pday));
                                 }
 							}
 							else
 							{
 								for (pday=0 ; pday<365 ; pday++)
 								{
-                                    phen.remdays_curgrowth.set(py * 365 - 182 + pday, remdays_curgrowth.get(pday));
-                                    phen.remdays_transfer.set(py * 365 - 182 + pday, remdays_transfer.get(pday));
-                                    phen.remdays_litfall.set(py * 365 - 182 + pday, remdays_litfall.get(pday));
-                                    phen.predays_transfer.set(py * 365 - 182 + pday, predays_transfer.get(pday));
-                                    phen.predays_litfall.set(py * 365 - 182 + pday, predays_litfall.get(pday));
+									phen.remdays_curgrowth.add(py * 365 - 182 + pday, remdays_curgrowth.get(pday));
+									phen.remdays_transfer.add(py * 365 - 182 + pday, remdays_transfer.get(pday));
+									phen.remdays_litfall.add(py * 365 - 182 + pday, remdays_litfall.get(pday));
+									phen.predays_transfer.add(py * 365 - 182 + pday, predays_transfer.get(pday));
+									phen.predays_litfall.add(py * 365 - 182 + pday, predays_litfall.get(pday));
                                 }
 							}
 						} /* end if south */
@@ -839,19 +845,17 @@ public class Prephenology {
 							/* north */
 							for (pday=0 ; pday<365 ; pday++)
 							{
-                                phen.remdays_curgrowth.set(py * 365 + pday, remdays_curgrowth.get(pday));
-                                phen.remdays_transfer.set(py * 365 + pday, remdays_transfer.get(pday));
-                                phen.remdays_litfall.set(py * 365 + pday, remdays_litfall.get(pday));
-                                phen.predays_transfer.set(py * 365 + pday, predays_transfer.get(pday));
-                                phen.predays_litfall.set(py * 365 + pday, predays_litfall.get(pday));
+								phen.remdays_curgrowth.add(py * 365 + pday, remdays_curgrowth.get(pday));
+								phen.remdays_transfer.add(py * 365 + pday, remdays_transfer.get(pday));
+								phen.remdays_litfall.add(py * 365 + pday, remdays_litfall.get(pday));
+								phen.predays_transfer.add(py * 365 + pday, predays_transfer.get(pday));
+								phen.predays_litfall.add(py * 365 + pday, predays_litfall.get(pday));
                             }
 						} /* end if north */
 					} /* end phenyears loop for filling permanent arrays */
 				} /* end else phenology model block */
 							
 				/* free the local array memory */
-
-				
 				return 0;
 			}
 

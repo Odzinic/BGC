@@ -55,15 +55,16 @@ public class Ini {
                 // }
                 // break;
 
-                try {
-                    RandomAccessFile test = new RandomAccessFile(target, "r");
-                    return true;
-                } catch (IOException io) {
-                    System.out.printf(BV_ERROR, "Can't open %s for binary read ... Exiting\n", target.getAbsolutePath());
-                    ok = 0;
-                    break;
-
-                }
+//                try {
+//                    RandomAccessFile test = new RandomAccessFile(target, "r");
+//                    return true;
+//                } catch (IOException io) {
+//                    System.out.printf(BV_ERROR, "Can't open %s for binary read ... Exiting\n", target.getAbsolutePath());
+//                    ok = 0;
+//                    return false;
+//
+//                }
+                return target.canRead();
 
             case 'w':
                 // if ((target->ptr = fopen(target->name,"wb")) == NULL)

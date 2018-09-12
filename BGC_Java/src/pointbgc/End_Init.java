@@ -28,11 +28,11 @@ public class End_Init {
         try{
             keyword = ini.scan_value(0, 's').strVal;
         } catch (IndexOutOfBoundsException ibe) {
-            System.out.printf(BV_ERROR, "Error reading keyword for end of initialization file\n");
-            System.out.printf(BV_ERROR, "Expecting keyword --> %s in file %s\n",key1,init.getName());
-            System.out.printf(BV_ERROR, "This indicates that you have the wrong number of lines\n");
-            System.out.printf(BV_ERROR, "of information in your initialization file.\n");
-            System.out.printf(BV_ERROR, "Refer to documentation to determine proper format.\n");
+            System.out.println("Error reading keyword for end of initialization file");
+            System.out.printf("Expecting keyword --> %s in file %s", key1, init.getName());
+            System.out.println("This indicates that you have the wrong number of lines");
+            System.out.println("of information in your initialization file.");
+            System.out.println("Refer to documentation to determine proper format.");
 
 
         } catch (NullPointerException npe) {

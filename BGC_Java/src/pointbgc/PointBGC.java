@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class PointBGC {
 
     //TODO: Can these be properly accessed outside of PointBGC class
-    public static int cli_mode = (int) Constant.MODE_INI.getValue();
+    public static double cli_mode = Constant.MODE_INI.getValue();
     public static int summary_sanity;
     public static int bgc_verbosity;
 
@@ -264,7 +264,8 @@ public class PointBGC {
          ******************************/
 
         /* open the main init file for ascii read and check for errors */
-        if (!ini.file_open(new File(args[args.length - 1]), 'i')) {
+        if (!(new File(args[args.length - 1]).canRead())) {
+            System.out.println(args[args.length - 1]);
             System.out.println("Error opening init file, pointbgc.c");
             return;
         }
@@ -282,6 +283,12 @@ public class PointBGC {
             return;
         } else System.out.println(("Restart class initialized"));
 
+        /* read simulation timing control parameters */
+        if (!time_init.time_init(init, bgcin.ctrl)) {
+            System.out.println(("Error in initializing Timing Control class"));
+            return;
+        } else System.out.println("Timing Control class initialized");
+
         /* read scalar climate change parameters */
         if (!scc_init.scc_init(init, scc)) {
             System.out.println(("Error in initializing Scalar Climate Change class"));
@@ -291,6 +298,7 @@ public class PointBGC {
         /* read CO2 control parameters */
         if (!co2_init.co2_init(init, bgcin.co2, bgcin.ctrl.simyears)) {
             System.out.println("Error in initializing CO2 Control class");
+            return;
         } else System.out.println("CO2 control initialized class");
 
         /* Check if reading Nitrogen Deposition file is enabled */
@@ -430,7 +438,7 @@ public class PointBGC {
         if (restart.write_restart == 1) {
             BufferedWriter restart_file = null;
             try {
-                restart_file = new BufferedWriter(new FileWriter("restart_file.ini", true));
+                restart_file = new BufferedWriter(new FileWriter("restart/restart_file.ini", true));
             } catch (IOException e) {
                 e.printStackTrace();
             }

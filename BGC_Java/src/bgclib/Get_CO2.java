@@ -9,9 +9,9 @@ public class Get_CO2 {
 		int i;
 		for (i = 0; i < co2.co2vals; i++) {
 
-			if (co2.co2year_array[i] == simyr) {
+            if (co2.co2year_array.get(i) == simyr) {
 
-				return (co2.co2ppm_array[i]);
+                return (co2.co2ppm_array.get(i));
 			}
 		}
 

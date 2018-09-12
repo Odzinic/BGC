@@ -10,9 +10,9 @@ public class Get_NDep {
 
 		for (i = 0; i < ndepctrl.ndepvals; i++) {
 
-			if (ndepctrl.ndepyear_array[i] == simyr) {
+            if (ndepctrl.ndepyear_array.get(i) == simyr) {
 
-				return (ndepctrl.ndep_array[i]);
+                return (ndepctrl.ndep_array.get(i));
 			}
 		}
 
