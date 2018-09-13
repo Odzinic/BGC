@@ -3,7 +3,7 @@ package bgclib;
 import classes.CO2Control;
 
 public class Get_CO2 {
-
+	//TODO: Leave as double
 	public double get_co2(CO2Control co2, int simyr) {
 
 		int i;

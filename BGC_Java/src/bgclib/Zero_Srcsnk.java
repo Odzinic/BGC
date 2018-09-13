@@ -7,9 +7,8 @@ import classes.Summary;
 
 public class Zero_Srcsnk {
 
-	public int zero_srcsnk(CState cs, NState ns, WState ws, Summary summary) {
+    public boolean zero_srcsnk(CState cs, NState ns, WState ws, Summary summary) {
 
-		int ok = 1;
 
 		/* zero the water sources and sinks */
 		ws.prcp_src = 0.0;
@@ -58,7 +57,7 @@ public class Zero_Srcsnk {
 		summary.cum_hr = 0.0;
 		summary.cum_fire = 0.0;
 
-		return 0;
+        return true;
 	}
 
 }

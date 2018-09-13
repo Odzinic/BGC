@@ -6,7 +6,7 @@ import classes.NFlux;
 
 public class Make_Zero_Flux_Struct {
 
-	public int make_zero_flux_struct(WFlux wf, CFlux cf, NFlux nf) {
+	public boolean make_zero_flux_struct(WFlux wf, CFlux cf, NFlux nf) {
 
 		/* daily water fluxes */
 		wf.prcp_to_canopyw = 0.0;
@@ -271,7 +271,7 @@ public class Make_Zero_Flux_Struct {
 		nf.livecrootn_to_deadcrootn = 0.0;
 		nf.livecrootn_to_retransn = 0.0;
 
-		return 0;
+		return true;
 	}
 
 }

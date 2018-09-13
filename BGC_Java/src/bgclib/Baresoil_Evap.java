@@ -7,7 +7,7 @@ import bgclib.Canopy_Et;
 
 public class Baresoil_Evap {
 
-	public int baresoil_evap(final MetVar metv, WFlux wf, double dsr_ptr) {
+    public boolean baresoil_evap(final MetVar metv, WFlux wf, double dsr_ptr) {
 
 		double dsr;
 		double rbl;
@@ -50,9 +50,9 @@ public class Baresoil_Evap {
 		pmet_in.rv = rbl;
 		pmet_in.rv = rbl;
 
+        //TODO: Find if pot_evap actually gets calculated
 		/* calculate pot_evap in kg/m2/s */
-		pot_evap = ce.penmon(pmet_in, 0, pot_evap); // !!!!!!!!!!!!!!!!! Need to
-													// find way to ref pot_evap
+        pot_evap = ce.penmon(pmet_in, 0);
 
 		/* convert to daily total kg/m2 */
 		pot_evap *= metv.dayl;
@@ -96,7 +96,7 @@ public class Baresoil_Evap {
 		wf.soilw_evap = evap;
 		dsr_ptr = dsr;
 
-		return 0;
+        return true;
 	}
 
 }

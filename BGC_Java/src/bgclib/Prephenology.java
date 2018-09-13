@@ -12,12 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Prephenology {
-	
-	int prephenology(final Control ctrl, final Epconst epc, 
-			final Siteconst sitec, final MetArr metarr,
-			PhenArray phen)
+
+    boolean prephenology(final Control ctrl, final Epconst epc,
+                         final Siteconst sitec, final MetArr metarr,
+                         PhenArray phen)
 			{
-				int ok=1;
 				int model,woody,evergreen,south = 0;
 				double t1;
 				String round;
@@ -595,10 +594,10 @@ public class Prephenology {
 							if (onset_day != -1)
 							{
 								/* calculate three-day boxcar average of tmin */
-								if (smooth.boxcar_smooth(grass_tminyear, grass_3daytmin, 365,3,0) == 1)
+                                if (!smooth.boxcar_smooth(grass_tminyear, grass_3daytmin, 365, 3, 0))
 								{
 									System.out.printf(BV_ERROR, "Error in prephenology() call to boxcar()\n");
-									ok=0;
+                                    return false;
 								}
 								
 								for (pday=onset_day+30 ; pday<365 ; pday++)
@@ -722,7 +721,7 @@ public class Prephenology {
 								System.out.printf(BV_ERROR, "ngrowthdays = %d\n",ngrowthdays);
 								System.out.printf(BV_ERROR, "onday = %d\toffday = %d\tphenyear = %d\n",
 								onday,offday,py);
-								ok=0;
+                                return false;
 							}
 							/* define the length of the transfer and litfall periods */
 							/* calculate number of transfer days and number of litfall days
@@ -856,7 +855,7 @@ public class Prephenology {
 				} /* end else phenology model block */
 							
 				/* free the local array memory */
-				return 0;
+                return true;
 			}
 
 }

@@ -8,9 +8,8 @@ import classes.WFlux;
 
 public class Summary_Fun {
 
-	public int csummary(CFlux cf, CState cs, Summary summary) {
+    public boolean csummary(CFlux cf, CState cs, Summary summary) {
 
-		int ok = 1;
 		double gpp, mr, gr, hr, fire;
 		double npp, nep, nee;
 
@@ -83,10 +82,10 @@ public class Summary_Fun {
 		summary.soilc = cs.soil1c + cs.soil2c + cs.soil3c + cs.soil4c;
 		summary.totalc = summary.vegc + summary.litrc + summary.soilc;
 
-		return 0;
-	}
+        return true;
+    }
 
-	public int wsummary(WState ws, WFlux wf, Summary summary) {
+    public boolean wsummary(WState ws, WFlux wf, Summary summary) {
 
 		/*
 		 * Water state summary variables Purpose: calculates ET from individual
@@ -95,7 +94,6 @@ public class Summary_Fun {
 		 */
 		double et = 0.0, evap = 0.0, trans = 0.0;
 
-		int ok = 1;
 
 		et = wf.canopyw_evap + wf.soilw_evap + wf.soilw_trans + wf.snoww_subl;
 
@@ -109,7 +107,7 @@ public class Summary_Fun {
 		summary.daily_snoww = ws.snoww;
 		summary.daily_outflow = wf.soilw_outflow;
 
-		return 0;
+        return true;
 	}
 
 }

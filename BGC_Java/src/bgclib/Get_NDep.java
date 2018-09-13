@@ -3,7 +3,7 @@ package bgclib;
 import classes.NDepControl;
 
 public class Get_NDep {
-
+	//TODO: Leave as double
 	public double get_ndep(NDepControl ndepctrl, int simyr) {
 
 		int i;

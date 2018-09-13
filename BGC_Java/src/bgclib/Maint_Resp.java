@@ -9,7 +9,7 @@ import classes.Epvar;
 
 public class Maint_Resp {
 
-	public int maint_resp(final CState cs, final NState ns, final Epconst epc, final MetVar metv, CFlux cf, Epvar epv) {
+	public boolean maint_resp(final CState cs, final NState ns, final Epconst epc, final MetVar metv, CFlux cf, Epvar epv) {
 		/*
 		 * maintenance respiration routine Uses reference values at 20 deg C and
 		 * an empirical relationship between tissue N content and respiration
@@ -106,7 +106,7 @@ public class Maint_Resp {
 			cf.livecroot_mr = ns.livecrootn * mrpern * t1;
 		}
 
-		return 0;
+		return true;
 	}
 
 }

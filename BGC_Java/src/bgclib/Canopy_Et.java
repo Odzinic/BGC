@@ -10,7 +10,7 @@ import classes.Constant;
 
 public class Canopy_Et {
 
-	public int canopy_et(final MetVar metv, final Epconst epc, Epvar epv, WFlux wf, int verbose) {
+    public boolean canopy_et(final MetVar metv, final Epconst epc, Epvar epv, WFlux wf, int verbose) {
 
 		double gl_bl, gl_c, gl_s_sun, gl_s_shade;
 		double gl_e_wv, gl_t_wv_sun, gl_t_wv_shade, gl_sh;
@@ -169,10 +169,12 @@ public class Canopy_Et {
 			pmet_in.rh = 1.0 / gc_sh;
 			pmet_in.irad = metv.swabs;
 
+            //TODO: Changed code to exit if the e returned is zero
 			/* call penman-monteith function, returns e in kg/m2/s */
-			if (penmon(pmet_in, 0, e) == 0.0) {
+            e = penmon(pmet_in, 0);
+            if (e == 0.0) {
 				System.out.printf(BV_ERROR, "Error: penmon() for canopy evap... \n");
-				return 0;
+                return false;
 			}
 
 			/* calculate the time required to evaporate all the canopy water */
@@ -194,9 +196,10 @@ public class Canopy_Et {
 				pmet_in.rv = 1.0 / gl_t_wv_sun;
 				pmet_in.rh = 1.0 / gl_sh;
 				pmet_in.irad = metv.swabs_per_plaisun;
-				if (penmon(pmet_in, 0, t) == 0.0) {
+                t = penmon(pmet_in, 0);
+                if (t == 0.0) {
 					System.out.printf(BV_ERROR, "Error: penmon() for adjusted transpiration... \n");
-					return 0;
+                    return false;
 				}
 				trans_sun = t * t_dayl * epv.plaisun;
 
@@ -204,9 +207,10 @@ public class Canopy_Et {
 				pmet_in.rv = 1.0 / gl_t_wv_shade;
 				pmet_in.rh = 1.0 / gl_sh;
 				pmet_in.irad = metv.swabs_per_plaishade;
-				if (penmon(pmet_in, 0, t) == 0.0) {
+                t = penmon(pmet_in, 0);
+                if (t == 0.0) {
 					System.out.printf(BV_ERROR, "Error: penmon() for adjusted transpiration... \n");
-					return 0;
+                    return false;
 				}
 				trans_shade = t * t_dayl * epv.plaishade;
 				trans = trans_sun + trans_shade;
@@ -219,9 +223,10 @@ public class Canopy_Et {
 			pmet_in.rv = 1.0 / gl_t_wv_sun;
 			pmet_in.rh = 1.0 / gl_sh;
 			pmet_in.irad = metv.swabs_per_plaisun;
-			if (penmon(pmet_in, 0, t) == 0.0) {
+            t = penmon(pmet_in, 0);
+            if (t == 0.0) {
 				System.out.printf(BV_ERROR, "Error: penmon() for adjusted transpiration... \n");
-				return 0;
+                return false;
 			}
 			trans_sun = t * dayl * epv.plaisun;
 
@@ -229,9 +234,10 @@ public class Canopy_Et {
 			pmet_in.rv = 1.0 / gl_t_wv_shade;
 			pmet_in.rh = 1.0 / gl_sh;
 			pmet_in.irad = metv.swabs_per_plaishade;
-			if (penmon(pmet_in, 0, t) == 0.0) {
+            t = penmon(pmet_in, 0);
+            if (t == 0.0) {
 				System.out.printf(BV_ERROR, "Error: penmon() for adjusted transpiration... \n");
-				return 0;
+                return false;
 			}
 			trans_shade = t * dayl * epv.plaishade;
 			trans = trans_sun + trans_shade;
@@ -272,11 +278,11 @@ public class Canopy_Et {
 			epv.gc_sh = gc_sh;
 		}
 
-		return 0;
+        return true;
 
 	}
 
-	double penmon(final PMet in, int out_flag, double et) {
+    double penmon(final PMet in, int out_flag) {
 		/*
 		 * Combination equation for determining evaporation and transpiration.
 		 * 
@@ -296,7 +302,7 @@ public class Canopy_Et {
 		 * latent heat flux density (flag=1)
 		 */
 
-		int ok = 1;
+        double et = 0.0;
 		double ta;
 		double rho, lhvap, s;
 		double t1, t2, pvs1, pvs2, e, tk;
@@ -353,7 +359,7 @@ public class Canopy_Et {
 		if (out_flag != 1)
 			et = e / lhvap;
 
-		return 0;
+        return et;
 	}
 
 }

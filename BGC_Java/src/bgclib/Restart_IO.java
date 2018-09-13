@@ -9,8 +9,8 @@ import classes.Restart_Data;
 
 public class Restart_IO {
 
-	public int restart_input(Control ctrl, WState ws, CState cs, NState ns, Epvar epv, int metyr,
-			Restart_Data restart) {
+    public boolean restart_input(Control ctrl, WState ws, CState cs, NState ns, Epvar epv, int metyr,
+                                 Restart_Data restart) {
 
 		ws.soilw = restart.soilw;
 		ws.snoww = restart.snoww;
@@ -93,10 +93,10 @@ public class Restart_IO {
 		else
 			metyr = 0;
 
-		return 0;
-	}
+        return true;
+    }
 
-	public int restart_output(Control ctrl, WState ws, CState cs, NState ns, Epvar epv, int metyr,
+    public boolean restart_output(Control ctrl, WState ws, CState cs, NState ns, Epvar epv, int metyr,
 			Restart_Data restart) {
 
 		restart.soilw = ws.soilw;
@@ -177,7 +177,7 @@ public class Restart_IO {
 
 		restart.metyr = metyr;
 
-		return 0;
+        return true;
 	}
 
 }

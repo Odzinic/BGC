@@ -10,7 +10,7 @@ import classes.Constant;
 
 public class FirstDay {
 
-	public int firstday(final Epconst epc, final CInit cinit, Epvar epv, PhenArray phen, CState cs, NState ns) {
+	public boolean firstday(final Epconst epc, final CInit cinit, Epvar epv, PhenArray phen, CState cs, NState ns) {
 
 		int woody;
 		int predays;
@@ -194,7 +194,7 @@ public class FirstDay {
 			epv.annmax_livecrootc = 0.0;
 		}
 
-		return 0;
+		return true;
 	}
 
 }

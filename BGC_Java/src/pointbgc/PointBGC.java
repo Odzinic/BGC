@@ -246,8 +246,8 @@ public class PointBGC {
         /* get the system time at start of simulation */
         point.systime = zdt.toString();
 
-        output.anncodes = null;
-        output.daycodes = null;
+//        output.anncodes = null;
+//        output.daycodes = null;
         output.bgc_ascii = bgc_ascii;
 
         /* initialize the bgcin state variable structures before filling with
@@ -418,7 +418,7 @@ public class PointBGC {
         /* either call the spinup code or the normal simulation code */
         if (bgcin.ctrl.spinup == 1) {
 
-            if (bgc.bgc(bgcin, bgcout, MODE_SPINUP) == 0) {
+            if (!bgc.bgc(bgcin, bgcout, MODE_SPINUP)) {
                 System.out.println("Error in call to bgc()");
                 return;
             }
@@ -427,7 +427,7 @@ public class PointBGC {
             System.out.println(String.format("SPINUP: number of years  = %d", bgcout.spinup_years));
         } else {
 
-            if (bgc.bgc(bgcin, bgcout, MODE_MODEL) == 0) {
+            if (!bgc.bgc(bgcin, bgcout, MODE_MODEL)) {
                 System.out.println("Error in call to bgc()");
                 return;
             }
@@ -512,7 +512,7 @@ public class PointBGC {
             bgcin.ctrl.read_restart = 1;
             bgcin.restart_input = bgcout.restart_output;
 
-            if (bgc.bgc(bgcin, bgcout, MODE_MODEL) == 0) {
+            if (!bgc.bgc(bgcin, bgcout, MODE_MODEL)) {
                 System.out.println("Error in call to bgc()");
                 return;
             }

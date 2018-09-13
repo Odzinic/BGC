@@ -17,24 +17,23 @@ import java.util.List;
 
 public class Output_Map_Init {
 
-	int output_map_init(List<Double> output_map, MetVar metv, WState ws,
-						WFlux wf, CState cs, CFlux cf, NState ns,
-						NFlux nf, Phenology phen, Epvar epv,
-						PSn psn_sun, PSn psn_shade, Summary summary)
+	boolean output_map_init(List<Double> output_map, MetVar metv, WState ws,
+							WFlux wf, CState cs, CFlux cf, NState ns,
+							NFlux nf, Phenology phen, Epvar epv,
+							PSn psn_sun, PSn psn_shade, Summary summary)
 			{
-				int ok=1;
+
 				int i;
 				
 				double NMAP = Constant.NMAP.getValue();
-				
-				for (i=0 ; ok == 1 && i<NMAP ; i++)
+
+				for (i = 0; i < NMAP; i++)
 				{
 					output_map.add(i, 0.0);
 				}
-				
-				if (ok == 1)
-				{
-					/* daily meteorological variables */
+
+
+				/* daily meteorological variables */
 					output_map.set(0, metv.prcp);
 					output_map.set(1, metv.tmax);
 					output_map.set(2, metv.tmin);
@@ -548,9 +547,9 @@ public class Output_Map_Init {
 					output_map.set(644, summary.daily_trans);
 					output_map.set(645, summary.daily_soilw);
 					output_map.set(646, summary.daily_snoww);
-				}
-				
-				return 0;
+
+
+				return true;
 			}
 
 }

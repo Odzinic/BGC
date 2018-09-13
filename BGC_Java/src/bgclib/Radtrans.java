@@ -8,14 +8,13 @@ import classes.Constant;
 
 public class Radtrans {
 
-	public int radtrans(final CState cs, final Epconst epc, MetVar metv, Epvar epv, double albedo) {
+    public boolean radtrans(final CState cs, final Epconst epc, MetVar metv, Epvar epv, double albedo) {
 		/*
 		 * calculate the projected leaf area and SLA for sun and shade fractions
 		 * and the canopy transmission and absorption of shortwave radiation
 		 * based on the Beer's Law assumption of radiation attenuation as a
 		 * function of projected LAI.
 		 */
-		int ok = 1;
 
 		double proj_lai;
 		double albedo_sw, albedo_par;
@@ -52,7 +51,7 @@ public class Radtrans {
 			if (epv.plaishade < 0.0) {
 				System.out.printf(BV_ERROR, "FATAL ERROR: Negative plaishade\n");
 				System.out.printf(BV_ERROR, "LAI of shaded canopy = %lf\n", epv.plaishade);
-				ok = 0;
+                return false;
 			}
 
 			/*
@@ -71,7 +70,7 @@ public class Radtrans {
 		} else {
 			System.out.printf(BV_ERROR, "FATAL ERROR: Negative leaf carbon pool\n");
 			System.out.printf(BV_ERROR, "leafc = %.7e\n", cs.leafc);
-			ok = 0;
+            return false;
 		}
 
 		k = epc.ext_coef;
@@ -116,7 +115,7 @@ public class Radtrans {
 		if (swabs_plaishade < 0.0) /* AAN: Is this block even necesary? */
 		{
 			System.out.printf(BV_ERROR, "FATAL ERROR: negative swabs_plaishade (%lf)\n", swabs_plaishade);
-			ok = 0;
+            return false;
 		}
 
 		/*
@@ -146,7 +145,7 @@ public class Radtrans {
 		if (parabs_plaishade < 0.0) /* AAN: again, not necesary. */
 		{
 			System.out.printf(BV_ERROR, "FATAL ERROR: negative parabs_plaishade (%lf)\n", parabs_plaishade);
-			ok = 0;
+            return false;
 		}
 
 		/*
@@ -173,7 +172,7 @@ public class Radtrans {
 		metv.ppfd_per_plaishade = parabs_per_plaishade * EPAR;
 		metv.parabs = parabs;
 
-		return 0;
+        return true;
 	}
 
 }

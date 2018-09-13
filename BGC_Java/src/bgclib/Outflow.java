@@ -6,7 +6,7 @@ import classes.WFlux;
 
 public class Outflow {
 
-	public int outflow(final Siteconst sitec, final WState ws, WFlux wf) {
+	public boolean outflow(final Siteconst sitec, final WState ws, WFlux wf) {
 
 		/*
 		 * calculates the outflow flux from the difference between soilwater and
@@ -26,7 +26,7 @@ public class Outflow {
 			wf.soilw_outflow = 0.0;
 		}
 
-		return 0;
+		return true;
 
 	}
 

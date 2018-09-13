@@ -4,7 +4,7 @@ import classes.Constant;
 
 public class Atm_Pres {
 
-	public int atm_pres(double elev, double pa) {
+	public boolean atm_pres(double elev, double pa) {
 
 		double t1;
 		double t2;
@@ -20,7 +20,7 @@ public class Atm_Pres {
 		t2 = G_STD / (LR_STD * (R / MA));
 		pa = P_STD * Math.pow(t1, t2);
 
-		return 0;
+		return true;
 	}
 
 }

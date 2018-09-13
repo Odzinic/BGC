@@ -8,7 +8,7 @@ import classes.Constant;
 
 public class NLeaching {
 
-	public int nleaching(NState ns, NFlux nf, WState ws, WFlux wf) {
+	public boolean nleaching(NState ns, NFlux nf, WState ws, WFlux wf) {
 
 		double soilwater_nconc;
 		double MOBILEN_PROPORTION = Constant.MOBILEN_PROPORTION.getValue();
@@ -33,6 +33,6 @@ public class NLeaching {
 
 		}
 
-		return 0;
+		return true;
 	}
 }

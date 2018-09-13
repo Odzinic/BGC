@@ -8,7 +8,7 @@ import classes.NFlux;
 
 public class Mortality {
 
-	public int mortality(final Epconst epc, CState cs, CFlux cf, NState ns, NFlux nf) {
+	public boolean mortality(final Epconst epc, CState cs, CFlux cf, NState ns, NFlux nf) {
 
 		double mort;
 		/* dead stem combustion proportion */
@@ -421,7 +421,7 @@ public class Mortality {
 		ns.fire_snk += nf.m_cwdn_to_fire;
 		ns.cwdn -= nf.m_cwdn_to_fire;
 
-		return 0;
+		return true;
 	}
 
 }

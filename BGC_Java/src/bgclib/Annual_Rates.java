@@ -5,7 +5,7 @@ import classes.Epvar;
 
 public class Annual_Rates {
 
-	public int annual_rates(final Epconst epc, Epvar epv) {
+	public boolean annual_rates(final Epconst epc, Epvar epv) {
 		/* leaf and fineroot litterfall rates */
 		if (epc.evergreen == 1) {
 
@@ -32,7 +32,7 @@ public class Annual_Rates {
 			epv.day_frootc_litfall_increment = 0.0;
 		}
 
-		return 0;
+		return true;
 
 	}
 }

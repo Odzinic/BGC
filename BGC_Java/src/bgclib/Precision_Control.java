@@ -7,7 +7,7 @@ import classes.Constant;
 
 public class Precision_Control {
 
-	public int precision_control(WState ws, CState cs, NState ns) {
+    public boolean precision_control(WState ws, CState cs, NState ns) {
 		/* CARBON AND NITROGEN STATE VARIABLES */
 		/*
 		 * force very low leaf C to 0.0, to avoid roundoff error in canopy
@@ -139,7 +139,7 @@ public class Precision_Control {
 			ws.canopyw = 0.0;
 		}
 
-		return 0;
+        return true;
 	}
 
 }

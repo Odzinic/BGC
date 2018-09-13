@@ -4,11 +4,10 @@ import classes.*;
 
 public class State_Update {
 
-	public int daily_water_state_update(WFlux wf, WState ws) {
+    public boolean daily_water_state_update(WFlux wf, WState ws) {
 
 		/* daily update of the water state variables */
 
-		int ok = 1;
 
 		String BV_ERROR = String.valueOf(Constant.BV_ERROR.getValue());
 
@@ -66,19 +65,18 @@ public class State_Update {
 				System.out.printf(BV_ERROR, "Fatal negative soilwater error\n");
 				System.out.printf(BV_ERROR, "soilwater = %e\n", ws.soilw);
 				System.out.printf(BV_ERROR, "most likely a problem with reading the met data input file...\n");
-				ok = 0;
+                return false;
 			}
 		}
 
-		return 0;
+        return true;
 	}
-	
-	public int daily_carbon_state_update(CFlux cf, CState cs,
-			int alloc, int woody, int evergreen)
+
+    public boolean daily_carbon_state_update(CFlux cf, CState cs,
+                                             int alloc, int woody, int evergreen)
 			{
 				/* daily update of the carbon state variables */
-				
-				int ok=1;
+
 				
 				/* C state variables are updated below in the order of the relevant
 				fluxes in the daily model loop */
@@ -329,8 +327,8 @@ public class State_Update {
 						if (cs.frootc < 1e-10) cs.frootc = 0.0;
 					}
 				} /* end if allocation day */
-				
-				return 0;
+
+                return true;
             }
 
     public boolean daily_nitrogen_state_update(NFlux nf, NState ns, int alloc, int woody, int evergreen) {

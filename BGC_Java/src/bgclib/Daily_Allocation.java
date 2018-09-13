@@ -10,11 +10,10 @@ import classes.NTemp;
 import classes.Constant;
 
 public class Daily_Allocation {
-	
-	public int daily_allocation(CFlux cf, CState cs, NFlux nf, NState ns, Epconst epc, Epvar epv,
-			NTemp nt, double naddfrac, int mode){
-		
-		int ok=1;
+
+	public boolean daily_allocation(CFlux cf, CState cs, NFlux nf, NState ns, Epconst epc, Epvar epv,
+									NTemp nt, double naddfrac, int mode){
+
 		double day_gpp;     /* daily gross production */
 		double day_mresp;   /* daily total maintenance respiration */
 		double avail_c;     /* total C available for new production */
@@ -459,8 +458,8 @@ public class Daily_Allocation {
 		epv.daily_net_nmin = daily_net_nmin;
 		epv.daily_gross_nimmob = actual_immob;
 		epv.fpi = fpi;
-		
-		return 0;
+
+		return true;
 	}
 
 }

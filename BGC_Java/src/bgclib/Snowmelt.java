@@ -5,7 +5,7 @@ import classes.WFlux;
 
 public class Snowmelt {
 
-	public int snowmelt(final MetVar metv, WFlux wf, double snoww) {
+    public boolean snowmelt(final MetVar metv, WFlux wf, double snoww) {
 
 		final double sn_abs = 0.6;
 		final double lh_fus = 335.0;
@@ -39,7 +39,7 @@ public class Snowmelt {
 			wf.snoww_subl = rsub;
 		}
 
-		return 0;
+        return true;
 	}
 
 }

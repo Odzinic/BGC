@@ -9,8 +9,7 @@ public class Check_Balance {
 
 	String BV_ERROR = String.valueOf(Constant.BV_ERROR.getValue());
 
-	int check_water_balance(WState ws, int first_balance) {
-		int ok = 1;
+    boolean check_water_balance(WState ws, int first_balance) {
 		double old_balance = 0;
 		double in, out, store, balance;
 
@@ -39,16 +38,16 @@ public class Check_Balance {
 				System.out.printf(BV_ERROR, "Sinks   (summed over entire run)  = %lf\n", out);
 				System.out.printf(BV_ERROR, "Storage (current state variables) = %lf\n", store);
 				System.out.printf(BV_ERROR, "Exiting...\n");
-				ok = 0;
+                return false;
 			}
 		}
+        //TODO: Check what old_balance is for
 		old_balance = balance;
 
-		return 0;
-	}
+        return true;
+    }
 
-	int check_carbon_balance(CState cs, int first_balance) {
-		int ok = 1;
+    boolean check_carbon_balance(CState cs, int first_balance) {
 		double old_balance = 0;
 		double in, out, store, balance;
 
@@ -85,16 +84,15 @@ public class Check_Balance {
 				System.out.printf(BV_ERROR, "Sinks   (summed over entire run)  = %lf\n", out);
 				System.out.printf(BV_ERROR, "Storage (current state variables) = %lf\n", store);
 				System.out.printf(BV_ERROR, "Exiting...\n");
-				ok = 0;
+                return false;
 			}
 		}
 		old_balance = balance;
 
-		return 0;
-	}
+        return true;
+    }
 
-	int check_nitrogen_balance(NState ns, int first_balance) {
-		int ok = 1;
+    boolean check_nitrogen_balance(NState ns, int first_balance) {
 		double in, out, store, balance;
 		double old_balance = 0.0;
 
@@ -127,12 +125,12 @@ public class Check_Balance {
 				System.out.printf(BV_ERROR, "Sinks   (summed over entire run)  = %lf\n", out);
 				System.out.printf(BV_ERROR, "Storage (current state variables) = %lf\n", store);
 				System.out.printf(BV_ERROR, "Exiting...\n");
-				ok = 0;
+                return false;
 			}
 		}
 		old_balance = balance;
 
-		return 0;
+        return true;
 	}
 
 }

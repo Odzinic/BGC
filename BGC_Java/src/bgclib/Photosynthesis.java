@@ -9,14 +9,13 @@ import classes.Constant;
 
 public class Photosynthesis {
 
-	public int total_photosynthesis(final MetVar metv, final Epconst epc, Epvar epv, CFlux cf, PSn psn_sun,
-			PSn psn_shade) {
+    public boolean total_photosynthesis(final MetVar metv, final Epconst epc, Epvar epv, CFlux cf, PSn psn_sun,
+                                        PSn psn_shade) {
 		/*
 		 * This function is a wrapper and replacement for the photosynthesis
 		 * code which used to be in the central bgc.c code. At Mott Jolly's
 		 * request, all of the science code is being moved into funtions.
 		 */
-		int ok = 1;
 		double R = Constant.R.getValue();
 		String BV_DIAG = String.valueOf(Constant.BV_DIAG.getValue());
 		String BV_ERROR = String.valueOf(Constant.BV_ERROR.getValue());
@@ -38,9 +37,9 @@ public class Photosynthesis {
 		 */
 		psn_sun.g = epv.gl_t_wv_sun * 1e6 / (1.6 * R * (metv.tday + 273.15));
 		psn_sun.dlmr = epv.dlmr_area_sun;
-		if (ok == 1 && photosynthesis(psn_sun) == 1) {
+        if (!photosynthesis(psn_sun)) {
 			System.out.printf(BV_ERROR, "Error in photosynthesis() from bgc()\n");
-			ok = 0;
+            return false;
 		}
 
 		System.out.printf(BV_DIAG, "\t\tdone sun psn\n");
@@ -69,9 +68,9 @@ public class Photosynthesis {
 		 */
 		psn_shade.g = epv.gl_t_wv_shade * 1e6 / (1.6 * R * (metv.tday + 273.15));
 		psn_shade.dlmr = epv.dlmr_area_shade;
-		if (ok == 1 && photosynthesis(psn_shade) == 1) {
+        if (!photosynthesis(psn_shade)) {
 			System.out.printf(BV_ERROR, "Error in photosynthesis() from bgc()\n");
-			ok = 0;
+            return false;
 		}
 
 		System.out.printf(BV_DIAG, "\t\tdone shade_psn\n");
@@ -86,10 +85,10 @@ public class Photosynthesis {
 		 */
 		cf.psnshade_to_cpool = (epv.assim_shade + epv.dlmr_area_shade) * epv.plaishade * metv.dayl * 12.011e-9;
 
-		return 0;
-	}
+        return true;
+    }
 
-	public int photosynthesis(PSn psn) {
+    public boolean photosynthesis(PSn psn) {
 		/*
 		 * The following variables are assumed to be defined in the psn struct
 		 * at the time of the function call: c3 (flag) set to 1 for C3 model, 0
@@ -269,6 +268,6 @@ public class Photosynthesis {
 		System.out.printf(BV_DIAG, "psn.A: %f, A: %f\n", String.valueOf(psn.A), String.valueOf(A));
 		psn.Ci = Ca - (A / g);
 
-		return 0;
+        return true;
 	}
 }

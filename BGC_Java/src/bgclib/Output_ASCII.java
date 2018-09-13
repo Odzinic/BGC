@@ -16,7 +16,7 @@ public class Output_ASCII {
 	**/
 
 
-    public int output_ascii(List<Double> arr, int nvars, File ptr) {
+	public boolean output_ascii(List<Double> arr, int nvars, File ptr) {
 		int i = 0;
 		
 		PrintWriter writer = null;
@@ -32,8 +32,8 @@ public class Output_ASCII {
             writer.printf("%10.8f\t", arr.get(i));
         }
         writer.printf("\n");
-		
-		return 0;
+
+		return true;
 
 	}
 

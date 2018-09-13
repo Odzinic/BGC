@@ -6,7 +6,7 @@ import classes.Constant;
 
 public class Growth_Resp {
 
-	public int growth_resp(Epconst epc, CFlux cf) {
+	public boolean growth_resp(Epconst epc, CFlux cf) {
 
 		double g1; /* RATIO C respired for growth : C grown */
 		double g2; /* proportion of growth resp to release at fixation */
@@ -41,7 +41,7 @@ public class Growth_Resp {
 			cf.transfer_deadcroot_gr = cf.deadcrootc_transfer_to_deadcrootc * g1 * (1.0 - g2);
 		}
 
-		return 0;
+		return true;
 
 	}
 

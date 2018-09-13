@@ -5,7 +5,7 @@ import classes.WFlux;
 
 public class Prcp_Route {
 
-	public int prcp_route(final MetVar metv, double precip_int_coef, double all_lai, WFlux wf) {
+    public boolean prcp_route(final MetVar metv, double precip_int_coef, double all_lai, WFlux wf) {
 		/*
 		 * Precipitation routing, as either rain or snow. Rain can be
 		 * intercepted on the canopy, and amount in excess of interception is
@@ -47,6 +47,6 @@ public class Prcp_Route {
 			wf.prcp_to_snoww = prcp; /* no interception */
 		}
 
-		return 0;
+        return true;
 	}
 }

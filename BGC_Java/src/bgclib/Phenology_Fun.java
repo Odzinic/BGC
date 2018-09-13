@@ -11,9 +11,8 @@ import classes.Constant;
 
 public class Phenology_Fun {
 
-	public int phenology(final Epconst epc, final Phenology phen, Epvar epv, CState cs, CFlux cf, NState ns, NFlux nf) {
+    public boolean phenology(final Epconst epc, final Phenology phen, Epvar epv, CState cs, CFlux cf, NState ns, NFlux nf) {
 
-		int ok = 1;
 		double ndays;
 		double leaflitfallc, frootlitfallc;
 		double livestemtovrc, livestemtovrn;
@@ -60,18 +59,18 @@ public class Phenology_Fun {
 			leaflitfallc = epv.day_leafc_litfall_increment;
 			if (leaflitfallc > cs.leafc)
 				leaflitfallc = cs.leafc;
-			if (ok == 1 && leaf_litfall(epc, leaflitfallc, cf, nf) == 1) {
+            if (!leaf_litfall(epc, leaflitfallc, cf, nf)) {
 				System.out.printf(BV_ERROR, "Error in call to leaf_litfall() from phenology()\n");
-				ok = 0;
+                return false;
 			}
 
 			/* fine root litterfall */
 			frootlitfallc = epv.day_frootc_litfall_increment;
 			if (frootlitfallc > cs.frootc)
 				frootlitfallc = cs.frootc;
-			if (ok == 1 && froot_litfall(epc, frootlitfallc, cf, nf) == 1) {
+            if (!froot_litfall(epc, frootlitfallc, cf, nf)) {
 				System.out.printf(BV_ERROR, "Error in call to froot_litfall() from phenology()\n");
-				ok = 0;
+                return false;
 			}
 
 			/*
@@ -166,16 +165,16 @@ public class Phenology_Fun {
 				/* leaf litterfall */
 				if (leaflitfallc > cs.leafc)
 					leaflitfallc = cs.leafc;
-				if (ok == 1 && leaflitfallc == 1 && leaf_litfall(epc, leaflitfallc, cf, nf) == 1) {
+                if (leaflitfallc == 1 && !leaf_litfall(epc, leaflitfallc, cf, nf)) {
 					System.out.printf(BV_ERROR, "Error in call to leaf_litfall() from phenology()\n");
-					ok = 0;
+                    return false;
 				}
 				/* fine root litterfall */
 				if (frootlitfallc > cs.frootc)
 					frootlitfallc = cs.frootc;
-				if (ok == 1 && frootlitfallc == 1 && froot_litfall(epc, frootlitfallc, cf, nf) == 1) {
+                if (frootlitfallc == 1 && !froot_litfall(epc, frootlitfallc, cf, nf)) {
 					System.out.printf(BV_ERROR, "Error in call to froot_litfall() from phenology()\n");
-					ok = 0;
+                    return false;
 				}
 			} /* end if deciduous litterfall day */
 
@@ -233,10 +232,10 @@ public class Phenology_Fun {
 		if (epv.annmax_frootc < cs.frootc)
 			epv.annmax_frootc = cs.frootc;
 
-		return 0;
-	}
+        return true;
+    }
 
-	int leaf_litfall(final Epconst epc, double litfallc, CFlux cf, NFlux nf) {
+    boolean leaf_litfall(final Epconst epc, double litfallc, CFlux cf, NFlux nf) {
 		int ok = 1;
 		double c1, c2, c3, c4;
 		double n1, n2, n3, n4;
@@ -257,23 +256,23 @@ public class Phenology_Fun {
 		n4 = litfalln * epc.leaflitr_flig;
 		nretrans = (litfallc / avg_cn) - (litfalln);
 
-		if (ok == 1) {
-			/* set fluxes in daily flux structure */
-			cf.leafc_to_litr1c = c1;
-			cf.leafc_to_litr2c = c2;
-			cf.leafc_to_litr3c = c3;
-			cf.leafc_to_litr4c = c4;
-			nf.leafn_to_litr1n = n1;
-			nf.leafn_to_litr2n = n2;
-			nf.leafn_to_litr3n = n3;
-			nf.leafn_to_litr4n = n4;
-			nf.leafn_to_retransn = nretrans;
-		}
 
-		return 0;
-	}
+        /* set fluxes in daily flux structure */
+        cf.leafc_to_litr1c = c1;
+        cf.leafc_to_litr2c = c2;
+        cf.leafc_to_litr3c = c3;
+        cf.leafc_to_litr4c = c4;
+        nf.leafn_to_litr1n = n1;
+        nf.leafn_to_litr2n = n2;
+        nf.leafn_to_litr3n = n3;
+        nf.leafn_to_litr4n = n4;
+        nf.leafn_to_retransn = nretrans;
 
-	int froot_litfall(final Epconst epc, double litfallc, CFlux cf, NFlux nf) {
+
+        return true;
+    }
+
+    boolean froot_litfall(final Epconst epc, double litfallc, CFlux cf, NFlux nf) {
 		int ok = 1;
 		double c1, c2, c3, c4;
 		double n1, n2, n3, n4;
@@ -290,18 +289,18 @@ public class Phenology_Fun {
 		c4 = litfallc * epc.frootlitr_flig;
 		n4 = c4 / avg_cn;
 
-		if (ok == 1) {
-			/* set fluxes in daily flux structure */
-			cf.frootc_to_litr1c = c1;
-			cf.frootc_to_litr2c = c2;
-			cf.frootc_to_litr3c = c3;
-			cf.frootc_to_litr4c = c4;
-			nf.frootn_to_litr1n = n1;
-			nf.frootn_to_litr2n = n2;
-			nf.frootn_to_litr3n = n3;
-			nf.frootn_to_litr4n = n4;
-		}
 
-		return 0;
+        /* set fluxes in daily flux structure */
+        cf.frootc_to_litr1c = c1;
+        cf.frootc_to_litr2c = c2;
+        cf.frootc_to_litr3c = c3;
+        cf.frootc_to_litr4c = c4;
+        nf.frootn_to_litr1n = n1;
+        nf.frootn_to_litr2n = n2;
+        nf.frootn_to_litr3n = n3;
+        nf.frootn_to_litr4n = n4;
+
+
+        return true;
 	}
 }

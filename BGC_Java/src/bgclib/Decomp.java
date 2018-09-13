@@ -12,8 +12,8 @@ import classes.Constant;
 
 public class Decomp {
 
-	public int decomp(double tsoil, final Epconst epc, Epvar epv, final Siteconst sitec, CState cs, CFlux cf, NState ns,
-			NFlux nf, NTemp nt) {
+	public boolean decomp(double tsoil, final Epconst epc, Epvar epv, final Siteconst sitec, CState cs, CFlux cf, NState ns,
+						  NFlux nf, NTemp nt) {
 
 		double rate_scalar;
 		double t_scalar;
@@ -299,7 +299,7 @@ public class Decomp {
 		/* store the day's gross mineralization */
 		epv.daily_gross_nmin = mineralized;
 
-		return 0;
+		return true;
 
 	}
 

@@ -5,7 +5,7 @@ import classes.MetArr;
 
 public class DayMet {
 
-	public int daymet(final MetArr metarr, MetVar metv, int metday) {
+	public boolean daymet(final MetArr metarr, MetVar metv, int metday) {
 
 		/* generates daily meteorological variables from the metarray struct */
 		double tmax;
@@ -44,7 +44,7 @@ public class DayMet {
 		/* daylength (s) */
 		metv.dayl = metarr.dayl.get(metday);
 
-		return 0;
+		return true;
 	}
 
 }

@@ -4,7 +4,7 @@ import classes.Siteconst;
 
 public class Soilpsi {
 
-	public int soilpsi(final Siteconst sitec, double soilw, double psi, double vwc_out) {
+    public boolean soilpsi(final Siteconst sitec, double soilw, double psi, double vwc_out) {
 		/*
 		 * given a list of site constants and the soil water mass (kg/m2), this
 		 * function returns the soil water potential (MPa) inputs: ws.soilw
@@ -26,7 +26,6 @@ public class Soilpsi {
 		 * Sci. Soc. Am. J. 50:1031-1036.
 		 */
 
-		int ok = 1;
 		double vwc;
 
 		/* convert kg/m2 -. m3/m2 -. m3/m3 */
@@ -36,7 +35,7 @@ public class Soilpsi {
 		/* calculate psi */
 		psi = sitec.psi_sat * Math.pow((vwc / sitec.vwc_sat), sitec.soil_b);
 
-		return 0;
+        return true;
 	}
 
 }
