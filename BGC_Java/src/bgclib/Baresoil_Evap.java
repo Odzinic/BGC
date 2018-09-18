@@ -11,7 +11,7 @@ public class Baresoil_Evap {
 
 		double dsr;
 		double rbl;
-		double pot_evap = 0;
+        double pot_evap;
 		double evap;
 		PMet pmet_in;
 		double rcorr;
@@ -48,7 +48,8 @@ public class Baresoil_Evap {
 		pmet_in.vpd = metv.vpd;
 		pmet_in.irad = metv.swtrans;
 		pmet_in.rv = rbl;
-		pmet_in.rv = rbl;
+        pmet_in.rh = rbl;
+
 
         //TODO: Find if pot_evap actually gets calculated
 		/* calculate pot_evap in kg/m2/s */

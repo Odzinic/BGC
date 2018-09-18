@@ -419,7 +419,7 @@ public class PointBGC {
         if (bgcin.ctrl.spinup == 1) {
 
             if (!bgc.bgc(bgcin, bgcout, MODE_SPINUP)) {
-                System.out.println("Error in call to bgc()");
+                System.out.println("Error in call to bgc() using spinup mode");
                 return;
             }
 
@@ -428,7 +428,7 @@ public class PointBGC {
         } else {
 
             if (!bgc.bgc(bgcin, bgcout, MODE_MODEL)) {
-                System.out.println("Error in call to bgc()");
+                System.out.println("Error in call to bgc() using model mode");
                 return;
             }
         }
@@ -513,7 +513,7 @@ public class PointBGC {
             bgcin.restart_input = bgcout.restart_output;
 
             if (!bgc.bgc(bgcin, bgcout, MODE_MODEL)) {
-                System.out.println("Error in call to bgc()");
+                System.out.println("Error in call to bgc() in model mode with restart");
                 return;
             }
 

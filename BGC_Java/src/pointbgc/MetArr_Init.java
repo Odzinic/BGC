@@ -38,7 +38,7 @@ public class MetArr_Init {
         int year;
         double tmax, tmin, prcp, vpd, swavgfd = 0, dayl = 0;
         //TODO: Find if the number of header lines is initialized before this function call
-        int nhead = point.numhead;
+        int nhead;
 
         Scanner sc = null;
         String[] sCurrline;
@@ -54,6 +54,8 @@ public class MetArr_Init {
         Smooth sm = new Smooth();
 
         ndays = 365 * nyears;
+
+        nhead = point.numhead;
 
 		/* Skips the header files */
         for (int j = 0; j < nhead; j++) {

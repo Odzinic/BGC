@@ -19,6 +19,7 @@ public class State_Update {
 		ws.snoww += wf.prcp_to_snoww;
 		ws.prcp_src += wf.prcp_to_snoww;
 
+
 		/* snowmelt fluxes */
 		ws.soilw += wf.snoww_to_soilw;
 		ws.snoww -= wf.snoww_to_soilw;
@@ -43,7 +44,8 @@ public class State_Update {
 		ws.outflow_snk += wf.soilw_outflow;
 		ws.soilw -= wf.soilw_outflow;
 
-		/*
+
+        /*
 		 * the following special case prevents evaporation under very dry
 		 * conditions from causing a negative soilwater content
 		 */
@@ -578,7 +580,7 @@ public class State_Update {
 
 			/* for deciduous system, force leafn and frootn to exactly 0.0 on the
 			last day */
-            if (evergreen != 1) {
+            if (evergreen == 0) {
                 if (ns.leafn < 1e-10) ns.leafn = 0.0;
                 if (ns.frootn < 1e-10) ns.frootn = 0.0;
             }

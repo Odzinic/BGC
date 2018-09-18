@@ -1,10 +1,11 @@
 package bgclib;
 
 import classes.Constant;
+import classes.MetVar;
 
 public class Atm_Pres {
 
-	public boolean atm_pres(double elev, double pa) {
+    public boolean atm_pres(double elev, MetVar metv) {
 
 		double t1;
 		double t2;
@@ -18,7 +19,7 @@ public class Atm_Pres {
 
 		t1 = 1.0 - (LR_STD * elev) / T_STD;
 		t2 = G_STD / (LR_STD * (R / MA));
-		pa = P_STD * Math.pow(t1, t2);
+        metv.pa = P_STD * Math.pow(t1, t2);
 
 		return true;
 	}

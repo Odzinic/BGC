@@ -334,7 +334,6 @@ public class Canopy_Et {
 		 * transfer, parallel resistances : rhr = (rh * rr) / (rh + rr)
 		 */
 		rhr = (rh * rr) / (rh + rr);
-
 		/* calculate latent heat of vaporization as a function of ta */
 		lhvap = 2.5023e6 - 2430.54 * ta;
 

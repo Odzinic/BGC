@@ -140,9 +140,6 @@ public class BGC {
         nt = new NTemp(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         phenarr = new PhenArray(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        String BV_DIAG = String.valueOf(Constant.BV_DIAG.getValue());
-        String BV_ERROR = String.valueOf(Constant.BV_ERROR.getValue());
-        String BV_DETAIL = String.valueOf(Constant.BV_DETAIL.getValue());
         String SANE = String.valueOf(Constant.SANE.getValue());
         double SPINUP_TOLERANCE = Constant.SPINUP_TOLERANCE.getValue();
 
@@ -200,8 +197,9 @@ public class BGC {
         double MODE_MODEL = Constant.MODE_MODEL.getValue();
 
 
+
         if (mode != MODE_SPINUP && mode != MODE_MODEL) {
-            System.out.printf(BV_ERROR, "Error: Unknown MODE given when calling bgc()\n");
+            System.out.print("Error: Unknown MODE given when calling bgc()\n");
             return false;
         }
 
@@ -227,7 +225,7 @@ public class BGC {
             ramp_ndep = new Ramp_Ndep(0, 0, 0.0, 0.0);
         }
 
-        System.out.printf(BV_DIAG, "done copy input\n");
+        System.out.print("done copy input\n");
 
         /* local variable that signals the need for daily output array */
 //		dayout = (ctrl.dodaily == 1 || ctrl.domonavg == 1 || ctrl.doannavg == 1);
@@ -241,12 +239,12 @@ public class BGC {
 
 
         /* initialize monavg and annavg to 0.0 */
-        if (ctrl.domonavg == 2) {
+        if (ctrl.domonavg == 1) {
             for (outv = 0; outv < ctrl.ndayout; outv++) {
                 monavgarr.add(outv, 0.0);
             }
         }
-        if (ctrl.doannavg == 2) {
+        if (ctrl.doannavg == 1) {
             for (outv = 0; outv < ctrl.ndayout; outv++) {
                 annavgarr.add(outv, 0.0);
             }
@@ -255,35 +253,35 @@ public class BGC {
         /* initialize the output mapping array */
         if (!outmapin.output_map_init(output_map, metv, ws, wf, cs, cf, ns, nf, phen,
                 epv, psn_sun, psn_shade, summary)) {
-            System.out.printf(BV_ERROR, "Error in call to output_map_init() from bgc()\n");
+            System.out.print("Error in call to output_map_init() from bgc()\n");
             return false;
         }
 
-        System.out.printf(BV_DIAG, "done initialize outmap\n");
+        System.out.print("done initialize outmap\n");
 
         /* make zero-flux structures for use inside annual and daily loops */
         if (!mzf.make_zero_flux_struct(zero_wf, zero_cf, zero_nf)) {
-            System.out.printf(BV_ERROR, "Error in call to make_zero_flux_struct() from bgc()\n");
+            System.out.print("Error in call to make_zero_flux_struct() from bgc()\n");
             return false;
         }
 
-        System.out.printf(BV_DIAG, "done make_zero_flux\n");
+        System.out.print("done make_zero_flux\n");
 
         /* atmospheric pressure (Pa) as a function of elevation (m) */
-        if (!atmpres.atm_pres(sitec.elev, metv.pa)) {
-            System.out.printf(BV_ERROR, "Error in atm_pres() from bgc()\n");
+        if (!atmpres.atm_pres(sitec.elev, metv)) {
+            System.out.print("Error in atm_pres() from bgc()\n");
             return false;
         }
 
-        System.out.printf(BV_DIAG, "done atm_pres\n");
+        System.out.print("done atm_pres\n");
 
         /* determine phenological signals */
         if (!prephen.prephenology(ctrl, epc, sitec, metarr, phenarr)) {
-            System.out.printf(BV_ERROR, "Error in call to prephenology(), from bgc()\n");
+            System.out.print("Error in call to prephenology(), from bgc()\n");
             return false;
         }
 
-        System.out.printf(BV_DIAG, "done prephenology\n");
+        System.out.print("done prephenology\n");
 
 		/* calculate the annual average air temperature for use in soil 
 		temperature corrections. This code added 9 February 1999, in
@@ -300,38 +298,39 @@ public class BGC {
         if (ctrl.read_restart == 1) {
             if (!restio.restart_input(ctrl, ws, cs, ns, epv, metyr,
                     (bgcin.restart_input))) {
-                System.out.printf(BV_ERROR, "Error in call to restart_input() from bgc()\n");
+                System.out.print("Error in call to restart_input() from bgc()\n");
                 return false;
             }
 
-            System.out.printf(BV_DIAG, "done restart_input\n");
+            System.out.print("done restart_input\n");
 
         } else
             /* no restart file, user supplies initial conditions */ {
 			/* initialize leaf C and N pools depending on phenology signals for
 			the first metday */
             if (!firday.firstday(epc, cinit, epv, phenarr, cs, ns)) {
-                System.out.printf(BV_ERROR, "Error in call to firstday(), from bgc()\n");
+                System.out.print("Error in call to firstday(), from bgc()\n");
                 return false;
             }
 
             /* initial value for metyr */
             metyr = 0;
 
-            System.out.printf(BV_DIAG, "done firstday\n");
+            System.out.print("done firstday\n");
         }
 
         /* zero water, carbon, and nitrogen source and sink variables */
         if (!zersrc.zero_srcsnk(cs, ns, ws, summary)) {
-            System.out.printf(BV_ERROR, "Error in call to zero_srcsnk(), from bgc()\n");
+            System.out.print("Error in call to zero_srcsnk(), from bgc()\n");
             return false;
         }
 
-        System.out.printf(BV_DIAG, "done zero_srcsnk\n");
+        System.out.print("done zero_srcsnk\n");
 
 		/* initialize the indicator for first day of current simulation, so
 		that the checks for mass balance can have two days for comparison */
         first_balance = 1;
+
 
         /* mode == MODE_SPINUP only*/
         if (mode == MODE_SPINUP) {
@@ -394,20 +393,20 @@ public class BGC {
                 /* test whether metyr needs to be reset */
                 if (metyr == ctrl.metyears) {
                     if (mode == MODE_MODEL) {
-                        if (ctrl.onscreen == 1) System.out.printf(BV_DETAIL, "Resetting met data for cyclic input\n");
+                        if (ctrl.onscreen == 1) System.out.print("Resetting met data for cyclic input\n");
                     }
                     if (mode == MODE_SPINUP) {
-                        System.out.printf(BV_DIAG, "Resetting met data for cyclic input\n");
+                        System.out.print("Resetting met data for cyclic input\n");
                     }
                     metyr = 0;
                 }
 
                 if (mode == MODE_MODEL) {
                     /* output to screen to indicate start of simulation year */
-                    if (ctrl.onscreen == 1) System.out.printf(BV_DETAIL, "Year: %6d\n", ctrl.simstartyear + simyr);
+                    if (ctrl.onscreen == 1) System.out.printf("Year: %6d\n", ctrl.simstartyear + simyr);
                 } else if (mode == MODE_SPINUP) {
                     /* output to screen to indicate start of simulation year */
-                    if (ctrl.onscreen == 1) System.out.printf(BV_DETAIL, "Year: %6d\n", spinyears);
+                    if (ctrl.onscreen == 1) System.out.printf("Year: %6d\n", spinyears);
                 }
 
                 /* set the max lai variable, for annual diagnostic output */
@@ -423,9 +422,9 @@ public class BGC {
                     } else {
                         /* when varco2 = 1, use file for co2 */
                         if (co2.varco2 == 1) metv.co2 = getco2.get_co2(co2, (ctrl.simstartyear + simyr));
-                        System.out.printf(BV_DIAG, "CO2 val: %lf Year: %i\n", metv.co2, (ctrl.simstartyear + simyr));
+                        System.out.printf("CO2 val: %f Year: %d\n", metv.co2, (ctrl.simstartyear + simyr));
                         if (metv.co2 < -999) {
-                            System.out.printf(BV_ERROR, "Error finding CO2 value for year: %i\n", (ctrl.simstartyear + simyr));
+                            System.out.printf("Error finding CO2 value for year: %d\n", (ctrl.simstartyear + simyr));
                             break;
                         }
 
@@ -456,10 +455,10 @@ public class BGC {
 
                         daily_ndep = getndep.get_ndep(bgcin.ndepctrl, (ctrl.simstartyear + simyr));
                         if (daily_ndep < -999) {
-                            System.out.printf(BV_ERROR, "Error finding NDEP for year: %i\n", (ctrl.simstartyear + simyr));
+                            System.out.printf("Error finding NDEP for year: %d\n", (ctrl.simstartyear + simyr));
                             break;
                         } else {
-                            System.out.printf(BV_DIAG, "Using annual NDEP value: %lf\n", daily_ndep);
+                            System.out.printf("Using annual NDEP value: %f\n", daily_ndep);
                             daily_ndep /= 365.0;
                         }
                     }
@@ -474,12 +473,12 @@ public class BGC {
 
                 /* begin the daily model loop */
                 for (yday = 0; yday < 365; yday++) {
-                    System.out.printf(BV_DIAG, "year %d\tyday %d\n", simyr, yday);
+                    System.out.printf("year %d\tyday %d\n", simyr, yday);
 
 				/* Test for very low state variable values and force them
 				to 0.0 to avoid rounding and floating point overflow errors */
                     if (!prectrl.precision_control(ws, cs, ns)) {
-                        System.out.printf(BV_ERROR, "Error in call to precision_control() from bgc()\n");
+                        System.out.print("Error in call to precision_control() from bgc()\n");
                         return false;
                     }
 
@@ -493,11 +492,11 @@ public class BGC {
 
                     /* daily meteorological variables from metarrays */
                     if (!dmet.daymet(metarr, metv, metday)) {
-                        System.out.printf(BV_ERROR, "Error in daymet() from bgc()\n");
+                        System.out.print("Error in daymet() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone daymet\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone daymet\n", simyr, yday);
 
 				/* soil temperature correction using difference from
 				annual average tair */
@@ -510,11 +509,11 @@ public class BGC {
 
                     /* daily phenological variables from phenarrays */
                     if (!dphen.dayphen(phenarr, phen, metday)) {
-                        System.out.printf(BV_ERROR, "Error in dayphen() from bgc()\n");
+                        System.out.print("Error in dayphen() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone dayphen\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone dayphen\n", simyr, yday);
 
                     /* test for the annual allocation day */
                     if (phen.remdays_litfall == 1) annual_alloc = 1;
@@ -522,65 +521,65 @@ public class BGC {
 
                     /* phenology fluxes */
                     if (!phenfun.phenology(epc, phen, epv, cs, cf, ns, nf)) {
-                        System.out.printf(BV_ERROR, "Error in phenology() from bgc()\n");
+                        System.out.print("Error in phenology() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone phenology\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone phenology\n", simyr, yday);
 
 				/* calculate leaf area index, sun and shade fractions, and specific
 				leaf area for sun and shade canopy fractions, then calculate
 				canopy radiation interception and transmission */
                     if (!ratran.radtrans(cs, epc, metv, epv, sitec.sw_alb)) {
-                        System.out.printf(BV_ERROR, "Error in radtrans() from bgc()\n");
+                        System.out.print("Error in radtrans() from bgc()\n");
                         return false;
                     }
 
                     /* update the ann max LAI for annual diagnostic output */
                     if (epv.proj_lai > epv.ytd_maxplai) epv.ytd_maxplai = epv.proj_lai;
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone radtrans\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone radtrans\n", simyr, yday);
 
                     /* precip routing (when there is precip) */
                     if (metv.prcp == 1.0 && !prcout.prcp_route(metv, epc.int_coef, epv.all_lai,
                             wf)) {
-                        System.out.printf(BV_ERROR, "Error in prcp_route() from bgc()\n");
+                        System.out.print("Error in prcp_route() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone prcp_route\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone prcp_route\n", simyr, yday);
 
                     /* snowmelt (when there is a snowpack) */
                     if (ws.snoww == 1.0 && !snmelt.snowmelt(metv, wf, ws.snoww)) {
-                        System.out.printf(BV_ERROR, "Error in snowmelt() from bgc()\n");
+                        System.out.print("Error in snowmelt() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone snowmelt\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone snowmelt\n", simyr, yday);
 
                     /* bare-soil evaporation (when there is no snowpack) */
                     if (ws.snoww == 0.0 && !barevap.baresoil_evap(metv, wf, epv.dsr)) {
-                        System.out.printf(BV_ERROR, "Error in baresoil_evap() from bgc()\n");
+                        System.out.print("Error in baresoil_evap() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone bare_soil evap\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone bare_soil evap\n", simyr, yday);
 
                     /* soil water potential */
                     if (!sopsi.soilpsi(sitec, ws.soilw, epv.psi, epv.vwc)) {
-                        System.out.printf(BV_ERROR, "Error in soilpsi() from bgc()\n");
+                        System.out.print("Error in soilpsi() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone soilpsi\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone soilpsi\n", simyr, yday);
 
                     /* daily maintenance respiration */
                     if (!maresp.maint_resp(cs, ns, epc, metv, cf, epv)) {
-                        System.out.printf(BV_ERROR, "Error in m_resp() from bgc()\n");
+                        System.out.print("Error in m_resp() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone maint resp\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone maint resp\n", simyr, yday);
 
                     /* begin canopy bio-physical process simulation */
 				/* do canopy ET calculations whenever there is leaf area
@@ -589,11 +588,11 @@ public class BGC {
                     if (cs.leafc == 1 && metv.dayl == 1) {
                         /* conductance and evapo-transpiration */
                         if (!canet.canopy_et(metv, epc, epv, wf, 1)) {
-                            System.out.printf(BV_ERROR, "Error in canopy_et() from bgc()\n");
+                            System.out.print("Error in canopy_et() from bgc()\n");
                             return false;
                         }
 
-                        System.out.printf(BV_DIAG, "%d\t%d\tdone canopy_et\n", simyr, yday);
+                        System.out.printf("%d\t%d\tdone canopy_et\n", simyr, yday);
 
                     }
                 /* do photosynthesis only when it is part of the current
@@ -602,7 +601,7 @@ public class BGC {
 				of litterfall and allocation */
                     if (cs.leafc == 1 && phen.remdays_curgrowth == 1 && metv.dayl == 1) {
                         if (!photsynth.total_photosynthesis(metv, epc, epv, cf, psn_sun, psn_shade)) {
-                            System.out.printf(BV_ERROR, "Error in total_photosynthesis() from bgc()\n");
+                            System.out.print("Error in total_photosynthesis() from bgc()\n");
                             return false;
                         }
 
@@ -622,19 +621,19 @@ public class BGC {
 
                     /* calculate outflow */
                     if (!oflow.outflow(sitec, ws, wf)) {
-                        System.out.printf(BV_ERROR, "Error in outflow() from bgc.c\n");
+                        System.out.print("Error in outflow() from bgc.c\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone outflow\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone outflow\n", simyr, yday);
 
                     /* daily litter and soil decomp and nitrogen fluxes */
                     if (!dcomp.decomp(metv.tsoil, epc, epv, sitec, cs, cf, ns, nf, nt)) {
-                        System.out.printf(BV_ERROR, "Error in decomp() from bgc.c\n");
+                        System.out.print("Error in decomp() from bgc.c\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone decomp\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone decomp\n", simyr, yday);
 
 				/* Daily allocation gets called whether or not this is a
 				current growth day, because the competition between decomp
@@ -643,7 +642,7 @@ public class BGC {
 				immobilization fluxes are updated normally */
                     if (mode == MODE_MODEL) {
                         if (!dalloc.daily_allocation(cf, cs, nf, ns, epc, epv, nt, 1.0, (int) MODE_MODEL)) {
-                            System.out.printf(BV_ERROR, "Error in daily_allocation() from bgc.c\n");
+                            System.out.print("Error in daily_allocation() from bgc.c\n");
                             return false;
                         }
                     } else if (mode == MODE_SPINUP) {
@@ -652,122 +651,122 @@ public class BGC {
 					that supplements N supply */
                         if (steady1 == 0 && rising == 1 && metcycle == 0) {
                             if (!dalloc.daily_allocation(cf, cs, nf, ns, epc, epv, nt, naddfrac, (int) MODE_SPINUP)) {
-                                System.out.printf(BV_ERROR, "Error in daily_allocation() from bgc.c\n");
+                                System.out.print("Error in daily_allocation() from bgc.c\n");
                                 return false;
                             }
                         } else {
                             if (!dalloc.daily_allocation(cf, cs, nf, ns, epc, epv, nt, 1.0, (int) MODE_MODEL)) {
-                                System.out.printf(BV_ERROR, "Error in daily_allocation() from bgc.c\n");
+                                System.out.print("Error in daily_allocation() from bgc.c\n");
                                 return false;
                             }
                         }
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone daily_allocation\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone daily_allocation\n", simyr, yday);
 
 				/* reassess the annual turnover rates for livewood -. deadwood,
 				and for evergreen leaf and fine root litterfall. This happens
 				once each year, on the annual_alloc day (the last litterfall day) */
                     if (annual_alloc == 1) {
                         if (!annrate.annual_rates(epc, epv)) {
-                            System.out.printf(BV_ERROR, "Error in annual_rates() from bgc()\n");
+                            System.out.print("Error in annual_rates() from bgc()\n");
                             return false;
                         }
 
-                        System.out.printf(BV_DIAG, "%d\t%d\tdone annual rates\n", simyr, yday);
+                        System.out.printf("%d\t%d\tdone annual rates\n", simyr, yday);
                     }
 
 
                     /* daily growth respiration */
                     if (!groresp.growth_resp(epc, cf)) {
-                        System.out.printf(BV_ERROR, "Error in daily_growth_resp() from bgc.c\n");
+                        System.out.print("Error in daily_growth_resp() from bgc.c\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone growth_resp\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone growth_resp\n", simyr, yday);
 
                     /* daily update of the water state variables */
                     if (!statup.daily_water_state_update(wf, ws)) {
-                        System.out.printf(BV_ERROR, "Error in daily_water_state_update() from bgc()\n");
+                        System.out.print("Error in daily_water_state_update() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone water state update\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone water state update\n", simyr, yday);
 
                     /* daily update of carbon state variables */
                     if (!statup.daily_carbon_state_update(cf, cs, annual_alloc,
                             epc.woody, epc.evergreen)) {
-                        System.out.printf(BV_ERROR, "Error in daily_carbon_state_update() from bgc()\n");
+                        System.out.print("Error in daily_carbon_state_update() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone carbon state update\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone carbon state update\n", simyr, yday);
 //TODO: May have been checking daily_nitrogen for true....
                     /* daily update of nitrogen state variables */
                     if (!statup.daily_nitrogen_state_update(nf, ns, annual_alloc,
                             epc.woody, epc.evergreen)) {
-                        System.out.printf(BV_ERROR, "Error in daily_nitrogen_state_update() from bgc()\n");
+                        System.out.print("Error in daily_nitrogen_state_update() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone nitrogen state update\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone nitrogen state update\n", simyr, yday);
 
 				/* calculate N leaching loss.  This is a special state variable
 				update routine, done after the other fluxes and states are
 				reconciled in order to avoid negative sminn under heavy leaching
 				potential */
                     if (!nleach.nleaching(ns, nf, ws, wf)) {
-                        System.out.printf(BV_ERROR, "Error in nleaching() from bgc()\n");
+                        System.out.print("Error in nleaching() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone nitrogen leaching\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone nitrogen leaching\n", simyr, yday);
 
                     /* calculate daily mortality fluxes and update state variables */
 				/* this is done last, with a special state update procedure, to
 				insure that pools don't go negative due to mortality fluxes
 				conflicting with other proportional fluxes */
                     if (!mort.mortality(epc, cs, cf, ns, nf)) {
-                        System.out.printf(BV_ERROR, "Error in mortality() from bgc()\n");
+                        System.out.print("Error in mortality() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone mortality\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone mortality\n", simyr, yday);
 
                     /* test for water balance */
                     if (!checbal.check_water_balance(ws, first_balance)) {
-                        System.out.printf(BV_ERROR, "Error in check_water_balance() from bgc()\n");
-                        System.out.printf(BV_ERROR, "%d\n", metday);
+                        System.out.print("Error in check_water_balance() from bgc()\n");
+                        System.out.printf("%d\n", metday);
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone water balance\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone water balance\n", simyr, yday);
 
                     /* test for carbon balance */
                     if (!checbal.check_carbon_balance(cs, first_balance)) {
-                        System.out.printf(BV_ERROR, "Error in check_carbon_balance() from bgc()\n");
-                        System.out.printf(BV_ERROR, "%d\n", metday);
+                        System.out.print("Error in check_carbon_balance() from bgc()\n");
+                        System.out.printf("%d\n", metday);
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone carbon balance\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone carbon balance\n", simyr, yday);
 
                     /* test for nitrogen balance */
                     if (!checbal.check_nitrogen_balance(ns, first_balance)) {
-                        System.out.printf(BV_ERROR, "Error in check_nitrogen_balance() from bgc()\n");
-                        System.out.printf(BV_ERROR, "%d\n", metday);
+                        System.out.print("Error in check_nitrogen_balance() from bgc()\n");
+                        System.out.printf("%d\n", metday);
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone nitrogen balance\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone nitrogen balance\n", simyr, yday);
 
                     /* calculate carbon summary variables */
                     if (!sumfun.csummary(cf, cs, summary)) {
-                        System.out.printf(BV_ERROR, "Error in csummary() from bgc()\n");
+                        System.out.print("Error in csummary() from bgc()\n");
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone carbon summary\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone carbon summary\n", simyr, yday);
 
                     /* calculate water summary variables */
                     if (!sumfun.wsummary(ws, wf, summary)) {
@@ -775,19 +774,19 @@ public class BGC {
                         return false;
                     }
 
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone water summary\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone water summary\n", simyr, yday);
 
                     /* DAILY OUTPUT HANDLING */
 				/* fill the daily output array if daily output is requested,
 				or if the monthly or annual average of daily output variables
 				have been requested */
-                    System.out.printf(BV_DIAG, "Number of daily outputs: %d\n", ctrl.ndayout);
+                    System.out.printf("Number of daily outputs: %d\n", ctrl.ndayout);
                     if (dayout == 1) {
                         /* fill the daily output array */
                         for (outv = 0; outv < ctrl.ndayout; outv++) {
-                            System.out.printf(BV_DIAG, "Outv: %d, ", outv);
-                            System.out.printf(BV_DIAG, "DayCode: %d, ", ctrl.daycodes.get(outv));
-                            System.out.printf(BV_DIAG, "Output: %f\n", output_map.get(ctrl.daycodes.get(outv)));
+                            System.out.printf("Outv: %d, ", outv);
+                            System.out.printf("DayCode: %d, ", ctrl.daycodes.get(outv));
+                            System.out.printf("Output: %f\n", output_map.get(ctrl.daycodes.get(outv)));
                             dayarr.add(outv, (double) output_map.get(ctrl.daycodes.get(outv)));
                         }
                     }
@@ -797,12 +796,12 @@ public class BGC {
 //					if (fwrite(dayarr, sizeof(float), ctrl.ndayout, bgcout.dayout.ptr)
 //						!= (size_t)ctrl.ndayout)
 //					{
-//						System.out.printf(BV_ERROR, "Error writing to %s: simyear = %d, simday = %d\n",
+//						System.out.printf("Error writing to %s: simyear = %d, simday = %d\n",
 //							bgcout.dayout.name,simyr,yday);
 //						ok=0;
 //					}
 
-                        System.out.printf(BV_DIAG, "%d\t%d\tdone daily output\n", simyr, yday);
+                        System.out.printf("%d\t%d\tdone daily output\n", simyr, yday);
                         if (bgcout.bgc_ascii == 1) {
 
                             outasc.output_ascii(dayarr, ctrl.ndayout, bgcout.dayoutascii);
@@ -810,6 +809,7 @@ public class BGC {
                         }
 
                     }
+
                     /*******************/
                     /* MONTHLY OUTPUTS */
                     /*******************/
@@ -864,7 +864,7 @@ public class BGC {
 //						if (fwrite(monavgarr, sizeof(float), ctrl.ndayout, bgcout.monavgout.ptr)
 //							!= (size_t)ctrl.ndayout)
 //						{
-//							System.out.printf(BV_ERROR, "Error writing to %s: simyear = %d, simday = %d\n",
+//							System.out.printf("Error writing to %s: simyear = %d, simday = %d\n",
 //								bgcout.monavgout.name,simyr,yday);
 //							ok=0;
 //						}
@@ -884,7 +884,7 @@ public class BGC {
                             /* increment current month counter */
                             curmonth++;
 
-                            System.out.printf(BV_DIAG, "%d\t%d\tdone monavg output\n", simyr, yday);
+                            System.out.printf("%d\t%d\tdone monavg output\n", simyr, yday);
 
                         }
                     }
@@ -928,7 +928,7 @@ public class BGC {
 //						if (fwrite(annavgarr, sizeof(float), ctrl.ndayout, bgcout.annavgout.ptr)
 //							!= (size_t)ctrl.ndayout)
 //						{
-//							System.out.printf(BV_ERROR, "Error writing to %s: simyear = %d, simday = %d\n",
+//							System.out.printf("Error writing to %s: simyear = %d, simday = %d\n",
 //								bgcout.annavgout.name,simyr,yday);
 //							ok=0;
 //						}
@@ -939,7 +939,7 @@ public class BGC {
                                 annmaxplai = 0.0;
                             }
 
-                            System.out.printf(BV_DIAG, "%d\t%d\tdone annavg output\n", simyr, yday);
+                            System.out.printf("%d\t%d\tdone annavg output\n", simyr, yday);
 
                         }
                     }
@@ -979,13 +979,13 @@ public class BGC {
                 if (ctrl.doannual == 1) {
                     /* fill the annual output array */
                     for (outv = 0; outv < ctrl.nannout; outv++) {
-                        annarr.set(outv, (double) output_map.get(ctrl.anncodes.get(outv)));
+                        annarr.add(outv, (double) output_map.get(ctrl.anncodes.get(outv)));
                     }
                     /* write the annual output array to annual output file */
 //				if (fwrite(annarr, sizeof(float), ctrl.nannout, bgcout.annout.ptr)
 //					!= (size_t)ctrl.nannout)
 //				{
-//					System.out.printf(BV_ERROR, "Error writing to %s: simyear = %d, simday = %d\n",
+//					System.out.printf("Error writing to %s: simyear = %d, simday = %d\n",
 //						bgcout.annout.name,simyr,yday);
 //					ok=0;
 //				}
@@ -995,7 +995,7 @@ public class BGC {
                         outasc.output_ascii(annarr, ctrl.nannout, bgcout.annoutascii);
 
                     }
-                    System.out.printf(BV_DIAG, "%d\t%d\tdone annual output\n", simyr, yday);
+                    System.out.printf("%d\t%d\tdone annual output\n", simyr, yday);
                 }
 
                 if (mode == MODE_MODEL && bgcout.bgc_ascii == 1) {
@@ -1024,6 +1024,7 @@ public class BGC {
 
             }   /* end of annual model loop */
 
+
             if (mode == MODE_SPINUP) {
                 /* spinup control */
                 /* if this is the third pass through metcycle, do comparison */
@@ -1042,11 +1043,11 @@ public class BGC {
                     }
 //				steady1 = (Math.abs(t1) < SPINUP_TOLERANCE);
 
-                    System.out.printf(BV_DIAG, "spinyears = %d rising = %d steady1 = %d\n", spinyears,
+                    System.out.printf("spinyears = %d rising = %d steady1 = %d\n", spinyears,
                             rising, steady1);
-                    System.out.printf(BV_DIAG, "metcycle = %d tally1 = %lf tally2 = %lf pdif = %lf\n\n",
+                    System.out.printf("metcycle = %d tally1 = %f tally2 = %f pdif = %f\n\n",
                             metcycle, tally1, tally2, t1);
-                    if (steady1 == 1) System.out.printf(BV_DIAG, "SWITCH\n\n");
+                    if (steady1 == 1) System.out.printf("SWITCH\n\n");
 
                     metcycle = 0;
                 }
@@ -1064,22 +1065,22 @@ public class BGC {
 
                     /* if rising above critical rate, back to steady1=0 */
                     if (t1 > SPINUP_TOLERANCE) {
-                        System.out.printf(BV_DIAG, "\nSWITCH BACK\n");
+                        System.out.print("\nSWITCH BACK\n");
 
                         steady1 = 0;
                         rising = 1;
                     }
 
-                    System.out.printf(BV_DIAG, "spinyears = %d rising = %d steady2 = %d\n", spinyears,
+                    System.out.printf("spinyears = %d rising = %d steady2 = %d\n", spinyears,
                             rising, steady2);
-                    System.out.printf(BV_DIAG, "metcycle = %d tally1 = %lf tally2 = %lf pdif = %lf\n\n",
+                    System.out.printf("metcycle = %d tally1 = %f tally2 = %f pdif = %f\n\n",
                             metcycle, tally1, tally2, t1);
 
                     metcycle = 0;
                 } else {
-                    System.out.printf(BV_DIAG, "spinyears = %d rising = %d steady1 = %d\n", spinyears,
+                    System.out.printf("spinyears = %d rising = %d steady1 = %d\n", spinyears,
                             rising, steady1);
-                    System.out.printf(BV_DIAG, "metcycle = %d tally1 = %lf tally2 = %lf pdif = %lf\n",
+                    System.out.printf("metcycle = %d tally1 = %f tally2 = %f pdif = %f\n",
                             metcycle, tally1, tally2, t1);
 
                     metcycle++;
@@ -1106,19 +1107,19 @@ public class BGC {
 
         if (!restio.restart_output(ctrl, ws, cs, ns, epv, metyr,
                 (bgcout.restart_output))) {
-            System.out.printf(BV_ERROR, "Error in call to restart_output() from bgc()\n");
+            System.out.print("Error in call to restart_output() from bgc()\n");
             return false;
-        } else System.out.printf(BV_DIAG, "%d\t%d\tdone restart output\n", simyr, yday);
+        } else System.out.printf("%d\t%d\tdone restart output\n", simyr, yday);
 
 
         /* free phenology memory */
 //		if (ok && free_phenmem(phenarr))
 //		{
-//			System.out.printf(BV_ERROR, "Error in free_phenmem() from bgc()\n");
+//			System.out.printf("Error in free_phenmem() from bgc()\n");
 //			ok=0;
 //		}
 //
-//		System.out.printf(BV_DIAG, "%d\t%d\tdone free phenmem\n",simyr,yday);
+//		System.out.printf("%d\t%d\tdone free phenmem\n",simyr,yday);
 
         /* free memory for local output arrays */
 
@@ -1133,7 +1134,6 @@ public class BGC {
 //            System.out.printf(BV_ERROR, "ERROR at year %d\n", simyr - 1);
 //            System.out.printf(BV_ERROR, "ERROR at yday %d\n", yday - 1);
 //        }
-
 
         return true;
     }
