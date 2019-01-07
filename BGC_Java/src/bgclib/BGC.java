@@ -1,8 +1,6 @@
 package bgclib;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +46,17 @@ public class BGC {
      */
 
     public boolean bgc(BGCIn bgcin, BGCOut bgcout, int mode) {
+
+//        PrintStream originalStream = System.out;
+//        PrintStream dummyStream = new PrintStream(new OutputStream(){
+//            public void write(int b) {
+//                // NO-OP
+//            }
+//        });
+
+//        System.setOut(dummyStream);
+
+        //TODO: Remove dummy output streams
 
         String summary_sanity = "INSANE";
         /* variable declarations */
@@ -742,13 +751,15 @@ public class BGC {
 
                     System.out.printf("%d\t%d\tdone water balance\n", simyr, yday);
 
+
                     /* test for carbon balance */
                     if (!checbal.check_carbon_balance(cs, first_balance)) {
                         System.out.print("Error in check_carbon_balance() from bgc()\n");
                         System.out.printf("%d\n", metday);
                         return false;
                     }
-
+//                    System.setOut(dummyStream);
+//
                     System.out.printf("%d\t%d\tdone carbon balance\n", simyr, yday);
 
                     /* test for nitrogen balance */

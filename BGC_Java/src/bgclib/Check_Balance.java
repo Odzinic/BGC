@@ -81,12 +81,12 @@ public class Check_Balance {
                 cs.litr2c + cs.litr3c + cs.litr4c + cs.soil1c + cs.soil2c +
                 cs.soil3c + cs.soil4c + cs.cpool;
 
-//        System.out.printf("Numbers are %f, %f, %f", in, out, store);
+        //System.out.printf("\nNumbers are %.8f, %.8f", cs.psnsun_src, cs.psnshade_src);
 
 		/* calculate current balance */
 		balance = in - out - store;
 
-        System.out.printf("The old balance is: %.8f and then new balance is %.8f\n", balance, old_carbonbalance);
+//        System.out.printf("The old balance is: %.8f and then new balance is %.8f\n", balance, old_carbonbalance);
 
 		if (first_balance == 0) {
             if (Math.abs(old_carbonbalance - balance) > 1e-8) {
@@ -146,6 +146,13 @@ public class Check_Balance {
                 return false;
 			}
 		}
+
+        System.out.printf("\n%f, %f, %f\n", in, out, store);
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+
+        }
         old_nitrogenbalance = balance;
 
         return true;

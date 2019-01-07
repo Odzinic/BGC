@@ -95,6 +95,7 @@ public class Baresoil_Evap {
 		}
 
 		wf.soilw_evap = evap;
+        //TODO: What is dsr_ptr used for?
 		dsr_ptr = dsr;
 
         return true;
