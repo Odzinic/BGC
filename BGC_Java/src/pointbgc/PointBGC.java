@@ -438,7 +438,7 @@ public class PointBGC {
         if (restart.write_restart == 1) {
             BufferedWriter restart_file = null;
             try {
-                restart_file = new BufferedWriter(new FileWriter("restart/restart_file.ini", true));
+                restart_file = new BufferedWriter(new FileWriter("restart/restart_file.ini", false));
             } catch (IOException e) {
                 e.printStackTrace();
             }

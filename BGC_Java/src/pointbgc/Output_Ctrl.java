@@ -100,7 +100,7 @@ public class Output_Ctrl {
 		/* begin loop to read in the daily output variable indices */
         for (i = 0; i < output.ndayout; i++) {
 
-            output.daycodes.add(i, dailyIni.scan_value(1, 'i').intVal);
+            output.daycodes.add(i, dailyIni.scan_value(i + 1, 'i').intVal);
         }
 
 
@@ -122,7 +122,7 @@ public class Output_Ctrl {
 
             for (i = 0; i < output.nannout; i++) {
 
-                output.anncodes.add(i, annualIni.scan_value(1, 'i').intVal);
+                output.anncodes.add(i, annualIni.scan_value(i + 1, 'i').intVal);
             }
         }
 

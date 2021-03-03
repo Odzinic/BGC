@@ -94,6 +94,39 @@ public class Restart_Init {
 
         }
 
+        /* if using an input restart file, open it, otherwise discard the next line of the ini file */
+        try {
+            restart.in_restart = new File(ini.scan_value(3, 's').strVal);
+        } catch (IndexOutOfBoundsException ibe) {
+            System.out.println(ibe);
+            System.out.printf(BV_ERROR, "Error opening input restart file\n");
+
+            return false;
+        } catch (ClassCastException cce) {
+            System.out.println(cce);
+            System.out.printf(BV_ERROR, "Error opening input restart file\n");
+
+            return false;
+
+        }
+
+        /* if using an output restart file, open it, otherwise
+	discard the next line of the ini file */
+        try {
+            restart.out_restart = new File(ini.scan_value(3, 's').strVal);
+        } catch (IndexOutOfBoundsException ibe) {
+            System.out.println(ibe);
+            System.out.printf(BV_ERROR, "Error opening output restart file\n");
+
+            return false;
+        } catch (ClassCastException cce) {
+            System.out.println(cce);
+            System.out.printf(BV_ERROR, "Error opening output restart file\n");
+
+            return false;
+
+        }
+
         return true;
     }
 }
