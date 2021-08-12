@@ -97,7 +97,7 @@ public class Sitec_Init {
 
         sitec.soil_b = -(3.10 + 0.157 * clay - 0.003 * sand);
         sitec.vwc_sat = (50.5 - 0.142 * sand - 0.037 * clay) / 100.0;
-        sitec.psi_sat = -Math.exp((1.54 - 0.0095 * sand + 0.0063 * silt) * 9.8e-5);
+        sitec.psi_sat = -(Math.exp((1.54 - 0.0095 * sand + 0.0063 * silt) * Math.log(10.0)) * 9.8e-5);
         sitec.vwc_fc = sitec.vwc_sat * Math.pow((-0.015 / sitec.psi_sat), (1.0 / sitec.soil_b));
 
 	    /* define maximum soilwater content, for outflow calculation

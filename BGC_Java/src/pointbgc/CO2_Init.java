@@ -127,7 +127,7 @@ public class CO2_Init {
             }
 
         }
-        System.out.printf(String.format("Found: %d CO2 records in co2_init()", reccount));
+        System.out.println(String.format("Found: %d CO2 records in co2_init()", reccount));
 
         if (co2.co2ppm < 0.0) {
             System.out.println("Error in co2_init(): co2 (ppm) must be positive");
