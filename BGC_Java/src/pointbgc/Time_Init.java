@@ -11,15 +11,20 @@ See copyright.txt for Copyright information
 
 package pointbgc;
 
+import classes.Constant;
 import classes.Control;
 
 import java.io.File;
 
+
 public class Time_Init {
+
+    public static double cli_mode = Constant.MODE_INI.getValue();
 
     public boolean time_init(File init, Control ctrl) {
 
         String key = "TIME_DEFINE";
+
 
         Ini_REDO ini = new Ini_REDO(init, key);
 
@@ -63,6 +68,19 @@ public class Time_Init {
             return false;
         }
 
+        if (cli_mode == Constant.MODE_MODEL.getValue()) {
+            ctrl.spinup = 0;
+        } else if (cli_mode == Constant.MODE_SPINUP.getValue() || cli_mode == Constant.MODE_SPINNGO.getValue()) {
+            ctrl.spinup = 1;
+        }
+
+        /* read maximum allowable simulation years for spinup simulation */
+        try {
+            ctrl.maxspinyears = ini.scan_value(4, 'i').intVal;
+        } catch (IndexOutOfBoundsException ibe) {
+            System.out.println("Error reading max spinup years: time_init(), time_init.c");
+            return false;
+        }
 
         return true;
     }
