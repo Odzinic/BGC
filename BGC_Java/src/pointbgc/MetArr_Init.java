@@ -93,8 +93,8 @@ public class MetArr_Init {
 
             metarr.tmax.add(i, tmax + scc.s_tmax);
             metarr.tmin.add(i, tmin + scc.s_tmin);
-            metarr.prcp.add(i, prcp + scc.s_prcp);
-            metarr.vpd.add(i, vpd + scc.s_vpd);
+            metarr.prcp.add(i, prcp * scc.s_prcp);
+            metarr.vpd.add(i, vpd * scc.s_vpd);
             metarr.swavgfd.add(i, swavgfd * scc.s_swavgfd);
             metarr.dayl.add(i, dayl);
             metarr.par.add(i, swavgfd * RAD2PAR * scc.s_swavgfd);
