@@ -26,17 +26,17 @@ public class Phenology_Fun {
 			/* transfer growth fluxes */
 			/* check for days left in transfer growth period */
 			/* AAN - yes, this is an assignment */
-			if ((ndays = phen.remdays_transfer) == 1) {
-				/*
-				 * calculate rates required to empty each transfer compartment
-				 * by the end of transfer period, at approximately a constant
-				 * rate of transfer
-				 */
-				cf.leafc_transfer_to_leafc = cs.leafc_transfer / ndays;
-				nf.leafn_transfer_to_leafn = ns.leafn_transfer / ndays;
-				cf.frootc_transfer_to_frootc = cs.frootc_transfer / ndays;
-				nf.frootn_transfer_to_frootn = ns.frootn_transfer / ndays;
-				if (epc.woody == 1) {
+			if ((ndays = phen.remdays_transfer) > 0) {
+                /*
+                 * calculate rates required to empty each transfer compartment
+                 * by the end of transfer period, at approximately a constant
+                 * rate of transfer
+                 */
+                cf.leafc_transfer_to_leafc = cs.leafc_transfer / ndays;
+                nf.leafn_transfer_to_leafn = ns.leafn_transfer / ndays;
+                cf.frootc_transfer_to_frootc = cs.frootc_transfer / ndays;
+                nf.frootn_transfer_to_frootn = ns.frootn_transfer / ndays;
+                if (epc.woody == 1) {
 					cf.livestemc_transfer_to_livestemc = cs.livestemc_transfer / ndays;
 					nf.livestemn_transfer_to_livestemn = ns.livestemn_transfer / ndays;
 					cf.deadstemc_transfer_to_deadstemc = cs.deadstemc_transfer / ndays;
@@ -85,13 +85,13 @@ public class Phenology_Fun {
 				livestemtovrn = livestemtovrc / epc.livewood_cn;
 				if (livestemtovrc > cs.livestemc)
 					livestemtovrc = cs.livestemc;
-				if (livestemtovrn > ns.livestemn)
-					livestemtovrn = ns.livestemn;
-				if (livestemtovrc == 1 && livestemtovrn == 1) {
-					cf.livestemc_to_deadstemc = livestemtovrc;
-					nf.livestemn_to_deadstemn = livestemtovrc / epc.deadwood_cn;
-					nf.livestemn_to_retransn = livestemtovrn - nf.livestemn_to_deadstemn;
-				}
+                if (livestemtovrn > ns.livestemn)
+                    livestemtovrn = ns.livestemn;
+                if (livestemtovrc > 0 && livestemtovrn > 0) {
+                    cf.livestemc_to_deadstemc = livestemtovrc;
+                    nf.livestemn_to_deadstemn = livestemtovrc / epc.deadwood_cn;
+                    nf.livestemn_to_retransn = livestemtovrn - nf.livestemn_to_deadstemn;
+                }
 
 				/*
 				 * turnover from live coarse root wood to dead coarse root wood
@@ -100,13 +100,13 @@ public class Phenology_Fun {
 				livecroottovrn = livecroottovrc / epc.livewood_cn;
 				if (livecroottovrc > cs.livecrootc)
 					livecroottovrc = cs.livecrootc;
-				if (livecroottovrn > ns.livecrootn)
-					livecroottovrn = ns.livecrootn;
-				if (livecroottovrc == 1 && livecroottovrn == 1) {
-					cf.livecrootc_to_deadcrootc = livecroottovrc;
-					nf.livecrootn_to_deadcrootn = livecroottovrc / epc.deadwood_cn;
-					nf.livecrootn_to_retransn = livecroottovrn - nf.livecrootn_to_deadcrootn;
-				}
+                if (livecroottovrn > ns.livecrootn)
+                    livecroottovrn = ns.livecrootn;
+                if (livecroottovrc > 0 && livecroottovrn > 0) {
+                    cf.livecrootc_to_deadcrootc = livecroottovrc;
+                    nf.livecrootn_to_deadcrootn = livecroottovrc / epc.deadwood_cn;
+                    nf.livecrootn_to_retransn = livecroottovrn - nf.livecrootn_to_deadcrootn;
+                }
 			}
 		} /* end if evergreen */
 
@@ -163,19 +163,19 @@ public class Phenology_Fun {
 					epv.day_frootc_litfall_increment += drate;
 				}
 				/* leaf litterfall */
-				if (leaflitfallc > cs.leafc)
-					leaflitfallc = cs.leafc;
-                if (leaflitfallc == 1 && !leaf_litfall(epc, leaflitfallc, cf, nf)) {
-					System.out.printf(BV_ERROR, "Error in call to leaf_litfall() from phenology()\n");
+                if (leaflitfallc > cs.leafc)
+                    leaflitfallc = cs.leafc;
+                if (leaflitfallc > 0 && !leaf_litfall(epc, leaflitfallc, cf, nf)) {
+                    System.out.printf(BV_ERROR, "Error in call to leaf_litfall() from phenology()\n");
                     return false;
-				}
+                }
 				/* fine root litterfall */
-				if (frootlitfallc > cs.frootc)
-					frootlitfallc = cs.frootc;
-                if (frootlitfallc == 1 && !froot_litfall(epc, frootlitfallc, cf, nf)) {
-					System.out.printf(BV_ERROR, "Error in call to froot_litfall() from phenology()\n");
+                if (frootlitfallc > cs.frootc)
+                    frootlitfallc = cs.frootc;
+                if (frootlitfallc > 0 && !froot_litfall(epc, frootlitfallc, cf, nf)) {
+                    System.out.printf(BV_ERROR, "Error in call to froot_litfall() from phenology()\n");
                     return false;
-				}
+                }
 			} /* end if deciduous litterfall day */
 
 			/*
@@ -189,13 +189,13 @@ public class Phenology_Fun {
 				livestemtovrn = livestemtovrc / epc.livewood_cn;
 				if (livestemtovrc > cs.livestemc)
 					livestemtovrc = cs.livestemc;
-				if (livestemtovrn > ns.livestemn)
-					livestemtovrn = ns.livestemn;
-				if (livestemtovrc == 1 && livestemtovrn == 1) {
-					cf.livestemc_to_deadstemc = livestemtovrc;
-					nf.livestemn_to_deadstemn = livestemtovrc / epc.deadwood_cn;
-					nf.livestemn_to_retransn = livestemtovrn - nf.livestemn_to_deadstemn;
-				}
+                if (livestemtovrn > ns.livestemn)
+                    livestemtovrn = ns.livestemn;
+                if (livestemtovrc > 0 && livestemtovrn > 0) {
+                    cf.livestemc_to_deadstemc = livestemtovrc;
+                    nf.livestemn_to_deadstemn = livestemtovrc / epc.deadwood_cn;
+                    nf.livestemn_to_retransn = livestemtovrn - nf.livestemn_to_deadstemn;
+                }
 
 				/*
 				 * turnover from live coarse root wood to dead coarse root wood
@@ -204,13 +204,13 @@ public class Phenology_Fun {
 				livecroottovrn = livecroottovrc / epc.livewood_cn;
 				if (livecroottovrc > cs.livecrootc)
 					livecroottovrc = cs.livecrootc;
-				if (livecroottovrn > ns.livecrootn)
-					livecroottovrn = ns.livecrootn;
-				if (livecroottovrc == 1 && livecroottovrn == 1) {
-					cf.livecrootc_to_deadcrootc = livecroottovrc;
-					nf.livecrootn_to_deadcrootn = livecroottovrc / epc.deadwood_cn;
-					nf.livecrootn_to_retransn = livecroottovrn - nf.livecrootn_to_deadcrootn;
-				}
+                if (livecroottovrn > ns.livecrootn)
+                    livecroottovrn = ns.livecrootn;
+                if (livecroottovrc > 0 && livecroottovrn > 0) {
+                    cf.livecrootc_to_deadcrootc = livecroottovrc;
+                    nf.livecrootn_to_deadcrootn = livecroottovrc / epc.deadwood_cn;
+                    nf.livecrootn_to_retransn = livecroottovrn - nf.livecrootn_to_deadcrootn;
+                }
 			}
 
 		} /* end if deciduous */
