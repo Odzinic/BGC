@@ -248,14 +248,20 @@ public class BGC {
 
 
         /* initialize monavg and annavg to 0.0 */
+        if (dayout == 1) {
+            for (outv = 0; outv < ctrl.ndayout; outv++) {
+                dayarr.add(outv, 0.0);
+            }
+        }
         if (ctrl.domonavg == 1) {
             for (outv = 0; outv < ctrl.ndayout; outv++) {
                 monavgarr.add(outv, 0.0);
             }
         }
-        if (ctrl.doannavg == 1) {
-            for (outv = 0; outv < ctrl.ndayout; outv++) {
-                annavgarr.add(outv, 0.0);
+
+        if (ctrl.doannual == 1) {
+            for (outv = 0; outv < ctrl.nannout; outv++) {
+                annarr.add(outv, 0.0);
             }
         }
 
