@@ -1,7 +1,13 @@
 package bgclib;
 
 import java.io.*;
+import java.lang.reflect.Array;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import classes.BGCIn;
@@ -810,13 +816,21 @@ public class BGC {
                     /* only write daily outputs if requested */
                     if (ctrl.dodaily == 1) {
 //					/* write the daily output array to daily output file */
-//					if (fwrite(dayarr, sizeof(float), ctrl.ndayout, bgcout.dayout.ptr)
-//						!= (size_t)ctrl.ndayout)
-//					{
-//						System.out.printf("Error writing to %s: simyear = %d, simday = %d\n",
-//							bgcout.dayout.name,simyr,yday);
-//						ok=0;
-//					}
+                        Path dailyfilePath = Paths.get(bgcout.dayout.getAbsolutePath());
+
+                        ByteBuffer dailyBB = ByteBuffer.allocate(dayarr.size() * 8);
+                        for (double d : dayarr) {
+                            dailyBB.putDouble(d);
+                        }
+                        byte[] dailyByteArray = dailyBB.array();
+
+                        try {
+                            FileOutputStream fos = new FileOutputStream(String.valueOf(dailyfilePath));
+                            fos.write(dailyByteArray);
+                            System.out.printf("Writing %s", Arrays.toString(dailyByteArray));
+                        } catch (IOException ioe) {
+                            ioe.printStackTrace();
+                        }
 
                         System.out.printf("%d\t%d\tdone daily output\n", simyr, yday);
                         if (bgcout.bgc_ascii == 1) {

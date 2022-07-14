@@ -93,7 +93,7 @@ public class Check_Balance {
                 System.out.printf("FATAL ERRROR: carbon balance error:\n");
                 System.out.printf("Balance from previous day = %f\n", old_carbonbalance);
                 System.out.printf("Balance from current day  = %f\n", balance);
-                System.out.printf("Difference (previous - current) = %f\n", old_carbonbalance - balance);
+                System.out.printf("Difference (previous - current) = %5.10f\n", old_carbonbalance - balance);
                 System.out.printf("Components of current balance:\n");
                 System.out.printf("Sources (summed over entire run)  = %f\n", in);
                 System.out.printf("Sinks   (summed over entire run)  = %f\n", out);
